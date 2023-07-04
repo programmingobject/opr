@@ -8,7 +8,7 @@ name = "opr"
 description = "Object Programming Runtime"
 version = "211"
 authors = [
-    {name = "Bart Thate", email = "bthate@dds.nl" },
+    {name = "Bart Thate", email = "programmingobject@gmail.com" },
 ]
 readme = "README.rst"
 license = { text="Public Domain"}
