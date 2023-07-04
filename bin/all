@@ -1,0 +1,51 @@
+#!/usr/bin/env python3
+# This file is placed in the Public Domain.
+
+
+"build all"
+
+
+import os
+import subprocess
+import sys
+import time
+
+
+DATE = time.ctime(time.time()).replace("  ", " ")
+NAME = "opr"
+
+
+os.environ["PATH"] += ":bin"
+
+
+def popen(txt):
+    "run in popen"
+    print("\n" + txt +"\n")
+    with subprocess.Popen(
+                           txt.split(),
+                           stdin=sys.stdin,
+                           stdout=sys.stdout,
+                           stderr=sys.stderr,
+                           close_fds=False,
+                           text=True
+                         ) as prock:
+        prock.communicate()
+        prock.wait()
+
+
+def main():
+    "build project"
+    print(f"ALL started at {DATE}")
+    popen("clean")
+    popen("lint")
+    #popen("python3 -m pylama --skip env/*")
+    popen("python3 -m pytest --doctest-modules")
+    popen("build")
+    popen("python3 -mvirtualenv --system-site-packages env")
+    popen(f"env/bin/python3 -m pip  install {NAME} -f dist --upgrade --force-reinstall")
+    popen(f"env/bin/{NAME} cmd")
+    popen("twine check dist/*")
+
+
+if __name__ == "__main__":
+    main()

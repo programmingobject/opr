@@ -1,0 +1,207 @@
+#!/usr/bin/env python3
+# This file is placed in the Public Domain.
+#
+# pylint: disable=C0413,E0611,I1101
+
+
+"tinder"
+
+
+import os
+import random
+import shutil
+import sys
+import termios
+import time
+import traceback
+import _thread
+
+
+sys.path.insert(0, os.getcwd())
+
+
+from opr.handler import Cfg, Commands, Errors, Event, Handler
+from opr.loggers import Logging
+from opr.objects import Object, keys, update
+from opr.persist import Persist
+from opr.threads import launch
+from opr.utility import elapsed, spl
+
+
+import opr.modules
+
+
+DATE = time.ctime(time.time()).replace("  ", " ")
+NAME = "tinder"
+STARTTIME = time.time()
+
+
+Cfg.debug = True
+Cfg.silent = False
+Cfg.skip = ["debug",]
+
+
+Logging.raw = print
+Persist.workdir = ".test"
+
+
+paylock = _thread.allocate_lock()
+outlock = _thread.allocate_lock()
+
+
+errors = []
+events = []
+
+
+param = Object()
+param.add = ["test@shell", "bart", ""]
+param.cfg = ["server=localhost", ""]
+param.dne = ["test4", ""]
+param.rem = ["reddit", ""]
+param.dpl = ["reddit title,summary,link", ""]
+param.flt = ["0", ""]
+param.fnd = [
+             "cfg",
+             "tdo",
+             "rss",
+             "tdo txt==test",
+             "cfg server==localhost",
+             "rss rss==reddit"
+            ]
+param.log = ["test1", ""]
+param.nme = ["reddit reddit"]
+param.dpl = ["reddit title,link"]
+param.rem = ["reddit"]
+param.rss = ["https://www.reddit.com/r/python/.rss"]
+param.tdo = ["test4", ""]
+param.thr = [""]
+
+
+def cprint(txt):
+    "flushed print"
+    print(txt)
+    sys.stdout.flush()
+
+
+class CLI(Handler):
+
+    "verbose command line interface"
+
+    def raw(self, txt):
+        with outlock:
+            if txt and "v" in Cfg.opts:
+                cprint(txt.rstrip())
+
+
+def consume(evts):
+    "wait for events to be processed"
+    fixed = []
+    res = []
+    for evt in evts:
+        res.append(evt.wait())
+        fixed.append(evt)
+    for fff in fixed:
+        try:
+            evts.remove(fff)
+        except ValueError:
+            continue
+    return res
+
+
+def parse_cli(txt) -> Cfg:
+    "parse commad line interface"
+    evt = Event()
+    evt.parse(txt)
+    update(Cfg, evt, False)
+    Cfg.mod += evt.mods
+    return Cfg
+
+
+def scanstr(pkg, mods, init=None, doall=False, wait=False) -> None:
+    "scan a package for list of modules"
+    res = []
+    path = pkg.__path__[0]
+    if doall:
+        modlist = [x[:-3] for x in os.listdir(path) if x.endswith(".py") and x != "__init__.py"]
+        mods = ",".join(sorted(modlist))
+    threads = []
+    for modname in spl(mods):
+        module = getattr(opr.modules, modname, None)
+        if module:
+            if not init:
+                Commands.scan(module)
+        if init and "start" in dir(module):
+            threads.append(launch(module.start))
+        res.append(module)
+    if wait:
+        for thread in threads:
+            thread.join()
+    return res
+
+
+def payload(clt) -> None:
+    "run payload"
+    cmds = list(keys(Commands.cmds))
+    random.shuffle(cmds)
+    with paylock:
+        nmr = 0
+        for cmnd in cmds:
+            for ex in getattr(param, cmnd, [""]):
+                evt = clt.event(cmnd + " " + ex)
+                clt.put(evt)
+                events.append(evt)
+                nmr += 1
+        return nmr
+
+
+def waiter() -> None:
+    "wait for errros"
+    got = []
+    for ex in Errors.errors:
+        if not Cfg.silent:
+            traceback.print_exception(type(ex), ex, ex.__traceback__)
+        got.append(ex)
+    for exc in got:
+        Errors.errors.remove(exc)
+
+
+def wrap(func) -> None:
+    "wrap function"
+    old = termios.tcgetattr(sys.stdin.fileno())
+    try:
+        func()
+    except (EOFError, KeyboardInterrupt):
+        print("")
+        sys.stdout.flush()
+    finally:
+        termios.tcsetattr(sys.stdin.fileno(), termios.TCSADRAIN, old)
+        waiter()
+
+
+def main() -> None:
+    "main program"
+    print(f"{NAME.upper()} started {DATE}")
+    if os.path.exists(Persist.workdir):
+        shutil.rmtree(Persist.workdir)
+    parse_cli(" ".join(sys.argv[1:]))
+    if "v" in Cfg.opts:
+        Logging.verbose = True
+    scanstr(opr.modules, Cfg.mod, doall=True)
+    nrs = Cfg.index or 1
+    cli = CLI()
+    cli.start()
+    waiters = []
+    for _nr in range(nrs):
+        waiters.append(launch(payload, cli, name=_nr))
+    result = 1
+    for wtr in waiters:
+        result += wtr.join() or 1
+    consume(events)
+    endtime = time.time()
+    lap = elapsed(endtime - STARTTIME)
+    percall = (endtime - STARTTIME)/result
+    waiter()
+    print(f"{lap} {result} {percall}")
+
+
+wrap(main)

@@ -1,0 +1,32 @@
+#!/usr/bin/env python3
+# This file is placed in the Public Domain.
+
+
+"wipe all"
+
+
+import os
+import sys
+
+
+os.environ["PATH"] += ":bin"
+
+
+def popen(txt):
+    "run in popen"
+    for line in os.popen(txt).readlines():
+        print(line.rstrip())
+        sys.stdout.flush()
+
+
+
+def main():
+    "main program"
+    popen("rm -fRv store env build dist MANIFEST *.egg-info")
+    popen("rm -fRv .tsd .pytest_cache .test  __pycache__ *~")
+    popen("loop . rm -fRv *~")
+    popen("loop . rm -fRv __pycache__")
+
+
+if __name__ == "__main__":
+    main()

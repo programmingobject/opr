@@ -1,0 +1,118 @@
+#!/usr/bin/env python3
+# This file is placed in the Public Domain.
+
+
+"lintify"
+
+
+import json
+import os
+import sys
+
+
+os.environ["PATH"] += ":bin"
+os.environ["PYTHONPATH"] = os.getcwd()
+os.environ["PYTHONUNBUFFERED"] = "1"
+
+
+SKIP = [
+        "***",
+        "---",
+        "Your code",
+        "bin/opr"
+       ]
+
+
+SKIPDIR = [
+           ".",
+           "files",
+           "env",
+           ".git",
+          ]
+
+SKIPFILE = [
+           "setup.py",
+           "README.rst",
+           "MANUAL.rst",
+           'MANIFEST.in',
+           '.tsd',
+           'pyproject.toml'
+           ]
+
+
+def doskip(txt, skiplist):
+    "check is txt needs to be skipped"
+    if not txt.strip():
+        return True
+    for skp in skiplist:
+        if ".tsd" == skp:
+            continue
+        if skp in txt:
+            return True
+    return False
+
+
+def diff(obj, obj2, doall=False):
+    "calculate difference between objects"
+    result = {}
+    for key, value in obj2.items():
+        if key in obj and obj[key] != value:
+            result[key] = value
+        if doall:
+            result[key] = value
+    return result
+
+
+def dump(path, result):
+    "dump result to path"
+    old = os.getcwd()
+    os.chdir(path)
+    for fnn in os.listdir(path):
+        if doskip(fnn, SKIPFILE):
+            continue
+        fpath = os.path.abspath(os.path.join(path, fnn))
+        if os.path.isdir(fpath):
+            if doskip(fnn, SKIPDIR):
+                continue
+            dump(fpath, result)
+            continue
+        result[fpath] = os.path.getmtime(fpath)
+    os.chdir(old)
+
+
+def popen(txt):
+    "run in popen"
+    for line in os.popen(txt).readlines():
+        if doskip(line, SKIP):
+            continue
+        print(line.rstrip())
+        sys.stdout.flush()
+
+
+if __name__ == "__main__":
+    # pylint: disable=C0103
+    popen("clean")
+    res = {}
+    older = {}
+    if os.path.exists(".tsd"):
+        try:
+            with open(".tsd", encoding="utf-8") as tsd:
+                older.update(json.load(tsd))
+        except json.decoder.JSONDecodeError:
+            pass
+    dump(os.getcwd(), res)
+    dif = diff(older, res, True)
+    if dif:
+        with open(".tsd", "w", encoding="utf-8") as tsd:
+            json.dump(res, tsd)
+            tsd.flush()
+            tsd.close()
+    nrs = 0
+    for fn in dif:
+        if ".tsd" in fn:
+            continue
+        print(fn)
+        popen(f"pylint {fn}")
+        nrs += 1
+    if not nrs:
+        print("no changes")

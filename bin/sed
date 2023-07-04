@@ -1,0 +1,36 @@
+#!/usr/bin/env python3
+# This file is placed in the Public Domain.
+
+
+"sed <txt1> <txt2>"
+
+
+import os
+import subprocess
+import sys
+
+
+os.environ["PATH"] += ":bin"
+
+
+try:
+    OLD, *NEW = sys.argv[1:]
+except ValueError:
+    print("sed <OLD> <NEW>")
+    sys.exit()
+
+
+def popen(txt):
+    "run in popen"
+    with subprocess.Popen(txt.split(),
+                          stdin=sys.stdin,
+                          stdout=sys.stdout,
+                          stderr=sys.stderr,
+                          close_fds=False
+                         ) as prok:
+        prok.communicate()
+        prok.wait()
+
+
+
+popen(f"files . sed -s -u -i s/{OLD}/{NEW[0]}/")

@@ -1,0 +1,50 @@
+#!/usr/bin/env python3
+# This file is placed in the Public Domain.
+
+
+"loop over every file in every directories"
+
+
+import os
+import sys
+
+
+SKIP = [
+        "env",
+       ]
+
+
+def files(path, end, txt):
+    "proces all files in directories"
+    older = os.getcwd()
+    os.chdir(path)
+    for fnn in os.listdir(path):
+        if fnn.startswith(".") or fnn.startswith("_"):
+            continue
+        if fnn in SKIP:
+            continue
+        fpath = os.path.abspath(os.path.join(path, fnn))
+        if os.path.isdir(fpath):
+            print(fpath)
+            files(fpath, end, txt)
+            continue
+        if end and not fnn.endswith(end):
+            continue
+        popen(txt + " " + fpath)
+    os.chdir(older)
+
+
+def popen(txt):
+    "run in popen"
+    for line in os.popen(txt).readlines():
+        if line.startswith("cat: "):
+            continue
+        print(line.rstrip())
+        sys.stdout.flush()
+
+
+if __name__ == "__main__":
+    if len(sys.argv) < 3:
+        print("files <dir> <end> <cmd>")
+    else:
+        files(sys.argv[1], sys.argv[2], " ".join(sys.argv[3:]))

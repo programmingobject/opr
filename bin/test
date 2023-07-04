@@ -1,0 +1,21 @@
+#!/usr/bin/env python3
+# This file is placed in the Public Domain.
+
+
+"run pytest"
+
+
+import os
+import sys
+
+
+def popen(txt):
+    "run in popen"
+    runtxt = "\n## " + txt +"\n"
+    print(runtxt)
+    for line in os.popen(txt).readlines():
+        print(line.rstrip())
+        sys.stdout.flush()
+
+
+popen("python3 -m pytest")
