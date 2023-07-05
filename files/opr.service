@@ -1,0 +1,27 @@
+[Unit]
+Description=Object Programming Runtime
+Requires=network.target
+After=network.target
+
+[Service]
+DynamicUser=True
+TimeoutStartSec=0
+RestartSec=10
+Restart=always
+Environment="APP_SITE_SETTINGS=/home/opr/.config/settings.cfg"
+Environment="PYTHONPATH=/home/opr/.local/pipx/venv/opr/lib/python3.6/site-packages"
+WorkingDirectory=/home/opr/.opr
+User=opr
+Group=opr
+PermissionsStartOnly=true
+
+KillSignal=SIGQUIT
+Type=notify
+NotifyAccess=all
+
+ExecStartPre=/bin/mkdir -p /run/opr
+ExecStartPre=/bin/chown opr:opr /run/opr
+ExecStart=/home/opr/.local/pipx/venv/opr/bin/opr
+
+[Install]
+WantedBy=multi-user.target
