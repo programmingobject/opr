@@ -266,6 +266,7 @@ class IRC(Handler, Output):
 
     def direct(self, txt):
         "send direct text"
+        time.sleep(1.0)
         Logging.debug(txt)
         self.sock.send(bytes(txt.rstrip()+'\r\n', 'utf-8'))
 
@@ -441,9 +442,10 @@ class IRC(Handler, Output):
                     BrokenPipeError
                    ) as ex:
                 Errors.errors.append(ex)
-                self.stop()
+                #self.stop()
                 Logging.debug("handler stopped")
-        try:
+                return self.event(str(ex))
+        try: 
             txt = self.buffer.pop(0)
         except IndexError:
             txt = ""
@@ -469,7 +471,7 @@ class IRC(Handler, Output):
                     BrokenPipeError
                    ) as ex:
                 Errors.errors.append(ex)
-                #self.stop()
+                                #self.stop()
                 return
         self.state.last = time.time()
         self.state.nrsend += 1
@@ -563,7 +565,7 @@ def cb_h903(evt):
     "capabilities end"
     assert evt
     bot = evt.bot()
-    bot.command('CAP END')
+    bot.direct('CAP END')
     bot.events.authed.set()
 
 
@@ -571,7 +573,7 @@ def cb_h904(evt):
     "capabilities end"
     assert evt
     bot = evt.bot()
-    bot.command('CAP END')
+    bot.direct('CAP END')
     bot.events.authed.set()
 
 
