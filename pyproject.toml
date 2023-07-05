@@ -12,23 +12,23 @@ authors = [
 ]
 readme = "README.rst"
 license = { text="Public Domain"}
-classifiers=[
-             'Development Status :: 3 - Alpha',
-             'License :: Public Domain',
-             'Operating System :: Unix',
-             'Programming Language :: Python',
-             'Topic :: Utilities'
-            ]
+classifiers = [ 
+               'Development Status :: 3 - Alpha',
+               'License :: Public Domain',
+               'Operating System :: Unix',
+               'Programming Language :: Python',
+               'Topic :: Utilities'
+              ]
+
+
+[script-files]
+"opr" = "bin/opr"
 
 
 [project.urls]
 "home" = "https://pypi.org/project/opr"
 "bugs" = "https://github.com/bthate/opr/issues"
 "source" = "https://github.com/bthate/opr"
-
-
-[project.scripts]
-opr = "opr.runtime:main"
 
 
 [project.optional-dependencies]
