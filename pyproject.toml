@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "opr"
 description = "Object Programming Runtime"
-version = "221"
+version = "222"
 authors = [
     {name = "Bart Thate", email = "programmingobject@gmail.com" },
 ]
@@ -34,9 +34,9 @@ classifiers = [
 [project.optional-dependencies]
 dev = []
 
-[tool.setuptools]
-packages = [
-            "opr",
-            "opr.modules"
-           ]
-zip-safe = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["opr*",]
+exclude = ["tests*",]
+namespaces = false

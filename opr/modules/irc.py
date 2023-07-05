@@ -446,7 +446,7 @@ class IRC(Handler, Output):
                 #self.stop()
                 Logging.debug("handler stopped")
                 return self.event(str(ex))
-        try: 
+        try:
             txt = self.buffer.pop(0)
         except IndexError:
             txt = ""
