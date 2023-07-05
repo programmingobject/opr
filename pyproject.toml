@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "opr"
 description = "Object Programming Runtime"
-version = "211"
+version = "220"
 authors = [
     {name = "Bart Thate", email = "programmingobject@gmail.com" },
 ]

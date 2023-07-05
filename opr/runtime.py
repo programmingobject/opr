@@ -36,7 +36,7 @@ NAME = __file__.split(os.sep)[-2]
 STARTTIME = time.time()
 
 
-Persist.workdir = os.path.expanduser("~/.{NAME}")
+Persist.workdir = os.path.expanduser(f"~/.{NAME}")
 
 
 Cfg = Default()
