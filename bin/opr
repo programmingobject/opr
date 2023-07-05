@@ -23,7 +23,8 @@ import traceback
 sys.path.insert(0, os.getcwd())
 
 
-from opr.handler import Bus, Commands, Errors, Event, Handler
+from opr.handler import Bus, Cfg, Commands, Errors, Event, Handler
+from opr.handler import command, parse_cli, scanstr, waiter
 from opr.loggers import Logging
 from opr.objects import Default, Object, keys, kind, prt, update
 from opr.persist import Persist
@@ -43,12 +44,6 @@ STARTTIME = time.time()
 
 
 Persist.workdir = os.path.expanduser(f"~/.{NAME}")
-
-
-Cfg = Default()
-Cfg.debug = False
-Cfg.mod = ""
-Cfg.verbose = False
 
 
 # CLASSES
@@ -89,14 +84,6 @@ def banner():
     sys.stdout.flush()
 
 
-def command(cli, txt) -> Event:
-    "run a command on a cli"
-    evt = cli.event(txt)
-    Commands.handle(evt)
-    evt.ready()
-    return evt
-
-
 def daemon():
     "fork to the background"
     pid = os.fork()
@@ -109,57 +96,6 @@ def daemon():
             os.dup2(sos.fileno(), sys.stdout.fileno())
         with open('/dev/null', 'a+', encoding="utf-8") as ses:
             os.dup2(ses.fileno(), sys.stderr.fileno())
-
-
-def parse_cli(txt) -> Cfg:
-    "parse commad line interface"
-    evt = Event()
-    evt.parse(txt)
-    update(Cfg, evt, False)
-    Cfg.mod += evt.mods
-    return Cfg
-
-
-def scanstr(pkg, mods, init=None, doall=False, wait=False) -> None:
-    "scan a package for list of modules"
-    res = []
-    path = pkg.__path__[0]
-    if doall:
-        modlist = [x[:-3] for x in os.listdir(path) if x.endswith(".py") and x != "__init__.py"]
-        mods = ",".join(sorted(modlist))
-    threads = []
-    for modname in spl(mods):
-        module = getattr(pkg, modname, None)
-        if module:
-            if not init:
-                Commands.scan(module)
-        if init and "start" in dir(module):
-            threads.append(launch(module.start))
-        res.append(module)
-    if wait:
-        for thread in threads:
-            thread.join()
-    return res
-
-
-def waiter(clear=True):
-    "poll for errors"
-    got = []
-    for ex in Errors.errors:
-        stream = io.StringIO(
-                             traceback.print_exception(
-                                                       type(ex),
-                                                       ex,
-                                                       ex.__traceback__
-                                                      )
-                            )
-        for line in stream.readlines():
-            Logging.debug(line)
-        got.append(ex)
-    if clear:
-        for exc in got:
-            Errors.errors.remove(exc)
-
 
 
 def wrap(func):
@@ -238,7 +174,7 @@ def rld(event):
             continue
         Commands.scan(mods)
         if "start" in dir(mods):
-            launch(mods.start)
+            thr = launch(mods.start)
         event.reply(f"reloaded {modname}")
 
 
@@ -249,7 +185,7 @@ def sts(event):
         if 'state' in dir(bot):
             event.reply(prt(bot.state, skip='lastline'))
             nmr += 1
-    if nmr:
+    if not nmr:
         event.reply("no status")
 
 

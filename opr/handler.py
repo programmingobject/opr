@@ -15,7 +15,7 @@ import threading
 
 
 from opr.loggers import Logging
-from opr.objects import Default, Object, copy, keys
+from opr.objects import Default, Object, copy, keys, update
 from opr.threads import launch
 from opr.utility import spl
 
@@ -32,7 +32,9 @@ def __dir__():
             'Event',
             'Handler',
             "dispatch",
-            "parse"
+            "parse",
+            'parse_cli',
+            'waiter'
            )
 
 
@@ -300,6 +302,13 @@ class Handler(Object):
 
 # UTILITY
 
+def command(cli, txt) -> Event:
+    "run a command on a cli"
+    evt = cli.event(txt)
+    Commands.handle(evt)
+    evt.ready()
+    return evt
+
 
 def dispatch(func, evt) -> None:
     # pylint: disable=W0718
@@ -310,6 +319,56 @@ def dispatch(func, evt) -> None:
         exc = ex.with_traceback(ex.__traceback__)
         Errors.errors.append(exc)
         evt.ready()
+
+
+def parse_cli(txt) -> Cfg:
+    "parse commad line interface"
+    evt = Event()
+    evt.parse(txt)
+    update(Cfg, evt, False)
+    Cfg.mod += evt.mods
+    return Cfg
+
+
+def scanstr(pkg, mods, init=None, doall=False, wait=False) -> None:
+    "scan a package for list of modules"
+    res = []
+    path = pkg.__path__[0]
+    if doall:
+        modlist = [x[:-3] for x in os.listdir(path) if x.endswith(".py") and x != "__init__.py"]
+        mods = ",".join(sorted(modlist))
+    threads = []
+    for modname in spl(mods):
+        module = getattr(pkg, modname, None)
+        if module:
+            if not init:
+                Commands.scan(module)
+        if init and "start" in dir(module):
+            threads.append(launch(module.start))
+        res.append(module)
+    if wait:
+        for thread in threads:
+            thread.join()
+    return res
+
+
+def waiter(clear=True):
+    "poll for errors"
+    got = []
+    for ex in Errors.errors:
+        stream = io.StringIO(
+                             traceback.print_exception(
+                                                       type(ex),
+                                                       ex,
+                                                       ex.__traceback__
+                                                      )
+                            )
+        for line in stream.readlines():
+            Logging.debug(line)
+        got.append(ex)
+    if clear:
+        for exc in got:
+            Errors.errors.remove(exc)
 
 
 # METHODS
