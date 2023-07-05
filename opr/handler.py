@@ -332,7 +332,7 @@ def parsequal(obj, word):
 def parseassign(obj, word):
     "check for assign"
     try:
-        key, value = word.split('=')
+        key, value = word.split('=', maxsplit=1)
         if key == "mod":
             if not obj.mod:
                 obj.mod = ""
