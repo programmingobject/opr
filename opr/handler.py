@@ -41,6 +41,9 @@ MODNAMES = {
 
 
 Cfg = Default()
+Cfg.debug = False
+Cfg.mod = ""
+Cfg.verbose = False
 
 
 # CLASSES

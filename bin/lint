@@ -101,7 +101,7 @@ if __name__ == "__main__":
         except json.decoder.JSONDecodeError:
             pass
     dump(os.getcwd(), res)
-    dif = diff(older, res, True)
+    dif = diff(older, res, False)
     if dif:
         with open(".tsd", "w", encoding="utf-8") as tsd:
             json.dump(res, tsd)

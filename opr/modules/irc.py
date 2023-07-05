@@ -25,7 +25,7 @@ from opr.utility import elapsed
 
 
 NAME = "opr"
-
+VERSION = "221"
 
 saylock = _thread.allocate_lock()
 
@@ -70,6 +70,7 @@ class Config(Default):
     username = NAME
     users = False
     verbose = False
+    version = VERSION
 
     def __init__(self):
         Default.__init__(self)
