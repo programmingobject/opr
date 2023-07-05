@@ -443,7 +443,7 @@ class IRC(Handler, Output):
                     BrokenPipeError
                    ) as ex:
                 Errors.errors.append(ex)
-                #self.stop()
+                self.stop()
                 Logging.debug("handler stopped")
                 return self.event(str(ex))
         try:
@@ -472,7 +472,7 @@ class IRC(Handler, Output):
                     BrokenPipeError
                    ) as ex:
                 Errors.errors.append(ex)
-                                #self.stop()
+                self.stop()
                 return
         self.state.last = time.time()
         self.state.nrsend += 1

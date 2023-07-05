@@ -27,7 +27,7 @@ from opr.handler import Bus, Commands, Errors, Event, Handler
 from opr.loggers import Logging
 from opr.objects import Default, Object, keys, kind, prt, update
 from opr.persist import Persist
-from opr.threads import launch
+from opr.threads import launch, name
 from opr.utility import elapsed, spl
 
 
@@ -214,7 +214,7 @@ def flt(event):
         return
     except (KeyError, TypeError, IndexError, ValueError):
         pass
-    event.reply(' | '.join([kind(obj) for obj in Bus.objs]))
+    event.reply(' | '.join([name(obj) for obj in Bus.objs]))
 
 
 def mod(event):
