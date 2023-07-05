@@ -328,7 +328,7 @@ def main():
         if 'c' in Cfg.opts and "d" not in Cfg.opts:
             csl = Console()
             csl.start()
-        scanstr(opr.modules, Cfg.mod, True, wait=True)
+        scanstr(opr.modules, Cfg.mod, True, wait=False)
         while 1:
             time.sleep(1.0)
             waiter()
