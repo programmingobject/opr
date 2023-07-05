@@ -27,6 +27,7 @@ def __dir__():
 
 
 def start():
+    time.sleep(60.0)
     for key in keys(oorzaken):
         val = getattr(oorzaken, key, None)
         if val and int(val) > 10000:

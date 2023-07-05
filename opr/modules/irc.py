@@ -244,11 +244,13 @@ class IRC(Handler, Output):
         if self.cfg.password:
             Logging.debug("using SASL")
             self.cfg.sasl = True
+            self.cfg.port = "6697"
             ctx = ssl.SSLContext(ssl.PROTOCOL_TLS)
             ctx.check_hostname = False
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.sock = ctx.wrap_socket(sock)
             self.sock.connect((server, port))
+            time.sleep(1.0)
             self.command('CAP LS 302')
         else:
             addr = socket.getaddrinfo(server, port, socket.AF_INET)[-1][-1]
@@ -338,6 +340,7 @@ class IRC(Handler, Output):
         "keep alive loop"
         while 1:
             self.events.connected.wait()
+            self.events.authed.wait()
             self.state.keeprunning = True
             time.sleep(self.cfg.sleep)
             self.state.pongcheck = True
@@ -356,8 +359,8 @@ class IRC(Handler, Output):
         self.events.connected.wait()
         self.events.authed.wait()
         nck = self.cfg.username
-        self.direct(f'NICK {nck}')
-        self.direct(f'USER {nck} {server} {server} {nck}')
+        self.command(f'NICK {nck}')
+        self.command(f'USER {nck} {server} {server} {nck}')
 
 
     def parsing(self, txt):
@@ -466,7 +469,7 @@ class IRC(Handler, Output):
                     BrokenPipeError
                    ) as ex:
                 Errors.errors.append(ex)
-                self.stop()
+                #self.stop()
                 return
         self.state.last = time.time()
         self.state.nrsend += 1

@@ -27,6 +27,7 @@ from opr.utility import elapsed, spl
 
 def start():
     "start a fetcher"
+    time.sleep(60.0)
     fetcher = Fetcher()
     fetcher.start()
     return fetcher
