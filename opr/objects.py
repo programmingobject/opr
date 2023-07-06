@@ -66,7 +66,7 @@ class Object:
         ""
         return self.__dict__.__delitem__(key)
 
-    def __getitem__(self, key, value):
+    def __getitem__(self, key):
         ""
         return self.__dict__.__getitem__(key)
 

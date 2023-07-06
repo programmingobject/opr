@@ -19,6 +19,7 @@ import _thread
 from opr.handler import Bus, Commands, Errors, Event, Handler
 from opr.loggers import Logging
 from opr.objects import Default, Object, copy, edit, keys, prt, update
+from opr.parsers import parse
 from opr.persist import find, fntime, last, write
 from opr.threads import launch
 from opr.utility import elapsed
@@ -59,7 +60,7 @@ class Config(Default):
     control = '!'
     edited = time.time()
     nick = NAME
-    nocommands = True
+    nocommands = False
     password = ''
     port = 6667
     realname = NAME
@@ -213,7 +214,6 @@ class IRC(Handler, Output):
         self.register('NOTICE', cb_notice)
         self.register('PRIVMSG', cb_privmsg)
         self.register('QUIT', cb_quit)
-        self.register("command", cb_command)
 
     def announce(self, txt):
         "annouce text on channels"
@@ -609,11 +609,8 @@ def cb_privmsg(evt):
         if bot.cfg.users and not Users.allowed(evt.origin, 'USER'):
             return
         Logging.debug(f"command from {evt.origin}: {evt.txt}")
-        msg = Event()
-        copy(msg, evt)
-        msg.type = 'command'
-        msg.parse(evt.txt)
-        bot.handle(msg)
+        parse(evt, evt.txt)
+        Commands.handle(evt)
 
 
 def cb_quit(evt):

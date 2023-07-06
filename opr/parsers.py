@@ -68,33 +68,32 @@ def parseoption(obj, word):
     return False
 
 
-def parse(txt):
+def parse(obj, txt):
     "parse text for commands and arguments/options"
-    res = {}
-    res["cmd"] = ""
-    res["otxt"] = txt
+    obj["cmd"] = ""
+    obj["otxt"] = txt
     splitted = txt.split()
     args = []
     _nr = -1
     for word in splitted:
-        if parseoption(res, word):
+        if parseoption(obj, word):
             continue
-        if parsequal(res, word):
+        if parsequal(obj, word):
             continue
-        if parseassign(res, word):
+        if parseassign(obj, word):
             continue
         _nr += 1
         if _nr == 0:
-            res["cmd"] = word
+            obj["cmd"] = word
             continue
         args.append(word)
     if args:
-        res["args"] = args
-        res["rest"] = ' '.join(args)
-        res["txt"] = res["cmd"] + ' ' + res["rest"]
+        obj["args"] = args
+        obj["rest"] = ' '.join(args)
+        obj["txt"] = obj["cmd"] + ' ' + obj["rest"]
     else:
-        res["txt"] = res["cmd"]
-    return res
+        obj["txt"] = obj["cmd"]
+    return obj
 
 
 def spl(txt) -> []:

@@ -135,11 +135,15 @@ class Commands(Object):
         if "txt" not in evt:
             return
         splitted = evt.txt.split()
-        cmd = splitted[0]
-        try:
-            args = splitted[1:]
-        except ValueError:
-            args = []
+        cmd = ""
+        args = []
+        rest = ""
+        if splitted:
+            cmd = splitted[0]
+            try:
+                args = splitted[1:]
+            except ValueError:
+                args = []
         func = getattr(Commands.cmds, cmd, None)
         if not func:
             modname = getattr(Commands.modnames, cmd, None)
@@ -155,6 +159,7 @@ class Commands(Object):
                 func = getattr(mod, cmd, None)
         evt.cmd = cmd
         evt.args = args
+        evt.rest = rest
         if func:
             try:
                 func(evt)
@@ -204,6 +209,9 @@ class Event(Default):
         "originating bot"
         assert self.orig
         return Bus.byorig(self.orig)
+
+    def parse(self):
+        parse(self)
 
     def ready(self) -> None:
         "signal event as ready"
@@ -324,6 +332,23 @@ def dispatch(func, evt) -> None:
         exc = ex.with_traceback(ex.__traceback__)
         Errors.errors.append(exc)
         evt.ready()
+
+
+def parse(obj, txt):
+    splitted = txt.split()
+    cmd = ""
+    args = []
+    rest = ""
+    if splitted:
+        cmd = splitted[0]
+        try:
+            args = splitted[1:]
+            rest = " ".join(args)
+        except ValueError:
+            pass
+    obj.cmd = cmd
+    obj.args = args
+    obj.rest = rest
 
 
 def scanstr(pkg, mods, init=None, doall=False, wait=False) -> None:

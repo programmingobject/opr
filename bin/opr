@@ -242,8 +242,7 @@ def upt(event):
 
 def main():
     "main program function"
-    cfg = parse(' '.join(sys.argv[1:]))
-    update(Cfg, cfg)
+    parse(Cfg, ' '.join(sys.argv[1:]))
     Commands.add(cmd)
     Commands.add(err)
     Commands.add(flt)
