@@ -18,7 +18,7 @@ import _thread
 
 from opr.handler import Bus, Commands, Errors, Event, Handler
 from opr.loggers import Logging
-from opr.objects import Default, Object, copy, edit, keys, prt, update
+from opr.objects import Default, Object, edit, keys, prt, update
 from opr.parsers import parse
 from opr.persist import find, fntime, last, write
 from opr.threads import launch

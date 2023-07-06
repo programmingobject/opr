@@ -13,5 +13,6 @@ from opr.parsers import parse
 class TestDecoder(unittest.TestCase):
 
     def test_parse(self):
-        prs = parse("cmd")
+        prs = {}
+        parse(prs, "cmd")
         self.assertEqual(prs["cmd"], "cmd")

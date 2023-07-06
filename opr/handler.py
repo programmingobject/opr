@@ -18,7 +18,7 @@ import traceback
 
 
 from opr.loggers import Logging
-from opr.objects import Default, Object, copy, keys, update
+from opr.objects import Default, Object, copy, keys
 from opr.threads import launch
 from opr.utility import spl
 
@@ -145,7 +145,7 @@ class Commands(Object):
                               modname.split(".")[-1],
                               None
                              )
-                func = getattr(mod, cmd, None)
+                func = getattr(mod, evt.cmd, None)
         if func:
             try:
                 func(evt)
@@ -190,6 +190,7 @@ class Event(Default):
         self._ready = threading.Event()
         self.result = []
         self.thr = None
+        self.txt = ""
 
     def bot(self):
         "originating bot"
@@ -197,7 +198,8 @@ class Event(Default):
         return Bus.byorig(self.orig)
 
     def parse(self):
-        parse(self)
+        "parse this event"
+        parse(self, self.txt)
 
     def ready(self) -> None:
         "signal event as ready"
@@ -321,6 +323,7 @@ def dispatch(func, evt) -> None:
 
 
 def parse(obj, txt):
+    "parse text for commands"
     obj.cmd = ""
     obj.args = []
     obj.rest = ""

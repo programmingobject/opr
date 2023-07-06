@@ -10,8 +10,7 @@
 def __dir__():
     return (
             "parse",
-            "parse_cli"
-           ) 
+           )
 
 
 __all__ = __dir__()
@@ -27,8 +26,8 @@ def parsequal(obj, word):
             value = value[:-1]
             obj["skip"][key] = value
         if not obj["gets"]:
-            obj["gets"] = Default()
-        obj[key] = value
+            obj["gets"] = {}
+        obj["gets"][key] = value
         return True
     except ValueError:
         return False

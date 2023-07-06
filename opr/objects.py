@@ -61,7 +61,7 @@ class Object:
         ""
         return key in self.__dict__
 
-    def __delitem__(self, key, value):
+    def __delitem__(self, key):
         ""
         return self.__dict__.__delitem__(key)
 
