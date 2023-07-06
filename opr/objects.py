@@ -82,7 +82,7 @@ class Object:
         return self.__dict__.__setitem__(key, value)
 
     def __str__(self):
-        return str(self.__dict__)
+        return dumps(dumprec(self))
 
 
 class Default(Object):
@@ -130,6 +130,18 @@ def diff(obj, obj2):
             result[key] = value
     return result
 
+
+def dumprec(obj) -> str:
+    "read object recursively"
+    ooo = type(obj)()
+    update(ooo, obj)
+    oooo = type(obj)()
+    for key, value in items(ooo):
+        if issubclass(type(value), Object):
+            oooo[key] = dumprec(value)
+            continue
+        oooo[key] = value
+    return oooo
 
 def edit(obj, setter, skip=False):
     "change object values with values from a setter dict"
@@ -190,6 +202,7 @@ def kind(obj) -> str:
     if kin == "type":
         kin = obj.__name__
     return kin
+
 
 
 def prt(obj, args="", skip="", plain=False):
