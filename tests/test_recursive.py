@@ -29,6 +29,5 @@ class TestRecursive(unittest.TestCase):
         obj.obj = Object()
         obj.obj.a = "test"
         pth = writerec(obj)
-        print(pth)
         readrec(obj, pth)
         self.assertEqual(obj.obj.a, "test")

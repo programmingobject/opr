@@ -42,7 +42,6 @@ def start():
 def stop():
     "stop irc bots"
     for bot in Bus.objs:
-        print(type(bot))
         if "IRC" in str(type(bot)):
             bot.stop()
 

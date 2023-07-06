@@ -24,7 +24,6 @@ def __dir__():
             'ObjectEncoder',
             'copy',
             'dump',
-            'dumprec',
             'dumps',
             'edit',
             'ident',
@@ -82,10 +81,6 @@ class Object:
         ""
         return self.__dict__.__setitem__(key, value)
 
-    def __str__(self):
-        ""
-        return dumprec(self)
-
 
 class Default(Object):
 
@@ -131,18 +126,6 @@ def diff(obj, obj2):
         else:
             result[key] = value
     return result
-
-
-def dumprec(obj, ooo="{"):
-    # pylint: disable=C0209
-    "dump object to string recursively"
-    for key, value in items(obj):
-        if issubclass(type(value), Object):
-            ooo += "'%s': %s" % (str(key), dumprec(value, ooo))
-            continue
-        ooo += "'%s': '%s'" % (str(key), str(value))
-    ooo += "}"
-    return ooo
 
 
 def edit(obj, setter, skip=False):

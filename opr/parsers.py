@@ -96,10 +96,10 @@ def parse(obj, txt):
     return obj
 
 
-def spl(txt) -> []:
+def spl(txt2) -> []:
     "split comma seperated string" 
     try:
-        res = txt.split(',')
+        res = txt2.split(',')
     except (TypeError, ValueError):
-        res = txt
+        res = txt2
     return [x for x in res if x]

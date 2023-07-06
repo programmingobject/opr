@@ -132,21 +132,10 @@ class Commands(Object):
     def handle(evt):
         # pylint: disable=W0718
         "handle an event"
-        if "txt" not in evt:
-            return
-        splitted = evt.txt.split()
-        cmd = ""
-        args = []
-        rest = ""
-        if splitted:
-            cmd = splitted[0]
-            try:
-                args = splitted[1:]
-            except ValueError:
-                args = []
-        func = getattr(Commands.cmds, cmd, None)
+        parse(evt, evt.txt)
+        func = getattr(Commands.cmds, evt.cmd, None)
         if not func:
-            modname = getattr(Commands.modnames, cmd, None)
+            modname = getattr(Commands.modnames, evt.cmd, None)
             mod = None
             if modname:
                 Logging.debug(f"load {modname}")
@@ -157,9 +146,6 @@ class Commands(Object):
                               None
                              )
                 func = getattr(mod, cmd, None)
-        evt.cmd = cmd
-        evt.args = args
-        evt.rest = rest
         if func:
             try:
                 func(evt)
@@ -335,20 +321,18 @@ def dispatch(func, evt) -> None:
 
 
 def parse(obj, txt):
+    obj.cmd = ""
+    obj.args = []
+    obj.rest = ""
     splitted = txt.split()
-    cmd = ""
-    args = []
-    rest = ""
     if splitted:
-        cmd = splitted[0]
+        obj.cmd = splitted[0]
         try:
-            args = splitted[1:]
-            rest = " ".join(args)
+            obj.args.extend(splitted[1:])
         except ValueError:
             pass
-    obj.cmd = cmd
-    obj.args = args
-    obj.rest = rest
+    if obj.args:
+        obj.rest = str(" ".join(obj.args))
 
 
 def scanstr(pkg, mods, init=None, doall=False, wait=False) -> None:
@@ -390,4 +374,3 @@ def waiter(clear=True):
     if clear:
         for exc in got:
             Errors.errors.remove(exc)
-

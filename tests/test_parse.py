@@ -14,5 +14,4 @@ class TestDecoder(unittest.TestCase):
 
     def test_parse(self):
         prs = parse("cmd")
-        print(prs)
         self.assertEqual(prs["cmd"], "cmd")
