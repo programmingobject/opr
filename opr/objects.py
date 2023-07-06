@@ -62,6 +62,14 @@ class Object:
         ""
         return key in self.__dict__
 
+    def __delitem__(self, key, value):
+        ""
+        return self.__dict__.__delitem__(key)
+
+    def __getitem__(self, key, value):
+        ""
+        return self.__dict__.__getitem__(key)
+
     def __iter__(self):
         ""
         return iter(self.__dict__)
@@ -69,6 +77,10 @@ class Object:
     def __len__(self):
         ""
         return len(self.__dict__)
+
+    def __setitem__(self, key, value):
+        ""
+        return self.__dict__.__setitem__(key, value)
 
     def __str__(self):
         ""

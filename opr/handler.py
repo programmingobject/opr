@@ -35,8 +35,6 @@ def __dir__():
             'Event',
             'Handler',
             "dispatch",
-            "parse",
-            'parse_cli',
             'waiter'
            )
 
@@ -65,7 +63,6 @@ class Errors(Object):
         "store exception in the errors list"
         exc = ex.with_traceback(ex.__traceback__)
         Errors.errors.append(exc)
-
 
     @staticmethod
     def size():
@@ -135,10 +132,17 @@ class Commands(Object):
     def handle(evt):
         # pylint: disable=W0718
         "handle an event"
-        evt.parse(evt.txt)
-        func = getattr(Commands.cmds, evt.cmd, None)
+        if "txt" not in evt:
+            return
+        splitted = evt.txt.split()
+        cmd = splitted[0]
+        try:
+            args = splitted[1:]
+        except ValueError:
+            args = []
+        func = getattr(Commands.cmds, cmd, None)
         if not func:
-            modname = getattr(Commands.modnames, evt.cmd, None)
+            modname = getattr(Commands.modnames, cmd, None)
             mod = None
             if modname:
                 Logging.debug(f"load {modname}")
@@ -148,7 +152,9 @@ class Commands(Object):
                               modname.split(".")[-1],
                               None
                              )
-                func = getattr(mod, evt.cmd, None)
+                func = getattr(mod, cmd, None)
+        evt.cmd = cmd
+        evt.args = args
         if func:
             try:
                 func(evt)
@@ -199,10 +205,6 @@ class Event(Default):
         assert self.orig
         return Bus.byorig(self.orig)
 
-    def parse(self, txt) -> None:
-        "parse text for commands"
-        parse(self, txt)
-
     def ready(self) -> None:
         "signal event as ready"
         self._ready.set()
@@ -233,7 +235,7 @@ class Handler(Object):
         self.cbs = Object()
         self.queue = queue.Queue()
         self.stopped = threading.Event()
-        self.register('command', Commands.handle)
+        self.register('event', Commands.handle)
         Bus.add(self)
 
     def announce(self, txt) -> None:
@@ -243,9 +245,9 @@ class Handler(Object):
     def event(self, txt) -> Event:
         "create an event and set its origin to this handler"
         msg = Event()
-        msg.type = 'command'
+        msg.type = 'event'
         msg.orig = repr(self)
-        msg.parse(txt)
+        msg.txt = txt
         return msg
 
     def handle(self, evt) -> Event:
@@ -324,15 +326,6 @@ def dispatch(func, evt) -> None:
         evt.ready()
 
 
-def parse_cli(txt) -> Cfg:
-    "parse commad line interface"
-    evt = Event()
-    evt.parse(txt)
-    update(Cfg, evt, False)
-    Cfg.mod += evt.mods
-    return Cfg
-
-
 def scanstr(pkg, mods, init=None, doall=False, wait=False) -> None:
     "scan a package for list of modules"
     res = []
@@ -373,82 +366,3 @@ def waiter(clear=True):
         for exc in got:
             Errors.errors.remove(exc)
 
-
-# METHODS
-
-
-def parsequal(obj, word):
-    "check for qualness"
-    try:
-        key, value = word.split('==')
-        if not obj.skip:
-            obj.skip = Default()
-        if value.endswith('-'):
-            value = value[:-1]
-            setattr(obj.skip, value, '')
-        if not obj.gets:
-            obj.gets = Default()
-        setattr(obj.gets, key, value)
-        return True
-    except ValueError:
-        return False
-
-
-def parseassign(obj, word):
-    "check for assign"
-    try:
-        key, value = word.split('=', maxsplit=1)
-        if key == "mod":
-            if not obj.mod:
-                obj.mod = ""
-            for val in spl(value):
-                if val not in obj.mods:
-                    obj.mods += f",{val}"
-            return True
-        if not obj.sets:
-            obj.sets = Default()
-        setattr(obj.sets, key, value)
-        return True
-    except ValueError:
-        return False
-
-
-def parseoption(obj, word):
-    "check for options"
-    if word.startswith('-'):
-        if not obj.index:
-            obj.index = 0
-        try:
-            obj.index = int(word[1:])
-        except ValueError:
-            if not obj.opts:
-                obj.opts = ""
-            obj.opts = obj.opts + word[1:]
-        return True
-    return False
-
-
-def parse(obj, txt):
-    "parse text for commands and arguments/options"
-    obj.otxt = txt
-    splitted = obj.otxt.split()
-    args = []
-    _nr = -1
-    for word in splitted:
-        if parseoption(obj, word):
-            continue
-        if parsequal(obj, word):
-            continue
-        if parseassign(obj, word):
-            continue
-        _nr += 1
-        if _nr == 0:
-            obj.cmd = word
-            continue
-        args.append(word)
-    if args:
-        obj.args = args
-        obj.rest = ' '.join(args)
-        obj.txt = obj.cmd + ' ' + obj.rest
-    else:
-        obj.txt = obj.cmd

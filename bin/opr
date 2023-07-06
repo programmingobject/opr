@@ -24,9 +24,10 @@ sys.path.insert(0, os.getcwd())
 
 
 from opr.handler import Bus, Cfg, Commands, Errors, Event, Handler
-from opr.handler import command, parse_cli, scanstr, waiter
+from opr.handler import command, scanstr, waiter
 from opr.loggers import Logging
 from opr.objects import Default, Object, keys, kind, prt, update
+from opr.parsers import parse
 from opr.persist import Persist
 from opr.threads import launch, name
 from opr.utility import elapsed, spl
@@ -241,7 +242,8 @@ def upt(event):
 
 def main():
     "main program function"
-    parse_cli(' '.join(sys.argv[1:]))
+    cfg = parse(' '.join(sys.argv[1:]))
+    update(Cfg, cfg)
     Commands.add(cmd)
     Commands.add(err)
     Commands.add(flt)
