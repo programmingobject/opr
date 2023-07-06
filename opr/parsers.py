@@ -39,13 +39,13 @@ def parseassign(obj, word):
     try:
         key, value = word.split('=', maxsplit=1)
         if key == "mod":
-            if not obj["mod"]:
+            if "mod" not in obj:
                 obj["mod"] = ""
             for val in spl(value):
                 if val not in obj["mod"]:
                     obj["mod"] += f",{val}"
             return True
-        if not obj["sets"]:
+        if "sets" not in  obj:
             obj["sets"] = {}
         obj["sets"][key] = value
         return True
@@ -95,3 +95,12 @@ def parse(txt):
     else:
         res["txt"] = res["cmd"]
     return res
+
+
+def spl(txt) -> []:
+    "split comma seperated string" 
+    try:
+        res = txt.split(',')
+    except (TypeError, ValueError):
+        res = txt
+    return [x for x in res if x]
