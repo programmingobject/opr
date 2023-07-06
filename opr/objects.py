@@ -81,6 +81,9 @@ class Object:
         ""
         return self.__dict__.__setitem__(key, value)
 
+    def __str__(self):
+        return str(self.__dict__)
+
 
 class Default(Object):
 
