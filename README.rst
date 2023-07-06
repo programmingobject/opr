@@ -44,39 +44,39 @@ USAGE
 
     list of commands
 
-    $ opr cmd
-    cmd,err,flt,sts,thr,upt
+        $ opr cmd
+        cmd,err,flt,sts,thr,upt
 
     start a console
 
-    $ opr -c
-    >
+        $ opr -c
+        >
 
     start additional modules
 
-    $ opr mod=<mod1,mod2> -c
-    >
+        $ opr mod=<mod1,mod2> -c
+        >
 
     list of modules
 
-    $ opr mod
-    cmd,err,flt,fnd,irc,log,mdl,mod,
-    req, rss,slg,sts,tdo,thr,upt,ver
+        $ opr mod
+        cmd,err,flt,fnd,irc,log,mdl,mod,
+        req, rss,slg,sts,tdo,thr,upt,ver
 
     to start irc, add mod=irc when
     starting
 
-    $ opr mod=irc -c
+        $ opr mod=irc -c
 
     to start rss, also add mod=rss
     when starting
 
-    $ opr mod=irc,rss -c
+        $ opr mod=irc,rss -c
 
     start as daemon
 
-    $ opr  mod=irc,rss -d
-    $ 
+        $ opr  mod=irc,rss -d
+        $ 
 
 
 CONFIGURATION
