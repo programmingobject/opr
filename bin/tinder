@@ -7,6 +7,15 @@
 "tinder"
 
 
+# AUTHOR
+
+
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+__version__ = 1
+
+
+# IMPORTS
+
 import os
 import random
 import shutil
@@ -31,6 +40,8 @@ from opr.utility import elapsed, spl
 
 import opr.modules
 
+
+# DEFINES
 
 DATE = time.ctime(time.time()).replace("  ", " ")
 NAME = "tinder"
@@ -78,8 +89,11 @@ param.tdo = ["test4", ""]
 param.thr = [""]
 
 
+# UTILITY
+
+
 def cprint(txt):
-    "flushed print"
+    """flushed print"""
     print(txt)
     sys.stdout.flush()
 
@@ -95,7 +109,7 @@ class CLI(Handler):
 
 
 def consume(evts):
-    "wait for events to be processed"
+    """wait for events to be processed"""
     fixed = []
     res = []
     for evt in evts:
@@ -110,7 +124,7 @@ def consume(evts):
 
 
 def parse_cli(txt) -> Cfg:
-    "parse commad line interface"
+    """parse commad line interface"""
     evt = Event()
     parse(evt, txt)
     update(Cfg, evt, False)
@@ -119,7 +133,7 @@ def parse_cli(txt) -> Cfg:
 
 
 def scanstr(pkg, mods, init=None, doall=False, wait=False) -> None:
-    "scan a package for list of modules"
+    """scan a package for list of modules"""
     res = []
     path = pkg.__path__[0]
     if doall:
@@ -141,7 +155,7 @@ def scanstr(pkg, mods, init=None, doall=False, wait=False) -> None:
 
 
 def payload(clt) -> None:
-    "run payload"
+    """run payload"""
     cmds = list(keys(Commands.cmds))
     random.shuffle(cmds)
     with paylock:
@@ -156,7 +170,7 @@ def payload(clt) -> None:
 
 
 def waiter() -> None:
-    "wait for errros"
+    """wait for errros"""
     got = []
     for ex in Errors.errors:
         if not Cfg.silent:
@@ -167,7 +181,7 @@ def waiter() -> None:
 
 
 def wrap(func) -> None:
-    "wrap function"
+    """wrap function"""
     old = termios.tcgetattr(sys.stdin.fileno())
     try:
         func()
@@ -180,7 +194,7 @@ def wrap(func) -> None:
 
 
 def main() -> None:
-    "main program"
+    """main program"""
     print(f"{NAME.upper()} started {DATE}")
     if os.path.exists(Persist.workdir):
         shutil.rmtree(Persist.workdir)

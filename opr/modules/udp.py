@@ -4,6 +4,9 @@
 """udp to irc relay"""
 
 
+# AUTHOR
+
+
 __author__ = "Bart Thate <programmingobject@gmail.com>"
 __version__ = 1
 
@@ -16,14 +19,13 @@ import socket
 import sys
 import time
 
-
 from opr.handler import Bus
 from opr.objects import Default, Object
 from opr.persist import last
 from opr.threads import launch
 
 
-# DEFINES
+# SERVICES
 
 
 def start():

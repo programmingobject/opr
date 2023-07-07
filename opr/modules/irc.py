@@ -4,11 +4,15 @@
 """internet relay chat"""
 
 
+# AUTHOR
+
+
 __author__ = "Bart Thate <programmingobject@gmail.com>"
 __version__ = 1
 
 
 # IMPORTS
+
 
 import base64
 import os
@@ -20,7 +24,6 @@ import time
 import textwrap
 import threading
 import _thread
-
 
 from opr.handler import Bus, Commands, Errors, Event, Handler
 from opr.loggers import Logging
@@ -40,13 +43,15 @@ VERSION = "221"
 saylock = _thread.allocate_lock()
 
 
+# SERVICES
+
+
 def start():
     """start a irc bot"""
     irc = IRC()
     irc.start()
     irc.events.joined.wait()
     return irc
-
 
 def stop():
     """stop irc bots"""
@@ -61,7 +66,6 @@ def stop():
 class NoUser(Exception):
 
     """user is not found"""
-
 
 class Config(Default):
 
@@ -99,7 +103,6 @@ class Config(Default):
     def __size__(self):
         return len(Config)
 
-
 class TextWrap(textwrap.TextWrapper):
 
     """text wrapper"""
@@ -112,7 +115,6 @@ class TextWrap(textwrap.TextWrapper):
         self.replace_whitespace = True
         self.tabsize = 4
         self.width = 450
-
 
 class Output(Object):
 
@@ -194,7 +196,6 @@ class Output(Object):
         """stop output loop"""
         self.dostop.set()
         self.oqueue.put_nowait((None, None))
-
 
 class IRC(Handler, Output):
 
@@ -292,7 +293,6 @@ class IRC(Handler, Output):
                 BrokenPipeError
                ) as ex:
             Errors.errors.append(ex)
-
 
     def doconnect(self, server, nck, port=6667):
         """connect loop"""
@@ -562,11 +562,9 @@ def cb_cap(evt):
     else:
         bot.direct('CAP REQ :sasl')
 
-
 def cb_command(evt):
     """execute an command"""
     Commands.handle(evt)
-
 
 def cb_error(evt):
     """handle error"""
@@ -575,14 +573,12 @@ def cb_error(evt):
     bot.state.errors.append(evt.txt)
     Logging.debug(evt.txt)
 
-
 def cb_h903(evt):
     """capabilities end"""
     assert evt
     bot = evt.bot()
     bot.direct('CAP END')
     bot.events.authed.set()
-
 
 def cb_h904(evt):
     """capabilities end"""
@@ -591,14 +587,11 @@ def cb_h904(evt):
     bot.direct('CAP END')
     bot.events.authed.set()
 
-
 def cb_kill(evt):
     """got killed"""
 
-
 def cb_log(evt):
     """log event"""
-
 
 def cb_notice(evt):
     """handle notice"""
@@ -606,7 +599,6 @@ def cb_notice(evt):
     if evt.txt.startswith('VERSION'):
         txt = f'\001VERSION {NAME} {bot.cfg.version} - {bot.cfg.username}\001'
         bot.command('NOTICE', evt.channel, txt)
-
 
 def cb_privmsg(evt):
     """handle privmsg"""
@@ -626,7 +618,6 @@ def cb_privmsg(evt):
         parse(evt, evt.txt)
         Commands.handle(evt)
 
-
 def cb_quit(evt):
     """handle quit"""
     bot = evt.bot()
@@ -636,6 +627,7 @@ def cb_quit(evt):
 
 
 # USERS
+
 
 class User(Object):
 
@@ -655,7 +647,6 @@ class User(Object):
     def isthere(self):
         """verify presence"""
         return True
-
 
 class Users(Object):
 
@@ -731,7 +722,6 @@ def cfg(event):
         write(config)
         event.reply('ok')
 
-
 def dlt(event):
     """delete an user"""
     if not event.args:
@@ -743,7 +733,6 @@ def dlt(event):
         write(obj)
         event.reply('ok')
         break
-
 
 def met(event):
     """add an user"""
@@ -761,7 +750,6 @@ def met(event):
     user.perms = ['USER']
     write(user)
     event.reply('ok')
-
 
 def mre(event):
     """pull from output cache"""

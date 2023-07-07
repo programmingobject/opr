@@ -5,13 +5,29 @@
 "build package"
 
 
+# AUTHOR
+
+
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+__version__ = 1
+
+
+# IMPORTS
+
+
 import os
 
 
+# UTILITY
+
+
 def popen(txt):
-    "run in popen"
+    """run in popen"""
     for line in os.popen(txt).readlines():
         print(line.strip())
+
+
+# RUNTIME
 
 
 popen("python3 setup.py sdist")

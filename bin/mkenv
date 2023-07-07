@@ -5,11 +5,27 @@
 "create environment"
 
 
+# AUTHOR
+
+
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+__version__ = 1
+
+
+# IMPORTS
+
+
 import os
 
 
+# DEFINES
+
+
+name = os.getcwd().split(os.sep)[-1]
 os.environ["PATH"] += ":bin"
 
+
+# UTILITY
 
 def popen(txt):
     "run text in popen"
@@ -17,7 +33,7 @@ def popen(txt):
         print(line.strip())
 
 
-name = os.getcwd().split(os.sep)[-1]
+# RUNTIME
 
 
 if not os.path.exists("dist"):

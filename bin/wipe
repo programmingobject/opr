@@ -2,26 +2,43 @@
 # This file is placed in the Public Domain.
 
 
-"wipe all"
+"""wipe all"""
+
+
+# AUTHOR
+
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+__version__ = 1
+
+
+# IMPORTS
 
 
 import os
 import sys
 
 
+# DEFINES
+
+
 os.environ["PATH"] += ":bin"
 
 
+# UTILITY
+
+
 def popen(txt):
-    "run in popen"
+    """run in popen"""
     for line in os.popen(txt).readlines():
         print(line.rstrip())
         sys.stdout.flush()
 
 
+# RUNTIME
+
 
 def main():
-    "main program"
+    """main program"""
     popen("rm -fRv store env build dist MANIFEST *.egg-info")
     popen("rm -fRv .tsd .pytest_cache .test  __pycache__ *~")
     popen("loop . rm -fRv *~")

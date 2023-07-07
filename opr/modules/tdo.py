@@ -4,6 +4,9 @@
 "todo lists"
 
 
+# AUTHOR
+
+
 __author__ = "Bart Thate <programmingobject@gmail.com>"
 __version__ = 1
 
@@ -12,7 +15,6 @@ __version__ = 1
 
 
 import time
-
 
 from opr.objects import Object
 from opr.persist import find, fntime, write
@@ -52,7 +54,6 @@ def dne(event):
         write(obj)
         event.reply('ok')
         break
-
 
 def tdo(event):
     "add a todo"

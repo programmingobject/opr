@@ -4,7 +4,11 @@
 """parsing"""
 
 
+# AUTHOR
+
+
 __author__ = "Bart Thate <programmingobject@gmail.com>"
+__version__ = 1
 
 
 # INTERFACE
@@ -23,7 +27,7 @@ __all__ = __dir__()
 
 
 def spl(txt2) -> []:
-    "split comma seperated string" 
+    """split comma seperated string"""
     try:
         res = txt2.split(',')
     except (TypeError, ValueError):
@@ -32,7 +36,7 @@ def spl(txt2) -> []:
 
 
 def parsequal(obj, word):
-    "check for qualness"
+    """check for qualness"""
     try:
         key, value = word.split('==')
         if not obj["skip"]:
@@ -49,7 +53,7 @@ def parsequal(obj, word):
 
 
 def parseassign(obj, word):
-    "check for assign"
+    """check for assign"""
     try:
         key, value = word.split('=', maxsplit=1)
         if key == "mod":
@@ -68,7 +72,7 @@ def parseassign(obj, word):
 
 
 def parseoption(obj, word):
-    "check for options"
+    """check for options"""
     if word.startswith('-'):
         if "index" not in obj:
             obj["index"] = 0
@@ -83,7 +87,7 @@ def parseoption(obj, word):
 
 
 def parse(obj, txt):
-    "parse text for commands and arguments/options"
+    """parse text for commands and arguments/options"""
     obj["cmd"] = ""
     obj["otxt"] = txt
     splitted = txt.split()

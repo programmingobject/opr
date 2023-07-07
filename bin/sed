@@ -2,7 +2,17 @@
 # This file is placed in the Public Domain.
 
 
-"sed <txt1> <txt2>"
+"""sed <txt1> <txt2>"""
+
+
+# AUTHOR
+
+
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+__version__ = 1
+
+
+# IMPORTS
 
 
 import os
@@ -10,14 +20,13 @@ import subprocess
 import sys
 
 
+# DEFINES
+
+
 os.environ["PATH"] += ":bin"
 
 
-try:
-    OLD, *NEW = sys.argv[1:]
-except ValueError:
-    print("sed <OLD> <NEW>")
-    sys.exit()
+# UTILITY
 
 
 def popen(txt):
@@ -31,6 +40,15 @@ def popen(txt):
         prok.communicate()
         prok.wait()
 
+
+
+# RUNTIME
+
+try:
+    OLD, *NEW = sys.argv[1:]
+except ValueError:
+    print("sed <OLD> <NEW>")
+    sys.exit()
 
 
 popen(f"files . sed -s -u -i s/{OLD}/{NEW[0]}/")

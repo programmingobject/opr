@@ -4,6 +4,9 @@
 "mailbox"
 
 
+# AUTHOR
+
+
 __author__ = "Bart Thate <programmingobject@gmail.com>"
 __version__ = 1
 
@@ -15,13 +18,13 @@ import mailbox
 import os
 import time
 
-
 from opr.objects import Object, prt, update
 from opr.persist import find, fntime, write
 from opr.utility import elapsed
 
 
 # DEFINES
+
 
 bdmonths = [
             'Bo',
@@ -38,7 +41,6 @@ bdmonths = [
             'Nov',
             'Dec'
            ]
-
 
 monthint = {
             'Jan': 1,
@@ -61,7 +63,7 @@ monthint = {
 
 class Email(Object):
 
-    "email object"
+    """email object"""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -81,7 +83,7 @@ class Email(Object):
 
 def to_date(date):
     # pylint: disable=C0209
-    "parse date out of string"
+    """parse date out of string"""
     date = date.replace("_", ":")
     res = date.split()
     ddd = ""
@@ -121,7 +123,7 @@ def to_date(date):
 
 
 def cor(event):
-    "trace correspondence"
+    """trace correspondence"""
     if not event.args:
         event.reply("cor <email>")
         return
@@ -137,9 +139,8 @@ def cor(event):
         txt = prt(email, txt, plain=True)
         event.reply(f"{nrs} {txt} {lsp}")
 
-
 def eml(event):
-    "search emails"
+    """search emails"""
     if not event.args:
         event.reply("eml <searchtxtinemail>")
         return
@@ -151,10 +152,9 @@ def eml(event):
             lsp = elapsed(time.time() - fntime(email.__oid__))
             event.reply(f"{nrs} {txt} {lsp}")
 
-
 def mbx(event):
     # pylint: disable=W0212
-    "scan mailbox/maildir"
+    """scan mailbox/maildir"""
     if not event.args:
         return
     path = os.path.expanduser(event.args[0])

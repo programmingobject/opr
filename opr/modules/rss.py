@@ -4,6 +4,9 @@
 """rich site syndicate"""
 
 
+# AUTHOR
+
+
 __author__ = "Bart Thate <programmingobject@gmail.com>"
 __version__ = 1
 
@@ -18,11 +21,9 @@ import time
 import urllib
 import _thread
 
-
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote_plus, urlencode
 from urllib.request import Request, urlopen
-
 
 from opr.handler import Bus, Cfg
 from opr.objects import Default, Object, prt, update
@@ -32,7 +33,7 @@ from opr.threads import launch, threaded
 from opr.utility import elapsed, spl
 
 
-# DEFINES
+# SERVICES
 
 
 def start():
@@ -41,6 +42,9 @@ def start():
     fetcher = Fetcher()
     fetcher.start()
     return fetcher
+
+
+# DEFINES
 
 
 fetchlock = _thread.allocate_lock()
@@ -61,7 +65,6 @@ class Feed(Default):
         """size"""
         return len(self.__dict__)
 
-
 class Rss(Object):
 
     """save rss item"""
@@ -80,7 +83,6 @@ class Rss(Object):
         """size"""
         return len(self.__dict__)
 
-
 class Seen(Object):
 
     """list of seen urls"""
@@ -96,7 +98,6 @@ class Seen(Object):
     def size(self):
         """size"""
         return len(self.__dict__)
-
 
 class Fetcher(Object):
 
@@ -177,7 +178,6 @@ class Fetcher(Object):
         if repeat:
             repeater = Repeater(300.0, self.run)
             repeater.start()
-
 
 class Parser(Object):
 

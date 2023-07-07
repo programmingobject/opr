@@ -5,8 +5,20 @@
 "run pytest"
 
 
+# AUTHOR
+
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+__version__ = 1
+
+
+# IMPORTS
+
+
 import os
 import sys
+
+
+# UTILITY
 
 
 def popen(txt):
@@ -16,6 +28,9 @@ def popen(txt):
     for line in os.popen(txt).readlines():
         print(line.rstrip())
         sys.stdout.flush()
+
+
+# RUNTIME
 
 
 popen("python3 -m pytest")

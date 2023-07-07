@@ -5,17 +5,31 @@
 "build all"
 
 
+# AUTHOR
+
+
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+__version__ = 1
+
+
+# IMPORTS
+
+
 import os
 import subprocess
 import sys
 import time
 
 
+# DEFINES
+
 DATE = time.ctime(time.time()).replace("  ", " ")
 NAME = "opr"
 
-
 os.environ["PATH"] += ":bin"
+
+
+# UTILITY
 
 
 def popen(txt):
@@ -31,6 +45,9 @@ def popen(txt):
                          ) as prock:
         prock.communicate()
         prock.wait()
+
+
+# RUNTIME
 
 
 def main():

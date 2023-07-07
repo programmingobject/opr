@@ -4,6 +4,9 @@
 """"clean namespace"""
 
 
+# NAME
+
+
 __author__ = "Bart Thate <programmingobject@gmail.com>"
 __version__ = 1
 
@@ -95,7 +98,7 @@ class Object:
 
 class Default(Object):
 
-    "default return values"
+    """default return values"""
 
     __slots__ = ("__default__",)
 
@@ -116,7 +119,7 @@ class Default(Object):
 
 
 def copy(obj, val) -> None:
-    "copy constructor"
+    """copy constructor"""
     if isinstance(val, list):
         update(obj, dict(val))
     elif isinstance(val, zip):
@@ -129,7 +132,7 @@ def copy(obj, val) -> None:
 
 
 def diff(obj, obj2):
-    "return objects with different fields"
+    """return objects with different fields"""
     result = {}
     for key, value in obj2.items():
         if key in obj and obj[key] != value:
@@ -140,7 +143,7 @@ def diff(obj, obj2):
 
 
 def dumprec(obj) -> str:
-    "read object recursively"
+    """read object recursively"""
     ooo = type(obj)()
     update(ooo, obj)
     oooo = type(obj)()
@@ -152,7 +155,7 @@ def dumprec(obj) -> str:
     return oooo
 
 def edit(obj, setter, skip=False):
-    "change object values with values from a setter dict"
+    """change object values with values from a setter dict"""
     try:
         setter = vars(setter)
     except (TypeError, ValueError):
@@ -184,7 +187,7 @@ def edit(obj, setter, skip=False):
 
 
 def ident(obj) -> str:
-    "create ident for object"
+    """create ident for object"""
     return os.path.join(
                         kind(obj),
                         str(uuid.uuid4().hex),
@@ -193,19 +196,19 @@ def ident(obj) -> str:
 
 
 def items(obj) -> []:
-    "key/value pairs"
+    """key/value pairs"""
     if isinstance(obj, type({})):
         return obj.items()
     return obj.__dict__.items()
 
 
 def keys(obj) -> []:
-    "list of keys"
+    """list of keys"""
     return obj.__dict__.keys()
 
 
 def kind(obj) -> str:
-    "type of object"
+    """type of object"""
     kin = str(type(obj)).split()[-1][1:-2]
     if kin == "type":
         kin = obj.__name__
@@ -213,7 +216,7 @@ def kind(obj) -> str:
 
 
 def prt(obj, args="", skip="", plain=False):
-    "pretty object print"
+    """pretty object print"""
     res = []
     keyz = []
     if "," in args:
@@ -246,7 +249,7 @@ def prt(obj, args="", skip="", plain=False):
 
 
 def update(obj, data, empty=True) -> None:
-    "update an object with a data dictionary"
+    """update an object with a data dictionary"""
     for key, value in items(data):
         if not empty and not value:
             continue
@@ -254,7 +257,7 @@ def update(obj, data, empty=True) -> None:
 
 
 def values(obj) -> []:
-    "list of values"
+    """list of values"""
     return obj.__dict__.values()
 
 
@@ -263,14 +266,14 @@ def values(obj) -> []:
 
 class ObjectDecoder(json.JSONDecoder):
 
-    "convert string to object"
+    """convert string to object"""
 
     def __init__(self, *args, **kwargs):
         ""
         json.JSONDecoder.__init__(self, *args, **kwargs)
 
     def decode(self, s, _w=None):
-        "string to object"
+        """string to object"""
         val = json.JSONDecoder.decode(self, s)
         if not val:
             val = {}
@@ -279,17 +282,17 @@ class ObjectDecoder(json.JSONDecoder):
         return obj
 
     def raw_decode(self, s, idx=0):
-        "do a indexed conversion"
+        """do a indexed conversion"""
         return json.JSONDecoder.raw_decode(self, s, idx)
 
 
 def load(fpt, *args, **kw) :
-    "return object from filepath"
+    """return object from filepath"""
     return json.load(fpt, *args, cls=ObjectDecoder, **kw)
 
 
 def loads(string, *args, **kw):
-    "load object from string"
+    """load object from string"""
     return json.loads(string, *args, cls=ObjectDecoder, **kw)
 
 
@@ -298,14 +301,14 @@ def loads(string, *args, **kw):
 
 class ObjectEncoder(json.JSONEncoder):
 
-    "from object to string"
+    """from object to string"""
 
     def __init__(self, *args, **kwargs):
         ""
         json.JSONEncoder.__init__(self, *args, **kwargs)
 
     def default(self, o) -> str:
-        "return string version for object"
+        """return string version for object"""
         if isinstance(o, dict):
             return o.items()
         if isinstance(o, Object):
@@ -329,21 +332,21 @@ class ObjectEncoder(json.JSONEncoder):
             return str(o)
 
     def encode(self, o) -> str:
-        "convert object to string"
+        """convert object to string"""
         return json.JSONEncoder.encode(self, o)
 
     def iterencode(self, o, _one_shot=False) -> str:
-        "use multiple encoding passes"
+        """use multiple encoding passes"""
         return json.JSONEncoder.iterencode(self, o, _one_shot)
 
 
 def dump(*args, **kw) -> None:
-    "json dump to disk with object encoder"
+    """json dump to disk with object encoder"""
     kw["cls"] = ObjectEncoder
     return json.dump(*args, **kw)
 
 
 def dumps(*args, **kw) -> str:
-    "json dump to string with object encoder"
+    """json dump to string with object encoder"""
     kw["cls"] = ObjectEncoder
     return json.dumps(*args, **kw)

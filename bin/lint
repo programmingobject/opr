@@ -5,9 +5,22 @@
 "lintify"
 
 
+# AUTHOR
+
+
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+__version__ = 1
+
+
+# IMPORTS
+
+
 import json
 import os
 import sys
+
+
+# DEFINES
 
 
 os.environ["PATH"] += ":bin"
@@ -40,8 +53,11 @@ SKIPFILE = [
            ]
 
 
+# UTILITY
+
+
 def doskip(txt, skiplist):
-    "check is txt needs to be skipped"
+    """check is txt needs to be skipped"""
     if not txt.strip():
         return True
     for skp in skiplist:
@@ -53,7 +69,7 @@ def doskip(txt, skiplist):
 
 
 def diff(obj, obj2, doall=False):
-    "calculate difference between objects"
+    """calculate difference between objects"""
     result = {}
     for key, value in obj2.items():
         if key in obj and obj[key] != value:
@@ -64,7 +80,7 @@ def diff(obj, obj2, doall=False):
 
 
 def dump(path, result):
-    "dump result to path"
+    """dump result to path"""
     old = os.getcwd()
     os.chdir(path)
     for fnn in os.listdir(path):
@@ -81,12 +97,15 @@ def dump(path, result):
 
 
 def popen(txt):
-    "run in popen"
+    """run in popen"""
     for line in os.popen(txt).readlines():
         if doskip(line, SKIP):
             continue
         print(line.rstrip())
         sys.stdout.flush()
+
+
+# RUNTIME
 
 
 if __name__ == "__main__":

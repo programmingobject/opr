@@ -4,7 +4,14 @@
 # pylint: disable=E0001
 
 
-"object programming runtime"
+"""object programming runtime"""
+
+
+# AUTHOR
+
+
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+__version__ = 1
 
 
 # IMPORTS

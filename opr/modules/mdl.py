@@ -7,6 +7,9 @@
 "genocide model for here in the netherlands"
 
 
+# AUTHOR
+
+
 __author__ = "Bart Thate <programmingobject@gmail.com>"
 __version__ = 1
 
@@ -17,7 +20,6 @@ __version__ = 1
 import datetime
 import time
 
-
 from opr.handler import Bus, Event
 from opr.objects import Object, copy, keys
 from opr.repeats import Repeater
@@ -25,7 +27,7 @@ from opr.threads import launch
 from opr.utility import elapsed
 
 
-# DEFINES
+# SERVICES
 
 
 def start():
@@ -42,12 +44,14 @@ def start():
     launch(daily, name="daily")
 
 
+# DEFINES
+
+
 DAY=24*60*60
 YEAR = 365*DAY
 SOURCE = "https://github.com/bthate/genocide"
 STARTDATE = "2020-01-01 00:00:00"
 STARTTIME = time.mktime(time.strptime(STARTDATE, "%Y-%m-%d %H:%M:%S"))
-
 
 oor = """"Totaal onderliggende doodsoorzaken (aantal)";
          "1 Infectieuze en parasitaire ziekten/Totaal infectieuze en parasitaire zktn (aantal)";
@@ -144,7 +148,6 @@ oor = """"Totaal onderliggende doodsoorzaken (aantal)";
          "18 COVID-19 (Coronavirus ziekte 19)/18 Totaal COVID-19 (Coronavirus 19) (aantal)";
          "18 COVID-19 (Coronavirus ziekte 19)/18.1 Vastgestelde COVID-19 (aantal)";
          "18 COVID-19 (Coronavirus ziekte 19)/18.2 Vermoedelijke COVID-19 (aantal)""".split(";")
-
 
 aantal = """
           168678;
@@ -244,13 +247,7 @@ aantal = """
           2678
          """.split(";")
 
-
-oorzaak = Object()
-copy(oorzaak, zip(oor,aantal))
-
-
 #oorzaak.Suicide = 1859
-
 
 aliases = {}
 aliases["Nieuwvormingen"] = "cancer"
@@ -272,18 +269,11 @@ aliases["Zwangerschap"] = "pregnancy"
 aliases["Suicide"] = "suicide"
 
 
-def getalias(txt):
-    for key, value in aliases.items():
-        if txt.lower() in key.lower():
-            return value
-
-
 demo = Object()
 demo.gehandicapten = 2000000
 demo.ggz = 800000
 demo.population = 17440000
 demo.part = 7000000000 / demo.population
-
 
 jaar = {}
 jaar["WvGGZ"] = 14206
@@ -293,6 +283,8 @@ jaar["Wfz"] = 23820
 jaar["totaal"] = 168678
 
 
+oorzaak = Object()
+copy(oorzaak, zip(oor, aantal))
 oorzaken = Object()
 
 
@@ -328,7 +320,6 @@ def boot():
         nms = nms.strip()
         setattr(oorzaken, nms, aantal[_nr])
 
-
 def daily():
     time.sleep(10.0)
     while 1:
@@ -336,25 +327,26 @@ def daily():
         cbnow(event)
         time.sleep(24*60*60)
 
-
 def hourly():
     while 1:
         time.sleep(60*60)
         event = Event()
         cbnow(event)
 
-
 def seconds(nrs):
     if not nrs:
         return nrs
     return 60*60*24*365 / float(nrs)
 
+def getalias(txt):
+    for key, value in aliases.items():
+        if txt.lower() in key.lower():
+            return value
 
 def getday():
     day = datetime.datetime.now()
     day = day.replace(hour=0, minute=0, second=0, microsecond=0)
     return day.timestamp()
-
 
 def getnr(name):
     for k in keys(oorzaken):
@@ -362,13 +354,11 @@ def getnr(name):
             return int(getattr(oorzaken, k))
     return 0
 
-
 def iswanted(k, line):
     for word in line:
         if word in k:
             return True
     return False
-
 
 def cbnow(evt):
     delta = time.time() - STARTTIME
@@ -381,7 +371,6 @@ def cbnow(evt):
         txt += "%s: %s " % (getalias(name), nrtimes)
     txt += " http://genocide.rtfd.io"
     Bus.announce(txt)
-
 
 def cbstats(evt):
     name = evt.rest or "Psych"
@@ -404,7 +393,6 @@ def cbstats(evt):
                                                               )
         Bus.announce(txt)
 
-
 def now(event):
     delta = time.time() - STARTTIME
     txt = elapsed(delta) + " "
@@ -416,7 +404,6 @@ def now(event):
         txt += "%s: %s " % (getalias(name), nrtimes)
     txt += " http://genocide.rtfd.io"
     event.reply(txt)
-
 
 def mdl(event):
     name = event.rest or "Psych"
@@ -436,7 +423,6 @@ def mdl(event):
                                                                elapsed(needed)
                                                               )
         event.reply(txt)
-
 
 def tpc(event):
     txt = "%ss " % elapsed(time.time() - STARTTIME)

@@ -4,6 +4,9 @@
 "shopping lists"
 
 
+# AUTHOR
+
+
 __author__ = "Bart Thate <programmingobject@gmail.com>"
 __version__ = 1
 
@@ -12,7 +15,6 @@ __version__ = 1
 
 
 import time
-
 
 from opr.objects import Object
 from opr.persist import find, fntime, write
@@ -51,7 +53,6 @@ def got(event):
         obj.__deleted__ = True
         write(obj)
         event.reply('ok')
-
 
 def shp(event):
     """add shop"""

@@ -5,8 +5,21 @@
 "loop over every file in every directories"
 
 
+# AUTHOR
+
+
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+__version__ = 1
+
+
+# IMPORTS
+
+
 import os
 import sys
+
+
+# DEFINES
 
 
 SKIP = [
@@ -14,8 +27,11 @@ SKIP = [
        ]
 
 
+# UTILITY
+
+
 def files(path, end, txt):
-    "proces all files in directories"
+    """proces all files in directories"""
     older = os.getcwd()
     os.chdir(path)
     for fnn in os.listdir(path):
@@ -34,13 +50,19 @@ def files(path, end, txt):
     os.chdir(older)
 
 
+# UTILITY
+
+
 def popen(txt):
-    "run in popen"
+    """run in popen"""
     for line in os.popen(txt).readlines():
         if line.startswith("cat: "):
             continue
         print(line.rstrip())
         sys.stdout.flush()
+
+
+# RUNTIME
 
 
 if __name__ == "__main__":
