@@ -31,61 +31,59 @@ USAGE
 
     list of commands
 
-    $ opr cmd
-    cmd,err,flt,sts,thr,upt
+      $ opr cmd
+      cmd,err,flt,sts,thr,upt
 
     start a console
 
-    $ opr -c
-    >
+      $ opr -c
+      >
 
     start additional modules
 
-    $ opr mod=<mod1,mod2> -c
-    >
+      $ opr mod=<mod1,mod2> -c
+      >
 
     list of modules
 
-    $ opr mod
-    cmd,err,flt,fnd,irc,log,mdl,mod,
-    req, rss,slg,sts,tdo,thr,upt,ver
+      $ opr mod
+      cmd,err,flt,fnd,irc,log,mdl,mod,
+      req, rss,slg,sts,tdo,thr,upt,ver
 
-    to start irc, add mod=irc when
-    starting
+    to start irc, add mod=irc when starting
 
-    $ opr mod=irc -c
+      $ opr mod=irc -c
 
     to start rss, also add mod=rss
-    when starting
 
-    $ opr mod=irc,rss -c
+      $ opr mod=irc,rss -c
 
     start as daemon
 
-    $ opr  mod=irc,rss -d
-    $ 
+      $ opr  mod=irc,rss -d
+      $ 
 
 
 CONFIGURATION
 
+ 
+    irc
 
- irc
+      $ opr cfg server=<server>
+      $ opr cfg channel=<channel>
+      $ opr cfg nick=<nick>
 
-    $ opr cfg server=<server>
-    $ opr cfg channel=<channel>
-    $ opr cfg nick=<nick>
+    sasl
 
- sasl
+      $ opr pwd <nsvnick> <nspass>
+      $ opr cfg password=<frompwd>
 
-    $ opr pwd <nsvnick> <nspass>
-    $ opr cfg password=<frompwd>
+    rss
 
- rss
-
-    $ opr rss <url>
-    $ opr dpl <url> <item1,item2>
-    $ opr rem <url>
-    $ opr nme <url< <name>
+      $ opr rss <url>
+      $ opr dpl <url> <item1,item2>
+      $ opr rem <url>
+      $ opr nme <url< <name>
 
 
 COMMANDS
@@ -122,7 +120,8 @@ COPYRIGHT
 """
 
 
-__author__ = "Bart Thate <bthate@dds.nl>"
+# IMPORTS
 
 
 from opr.objects import *
+from opr.objects import __all__, __dir__, __author__

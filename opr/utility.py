@@ -1,7 +1,10 @@
 # This file is placed in the Public Domain.
 
 
-"utility"
+"""utility"""
+
+
+__author__ = "Bart Thate <programmingobject@gmail.com>"
 
 
 # IMPORTS
@@ -11,7 +14,7 @@ import os
 import pathlib
 
 
-# DEFINES
+# INTERFACE
 
 
 def __dir__():
@@ -19,12 +22,13 @@ def __dir__():
             'cdir',
             'doskip',
             'elapsed',
-            'fnclass',
-            'fntime',
             'spl',
             'strip',
             'touch'
            )
+
+
+__all__ = __dir__()
 
 
 # UTILITY

@@ -1,7 +1,10 @@
 # This file is placed in the Public Domain.
 
 
-"clean namespace"
+""""clean namespace"""
+
+
+__author__ = "Bart Thate <programmingobject@gmail.com>"
 
 
 # IMPORTS
@@ -14,7 +17,7 @@ import uuid
 import _thread
 
 
-# DEFINES
+# INTERFACE
 
 
 def __dir__():
@@ -41,6 +44,9 @@ def __dir__():
 __all__ = __dir__()
 
 
+# DEFINES
+
+
 disklock = _thread.allocate_lock()
 
 
@@ -49,39 +55,40 @@ disklock = _thread.allocate_lock()
 
 class Object:
 
-    "clean namespace"
+    """clean namespace"""
 
     __slots__ = ('__dict__', '__oid__')
 
     def __init__(self):
-        ""
+        """construct an object without any methods, just dunders"""
         self.__oid__ = ident(self)
 
     def __contains__(self, key):
-        ""
+        """object contains key"""
         return key in self.__dict__
 
     def __delitem__(self, key):
-        ""
+        """remove key from object"""
         return self.__dict__.__delitem__(key)
 
     def __getitem__(self, key):
-        ""
+        """dict like access"""
         return self.__dict__.__getitem__(key)
 
     def __iter__(self):
-        ""
+        """iterate over this object"""
         return iter(self.__dict__)
 
     def __len__(self):
-        ""
+        """number of elements"""
         return len(self.__dict__)
 
     def __setitem__(self, key, value):
-        ""
+        """dict like set"""
         return self.__dict__.__setitem__(key, value)
 
     def __str__(self):
+        """return recursive json string"""
         return dumps(dumprec(self))
 
 
@@ -204,7 +211,6 @@ def kind(obj) -> str:
     return kin
 
 
-
 def prt(obj, args="", skip="", plain=False):
     "pretty object print"
     res = []
@@ -251,14 +257,18 @@ def values(obj) -> []:
     return obj.__dict__.values()
 
 
-## DECODER
+# DECODER
 
 
 class ObjectDecoder(json.JSONDecoder):
 
     "convert string to object"
 
-    def decode(self, s, _w=None) -> Object:
+    def __init__(self, *args, **kwargs):
+        ""
+        json.JSONDecoder.__init__(self, *args, **kwargs)
+
+    def decode(self, s, _w=None):
         "string to object"
         val = json.JSONDecoder.decode(self, s)
         if not val:
@@ -267,17 +277,17 @@ class ObjectDecoder(json.JSONDecoder):
         copy(obj, val)
         return obj
 
-    def raw_decode(self, s, idx=0) -> (int, Object):
+    def raw_decode(self, s, idx=0):
         "do a indexed conversion"
         return json.JSONDecoder.raw_decode(self, s, idx)
 
 
-def load(fpt, *args, **kw) -> Object:
+def load(fpt, *args, **kw) :
     "return object from filepath"
     return json.load(fpt, *args, cls=ObjectDecoder, **kw)
 
 
-def loads(string, *args, **kw) -> Object:
+def loads(string, *args, **kw):
     "load object from string"
     return json.loads(string, *args, cls=ObjectDecoder, **kw)
 
@@ -288,6 +298,10 @@ def loads(string, *args, **kw) -> Object:
 class ObjectEncoder(json.JSONEncoder):
 
     "from object to string"
+
+    def __init__(self, *args, **kwargs):
+        ""
+        json.JSONEncoder.__init__(self, *args, **kwargs)
 
     def default(self, o) -> str:
         "return string version for object"

@@ -1,7 +1,10 @@
 # This file is placed in the Public Domain.
 
 
-"persist"
+"""persist"""
+
+
+__author__ = "Bart Thate <programmingobject@gmail.com>"
 
 
 # IMPORTS
@@ -17,7 +20,7 @@ from opr.objects import Object, copy, ident, dump, items, kind, load, update
 from opr.utility import cdir, strip
 
 
-# DEFINES
+# INTERFACE
 
 
 def __dir__():
@@ -38,6 +41,12 @@ def __dir__():
            )
 
 
+__all__ = __dir__()
+
+
+# DEFINES
+
+
 disklock = _thread.allocate_lock()
 
 
@@ -46,18 +55,18 @@ disklock = _thread.allocate_lock()
 
 class Persist(Object):
 
-    "directory to persist to"
+    """directory to persist to"""
 
     workdir = ""
 
     @staticmethod
     def path(pth) -> str:
-        "return store path"
+        """return store path"""
         return os.path.join(Persist.workdir, 'store', pth)
 
     @staticmethod
     def storedir() -> str:
-        "return storage directory"
+        """return storage directory"""
         return os.path.join(Persist.workdir, "store")
 
 
@@ -65,7 +74,7 @@ class Persist(Object):
 
 
 def files() -> []:
-    "show all files in store"
+    """show all files in store"""
     res = []
     path = Persist.storedir()
     if os.path.exists(path):
@@ -74,7 +83,7 @@ def files() -> []:
 
 
 def find(mtc, selector=None) -> []:
-    "locate specific objects"
+    """locate specific objects"""
     if selector is None:
         selector = {}
     for fnm in fns(mtc):
@@ -87,7 +96,7 @@ def find(mtc, selector=None) -> []:
 
 
 def fnclass(pth) -> str:
-    "return class from filename"
+    """return class from filename"""
     try:
         *_rest, mpth = pth.split("store")
         splitted = mpth.split(os.sep)
@@ -98,7 +107,7 @@ def fnclass(pth) -> str:
 
 
 def fns(mtc) -> []:
-    "return matching filenames"
+    """return matching filenames"""
     dname = ''
     lst = mtc.lower().split(".")[-1]
     for rootdir, dirs, _files in os.walk(Persist.storedir(), topdown=False):
@@ -115,7 +124,7 @@ def fns(mtc) -> []:
 
 
 def fntime(daystr) -> float:
-    "return time from filename"
+    """return time from filename"""
     daystr = daystr.replace('_', ':')
     datestr = ' '.join(daystr.split(os.sep)[-2:])
     if '.' in datestr:
@@ -131,7 +140,7 @@ def fntime(daystr) -> float:
 
 
 def hook(otp) -> type:
-    "return object from filename"
+    """return object from filename"""
     clz = fnclass(otp)
     splitted = clz.split(".")
     modname = ".".join(splitted[:1])
@@ -148,11 +157,11 @@ def hook(otp) -> type:
     return obj
 
 
-## METHODS
+# METHODS
 
 
 def last(obj, selector=None) -> None:
-    "update with last saved version"
+    """update with last saved version"""
     if selector is None:
         selector = {}
     result = sorted(
@@ -167,7 +176,7 @@ def last(obj, selector=None) -> None:
 
 
 def read(obj, pth) -> str:
-    "read object from path"
+    """read object from path"""
     pth = Persist.path(pth)
     with disklock:
         with open(pth, 'r', encoding='utf-8') as ofile:
@@ -178,7 +187,7 @@ def read(obj, pth) -> str:
 
 
 def readrec(obj, pth=None) -> type:
-    "read object recursively"
+    """read object recursively"""
     ooo = type(obj)()
     if pth:
         read(ooo, pth)
@@ -194,7 +203,7 @@ def readrec(obj, pth=None) -> type:
 
 
 def search(obj, selector) -> bool:
-    "check whether values in selector dict match in the object"
+    """check whether values in selector dict match in the object"""
     res = False
     select = Object()
     copy(select, selector)
@@ -210,7 +219,7 @@ def search(obj, selector) -> bool:
 
 
 def write(obj) -> str:
-    "write object to disk"
+    """write object to disk"""
     try:
         pth = obj.__oid__
     except TypeError:
@@ -224,7 +233,7 @@ def write(obj) -> str:
 
 
 def writerec(obj):
-    "write object recursively"
+    """write object recursively"""
     ooo = type(obj)()
     for key, value in items(obj):
         if issubclass(type(value), Object):

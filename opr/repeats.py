@@ -1,7 +1,10 @@
 # This file is placed in the Public Domain.
 
 
-"clock"
+"""clock"""
+
+
+__author__ = "Bart Thate <programmingobject@gmail.com>"
 
 
 # IMPORTS
@@ -15,7 +18,7 @@ from opr.objects import Object
 from opr.threads import Thread, launch
 
 
-# DEFINES
+# INTERFACE
 
 
 def __dir__():
@@ -25,12 +28,15 @@ def __dir__():
            )
 
 
+__all__ = __dir__()
+
+
 # CLASSES
 
 
 class Timer:
 
-    "run x seconds from now"
+    """run x seconds from now"""
 
     def __init__(self, sleep, func, *args, thrname=None):
         super().__init__()
@@ -42,12 +48,12 @@ class Timer:
         self.timer = None
 
     def run(self) -> None:
-        "launch function in its thread"
+        """launch function in its thread"""
         self.state.latest = time.time()
         launch(self.func, *self.args)
 
     def start(self) -> None:
-        "start waiting till its time"
+        """start waiting till its time"""
         timer = threading.Timer(self.sleep, self.run)
         timer.name = self.name
         timer.daemon = True
@@ -60,14 +66,14 @@ class Timer:
         self.timer = timer
 
     def stop(self) -> None:
-        "stop waiting"
+        """stop waiting"""
         if self.timer:
             self.timer.cancel()
 
 
 class Repeater(Timer):
 
-    "run function every x seconds"
+    """run function every x seconds"""
 
     def run(self) -> Thread:
         thr = launch(self.start)

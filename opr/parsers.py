@@ -1,10 +1,13 @@
 # This file is placed in the Public Domain.
 
 
-"parsing"
+"""parsing"""
 
 
-# DEFINES
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+
+
+# INTERFACE
 
 
 def __dir__():
@@ -14,6 +17,18 @@ def __dir__():
 
 
 __all__ = __dir__()
+
+
+# UTILITY
+
+
+def spl(txt2) -> []:
+    "split comma seperated string" 
+    try:
+        res = txt2.split(',')
+    except (TypeError, ValueError):
+        res = txt2
+    return [x for x in res if x]
 
 
 def parsequal(obj, word):
@@ -93,12 +108,3 @@ def parse(obj, txt):
     else:
         obj["txt"] = obj["cmd"]
     return obj
-
-
-def spl(txt2) -> []:
-    "split comma seperated string" 
-    try:
-        res = txt2.split(',')
-    except (TypeError, ValueError):
-        res = txt2
-    return [x for x in res if x]
