@@ -77,6 +77,13 @@ p.s.
 """
 
 
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+__version__ = 1
+
+
+# COMMANDS
+
+
 def req(event):
     "show request to the prosecutor"
     event.reply(__doc__)

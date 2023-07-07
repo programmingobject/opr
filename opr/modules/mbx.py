@@ -4,6 +4,13 @@
 "mailbox"
 
 
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+__version__ = 1
+
+
+# IMPORTS
+
+
 import mailbox
 import os
 import time
@@ -13,6 +20,8 @@ from opr.objects import Object, prt, update
 from opr.persist import find, fntime, write
 from opr.utility import elapsed
 
+
+# DEFINES
 
 bdmonths = [
             'Bo',
@@ -47,6 +56,9 @@ monthint = {
            }
 
 
+# CLASSES
+
+
 class Email(Object):
 
     "email object"
@@ -62,6 +74,9 @@ class Email(Object):
     def size(self):
         "size"
         return len(self.__dict__)
+
+
+# UTILITY
 
 
 def to_date(date):
@@ -100,6 +115,9 @@ def to_date(date):
                         except (IndexError, KeyError):
                             ddd = ""
     return ddd
+
+
+# COMMANDS
 
 
 def cor(event):

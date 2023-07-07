@@ -1,8 +1,14 @@
 # This file is placed in the Public Domain.
 
 
-"internet relay chat"
+"""internet relay chat"""
 
+
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+__version__ = 1
+
+
+# IMPORTS
 
 import base64
 import os
@@ -25,6 +31,9 @@ from opr.threads import launch
 from opr.utility import elapsed
 
 
+# DEFINES
+
+
 NAME = "opr"
 VERSION = "221"
 
@@ -32,7 +41,7 @@ saylock = _thread.allocate_lock()
 
 
 def start():
-    "start a irc bot"
+    """start a irc bot"""
     irc = IRC()
     irc.start()
     irc.events.joined.wait()
@@ -40,20 +49,23 @@ def start():
 
 
 def stop():
-    "stop irc bots"
+    """stop irc bots"""
     for bot in Bus.objs:
         if "IRC" in str(type(bot)):
             bot.stop()
 
 
+# CLASSES
+
+
 class NoUser(Exception):
 
-    "user is not found"
+    """user is not found"""
 
 
 class Config(Default):
 
-    "irc config"
+    """irc config"""
 
     channel = f'#{NAME}'
     control = '!'
@@ -90,7 +102,7 @@ class Config(Default):
 
 class TextWrap(textwrap.TextWrapper):
 
-    "text wrapper"
+    """text wrapper"""
 
     def __init__(self):
         super().__init__()
@@ -104,7 +116,7 @@ class TextWrap(textwrap.TextWrapper):
 
 class Output(Object):
 
-    "output cache"
+    """output cache"""
 
     cache = Object()
 
@@ -114,18 +126,18 @@ class Output(Object):
         self.dostop = threading.Event()
 
     def dosay(self, channel, txt):
-        "echo text to channel"
+        """echo text to channel"""
         raise NotImplementedError
 
     def extend(self, channel, txtlist):
-        "add to channel cache"
+        """add to channel cache"""
         if channel not in self.cache:
             setattr(self.cache, channel, [])
         cache = getattr(self.cache, channel, None)
         cache.extend(txtlist)
 
     def gettxt(self, channel):
-        "return text from chanel cache"
+        """return text from chanel cache"""
         txt = None
         try:
             cache = getattr(self.cache, channel, None)
@@ -135,13 +147,13 @@ class Output(Object):
         return txt
 
     def oput(self, channel, txt):
-        "send channel/txt to queue"
+        """send channel/txt to queue"""
         if channel not in self.cache:
             setattr(self.cache, channel, [])
         self.oqueue.put_nowait((channel, txt))
 
     def output(self):
-        "output loop"
+        """output loop"""
         while not self.dostop.is_set():
             (channel, txt) = self.oqueue.get()
             if channel is None and txt is None:
@@ -167,26 +179,26 @@ class Output(Object):
                 self.dosay(channel, txt)
 
     def size(self, chan):
-        "show size of channel cache"
+        """show size of channel cache"""
         if chan in self.cache:
             return len(getattr(self.cache, chan, []))
         return 0
 
     def start(self):
-        "start output loop"
+        """start output loop"""
         self.dostop.clear()
         launch(self.output)
         return self
 
     def stop(self):
-        "stop output loop"
+        """stop output loop"""
         self.dostop.set()
         self.oqueue.put_nowait((None, None))
 
 
 class IRC(Handler, Output):
 
-    "internet relay chat"
+    """internet relay chat"""
 
     def __init__(self):
         Handler.__init__(self)
@@ -215,12 +227,12 @@ class IRC(Handler, Output):
         self.register('QUIT', cb_quit)
 
     def announce(self, txt):
-        "annouce text on channels"
+        """annouce text on channels"""
         for channel in self.channels:
             self.say(channel, txt)
 
     def command(self, cmd, *args):
-        "send command to server"
+        """send command to server"""
         with saylock:
             if not args:
                 self.raw(cmd)
@@ -237,7 +249,7 @@ class IRC(Handler, Output):
             self.state.last = time.time()
 
     def connect(self, server, port=6667):
-        "connect to server"
+        """connect to server"""
         self.state.nrconnect += 1
         self.events.connected.clear()
         Logging.debug(f"connecting to {server}:{port}")
@@ -265,13 +277,13 @@ class IRC(Handler, Output):
         return False
 
     def direct(self, txt):
-        "send direct text"
+        """send direct text"""
         time.sleep(1.0)
         Logging.debug(txt)
         self.sock.send(bytes(txt.rstrip()+'\r\n', 'utf-8'))
 
     def disconnect(self):
-        "disconnect from server"
+        """disconnect from server"""
         try:
             self.sock.shutdown(2)
         except (
@@ -283,7 +295,7 @@ class IRC(Handler, Output):
 
 
     def doconnect(self, server, nck, port=6667):
-        "connect loop"
+        """connect loop"""
         while 1:
             try:
                 if self.connect(server, port):
@@ -300,14 +312,14 @@ class IRC(Handler, Output):
         self.logon(server, nck)
 
     def dosay(self, channel, txt):
-        "called from output cache"
+        """called from output cache"""
         self.events.joined.wait()
         txt = str(txt).replace('\n', '')
         txt = txt.replace('  ', ' ')
         self.command('PRIVMSG', channel, txt)
 
     def event(self, txt):
-        "return a event"
+        """return a event"""
         evt = self.parsing(txt)
         cmd = evt.command
         if cmd == 'PING':
@@ -333,12 +345,12 @@ class IRC(Handler, Output):
         return evt
 
     def joinall(self):
-        "join all channels"
+        """join all channels"""
         for channel in self.channels:
             self.command('JOIN', channel)
 
     def keep(self):
-        "keep alive loop"
+        """keep alive loop"""
         while 1:
             self.events.connected.wait()
             self.events.authed.wait()
@@ -356,7 +368,7 @@ class IRC(Handler, Output):
                 break
 
     def logon(self, server, nck):
-        "logon to server"
+        """logon to server"""
         self.events.connected.wait()
         self.events.authed.wait()
         nck = self.cfg.username
@@ -366,7 +378,7 @@ class IRC(Handler, Output):
 
     def parsing(self, txt):
         # pylint: disable=R0912,R0915
-        "parse text"
+        """parse text"""
         rawstr = str(txt)
         rawstr = rawstr.replace('\u0001', '')
         rawstr = rawstr.replace('\001', '')
@@ -425,7 +437,7 @@ class IRC(Handler, Output):
         return obj
 
     def poll(self):
-        "poll input buffer for event"
+        """poll input buffer for event"""
         self.events.connected.wait()
         if not self.buffer:
             try:
@@ -452,7 +464,7 @@ class IRC(Handler, Output):
         return self.event(txt)
 
     def raw(self, txt):
-        "send raw text"
+        """send raw text"""
         txt = txt.rstrip()
         Logging.debug(txt)
         if not txt.endswith('\r\n'):
@@ -477,7 +489,7 @@ class IRC(Handler, Output):
         self.state.nrsend += 1
 
     def reconnect(self):
-        "reconnect to server"
+        """reconnect to server"""
         Logging.debug(f"reconnecting to {self.cfg.server}")
         try:
             self.disconnect()
@@ -488,11 +500,11 @@ class IRC(Handler, Output):
         self.doconnect(self.cfg.server, self.cfg.nick, int(self.cfg.port))
 
     def say(self, channel, txt):
-        "sat text of channel"
+        """sat text of channel"""
         self.oput(channel, txt)
 
     def some(self):
-        "check input cache"
+        """check input cache"""
         self.events.connected.wait()
         if not self.sock:
             return
@@ -507,7 +519,7 @@ class IRC(Handler, Output):
         self.state.lastline = splitted[-1]
 
     def start(self):
-        "start irc loop"
+        """start irc loop"""
         last(self.cfg)
         if self.cfg.channel not in self.channels:
             self.channels.append(self.cfg.channel)
@@ -525,22 +537,25 @@ class IRC(Handler, Output):
             launch(self.keep)
 
     def stop(self):
-        "stop irc loop"
+        """stop irc loop"""
         Bus.remove(self)
         Handler.stop(self)
         Output.stop(self)
         self.disconnect()
 
 
+# CALLBACKS
+
+
 def cb_auth(evt):
-    "authenticate to server"
+    """authenticate to server"""
     bot = evt.bot()
     assert evt
     assert bot.cfg.password
     bot.direct(f'AUTHENTICATE {bot.cfg.password}')
 
 def cb_cap(evt):
-    "ask capabilities from server"
+    """ask capabilities from server"""
     bot = evt.bot()
     if bot.cfg.password and 'ACK' in evt.arguments:
         bot.direct('AUTHENTICATE PLAIN')
@@ -549,12 +564,12 @@ def cb_cap(evt):
 
 
 def cb_command(evt):
-    "execute an command"
+    """execute an command"""
     Commands.handle(evt)
 
 
 def cb_error(evt):
-    "handle error"
+    """handle error"""
     bot = evt.bot()
     bot.state.nrerror += 1
     bot.state.errors.append(evt.txt)
@@ -562,7 +577,7 @@ def cb_error(evt):
 
 
 def cb_h903(evt):
-    "capabilities end"
+    """capabilities end"""
     assert evt
     bot = evt.bot()
     bot.direct('CAP END')
@@ -570,7 +585,7 @@ def cb_h903(evt):
 
 
 def cb_h904(evt):
-    "capabilities end"
+    """capabilities end"""
     assert evt
     bot = evt.bot()
     bot.direct('CAP END')
@@ -578,15 +593,15 @@ def cb_h904(evt):
 
 
 def cb_kill(evt):
-    "got killed"
+    """got killed"""
 
 
 def cb_log(evt):
-    "log event"
+    """log event"""
 
 
 def cb_notice(evt):
-    "handle notice"
+    """handle notice"""
     bot = evt.bot()
     if evt.txt.startswith('VERSION'):
         txt = f'\001VERSION {NAME} {bot.cfg.version} - {bot.cfg.username}\001'
@@ -594,7 +609,7 @@ def cb_notice(evt):
 
 
 def cb_privmsg(evt):
-    "handle privmsg"
+    """handle privmsg"""
     bot = evt.bot()
     if bot.cfg.nocommands:
         return
@@ -613,16 +628,18 @@ def cb_privmsg(evt):
 
 
 def cb_quit(evt):
-    "handle quit"
+    """handle quit"""
     bot = evt.bot()
     Logging.debug(f"quit from {bot.cfg.server}")
     if evt.orig and evt.orig in bot.zelf:
         bot.stop()
 
 
+# USERS
+
 class User(Object):
 
-    "an irc user"
+    """an irc user"""
 
     def __init__(self, val=None):
         Object.__init__(self)
@@ -632,21 +649,21 @@ class User(Object):
             update(self, val)
 
     def isok(self):
-        "verify user"
+        """verify user"""
         return True
 
     def isthere(self):
-        "verify presence"
+        """verify presence"""
         return True
 
 
 class Users(Object):
 
-    "manages all irc users"
+    """manages all irc users"""
 
     @staticmethod
     def allowed(origin, perm):
-        "check whether user has permissions"
+        """check whether user has permissions"""
         perm = perm.upper()
         user = Users.get_user(origin)
         val = False
@@ -656,7 +673,7 @@ class Users(Object):
 
     @staticmethod
     def delete(origin, perm):
-        "delete an user"
+        """delete an user"""
         res = False
         for user in Users.get_users(origin):
             try:
@@ -669,13 +686,13 @@ class Users(Object):
 
     @staticmethod
     def get_users(origin=''):
-        "find all users"
+        """find all users"""
         selector = {'user': origin}
         return find('user', selector)
 
     @staticmethod
     def get_user(origin):
-        "select specific user"
+        """select specific user"""
         users = list(Users.get_users(origin))
         res = None
         if len(users) > 0:
@@ -684,7 +701,7 @@ class Users(Object):
 
     @staticmethod
     def perm(origin, permission):
-        "set permission of an user"
+        """set permission of an user"""
         user = Users.get_user(origin)
         if not user:
             raise NoUser(origin)
@@ -694,8 +711,11 @@ class Users(Object):
         return user
 
 
+# COMMANDS
+
+
 def cfg(event):
-    "edit irc config"
+    """edit irc config"""
     config = Config()
     last(config)
     if not event.sets:
@@ -713,7 +733,7 @@ def cfg(event):
 
 
 def dlt(event):
-    "delete an user"
+    """delete an user"""
     if not event.args:
         event.reply('dlt <username>')
         return
@@ -726,7 +746,7 @@ def dlt(event):
 
 
 def met(event):
-    "add an user"
+    """add an user"""
     if not event.args:
         nmr = 0
         for obj in find('user'):
@@ -744,7 +764,7 @@ def met(event):
 
 
 def mre(event):
-    "pull from output cache"
+    """pull from output cache"""
     if not event.channel:
         event.reply('channel is not set.')
         return
@@ -763,7 +783,7 @@ def mre(event):
     event.reply(f'{size} more in cache')
 
 def pwd(event):
-    "create pasword from nickserv user/pass pair"
+    """create pasword from nickserv user/pass pair"""
     if len(event.args) != 2:
         event.reply('pwd <nick> <password>')
         return

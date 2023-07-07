@@ -1,7 +1,14 @@
 # This file is placed in the Public Domain.
 
 
-"shop"
+"shopping lists"
+
+
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+__version__ = 1
+
+
+# IMPORTS
 
 
 import time
@@ -12,25 +19,31 @@ from opr.persist import find, fntime, write
 from opr.utility import elapsed
 
 
+# CLASSES
+
+
 class Shop(Object):
 
-    "shop item"
+    """shop item"""
 
     def __init__(self):
         Object.__init__(self)
         self.txt = ''
 
     def sizeof(self):
-        "size"
+        """size"""
         return len(self.txt)
 
     def length(self):
-        "len"
+        """len"""
         return len(self.__dict__)
 
 
+# COMMANDS
+
+
 def got(event):
-    "got shop"
+    """got shop"""
     if not event.args:
         return
     selector = {'txt': event.args[0]}
@@ -41,7 +54,7 @@ def got(event):
 
 
 def shp(event):
-    "add shop"
+    """add shop"""
     if not event.rest:
         nmr = 0
         for obj in find('shop'):

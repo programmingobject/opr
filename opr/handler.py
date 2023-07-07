@@ -5,6 +5,7 @@
 
 
 __author__ = "Bart Thate <programmingobject@gmail.com>"
+__version__ = 1
 
 
 # IMPORTS
@@ -56,6 +57,9 @@ Cfg = Default()
 Cfg.debug = False
 Cfg.mod = ""
 Cfg.verbose = False
+
+
+# CLASSES
 
 
 class Errors(Object):

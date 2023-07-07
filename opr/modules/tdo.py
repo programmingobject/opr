@@ -1,7 +1,14 @@
 # This file is placed in the Public Domain.
 
 
-"todo"
+"todo lists"
+
+
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+__version__ = 1
+
+
+# IMPORTS
 
 
 import time
@@ -10,6 +17,9 @@ import time
 from opr.objects import Object
 from opr.persist import find, fntime, write
 from opr.utility import elapsed
+
+
+# CLASSES
 
 
 class Todo(Object):
@@ -27,6 +37,9 @@ class Todo(Object):
     def size(self):
         "size"
         return len(self.__dict__)
+
+
+# COMMANDS
 
 
 def dne(event):

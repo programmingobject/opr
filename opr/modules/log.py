@@ -4,12 +4,22 @@
 "log text"
 
 
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+__version__ = 1
+
+
+# IMPORTS
+
+
 import time
 
 
 from opr.objects import Object
 from opr.persist import find, fntime, write
 from opr.utility import elapsed
+
+
+# CLASSES
 
 
 class Log(Object):
@@ -26,6 +36,9 @@ class Log(Object):
 
     def __since__(self):
         return self.createtime
+
+
+# COMMANDS
 
 
 def log(event):

@@ -1,7 +1,14 @@
 # This file is placed in the Public Domain.
 
 
-"rich site syndicate"
+"""rich site syndicate"""
+
+
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+__version__ = 1
+
+
+# IMPORTS
 
 
 import html.parser
@@ -25,8 +32,11 @@ from opr.threads import launch, threaded
 from opr.utility import elapsed, spl
 
 
+# DEFINES
+
+
 def start():
-    "start a fetcher"
+    """start a fetcher"""
     time.sleep(60.0)
     fetcher = Fetcher()
     fetcher.start()
@@ -36,22 +46,25 @@ def start():
 fetchlock = _thread.allocate_lock()
 
 
+# CLASSES
+
+
 class Feed(Default):
 
-    "represent a rss feed"
+    """represent a rss feed"""
 
     def len(self):
-        "length"
+        """length"""
         return len(self.__dict__)
 
     def size(self):
-        "size"
+        """size"""
         return len(self.__dict__)
 
 
 class Rss(Object):
 
-    "save rss item"
+    """save rss item"""
 
     def __init__(self):
         super().__init__()
@@ -60,34 +73,34 @@ class Rss(Object):
         self.rss = ''
 
     def len(self):
-        "length"
+        """length"""
         return len(self.__dict__)
 
     def size(self):
-        "size"
+        """size"""
         return len(self.__dict__)
 
 
 class Seen(Object):
 
-    "list of seen urls"
+    """list of seen urls"""
 
     def __init__(self):
         super().__init__()
         self.urls = []
 
     def len(self):
-        "length" 
+        """length"""
         return len(self.__dict__)
 
     def size(self):
-        "size"
+        """size"""
         return len(self.__dict__)
 
 
 class Fetcher(Object):
 
-    "rss feed fetcher"
+    """rss feed fetcher"""
 
     dosave = False
     seen = Seen()
@@ -98,7 +111,7 @@ class Fetcher(Object):
 
     @staticmethod
     def display(obj):
-        "display rss item"
+        """display rss item"""
         result = ''
         displaylist = []
         try:
@@ -119,7 +132,7 @@ class Fetcher(Object):
         return result[:-2].rstrip()
 
     def fetch(self, feed):
-        "fetch updates"
+        """fetch updates"""
         with fetchlock:
             counter = 0
             objs = []
@@ -168,11 +181,11 @@ class Fetcher(Object):
 
 class Parser(Object):
 
-    "parse rss feed"
+    """parse rss feed"""
 
     @staticmethod
     def getitem(line, item):
-        "return xml items in rss feed"
+        """return xml items in rss feed"""
         lne = ''
         try:
             index1 = line.index(f'<{item}>') + len(item) + 2
@@ -188,7 +201,7 @@ class Parser(Object):
 
     @staticmethod
     def parse(txt, item='title,link'):
-        "parse text for xml items"
+        """parse text for xml items"""
         res = []
         for line in txt.split('<item>'):
             line = line.strip()
@@ -199,8 +212,11 @@ class Parser(Object):
         return res
 
 
+# UTILITY
+
+
 def getfeed(url, item):
-    "fetch feed"
+    """fetch feed"""
     if Cfg.debug:
         return [Object(), Object()]
     try:
@@ -213,7 +229,7 @@ def getfeed(url, item):
 
 
 def gettinyurl(url):
-    "fetch feed using tinyurl"
+    """fetch feed using tinyurl"""
     postarray = [
         ('submit', 'submit'),
         ('url', url),
@@ -232,7 +248,7 @@ def gettinyurl(url):
 
 
 def geturl(url):
-    "fetch url"
+    """fetch url"""
     url = urllib.parse.urlunparse(urllib.parse.urlparse(url))
     req = urllib.request.Request(url)
     req.add_header('User-agent', useragent("rss fetcher"))
@@ -242,24 +258,27 @@ def geturl(url):
 
 
 def striphtml(text):
-    "strip html"
+    """strip html"""
     clean = re.compile('<.*?>')
     return re.sub(clean, '', text)
 
 
 def unescape(text):
-    "unescape html"
+    """unescape html"""
     txt = re.sub(r'\s+', ' ', text)
     return html.unescape(txt)
 
 
 def useragent(txt):
-    "return useragent string"
+    """return useragent string"""
     return 'Mozilla/5.0 (X11; Linux x86_64) ' + txt
 
 
+# COMMANDS
+
+
 def dpl(event):
-    "set items to display"
+    """set items to display"""
     if len(event.args) < 2:
         event.reply('dpl <stringinurl> <item1,item2>')
         return
@@ -273,7 +292,7 @@ def dpl(event):
 
 @threaded
 def ftc(event):
-    "fetch feeds"
+    """fetch feeds"""
     res = []
     thrs = []
     fetcher = Fetcher()
@@ -287,7 +306,7 @@ def ftc(event):
 
 
 def nme(event):
-    "give feed an display name"
+    """give feed an display name"""
     if len(event.args) != 2:
         event.reply('name <stringinurl> <name>')
         return
@@ -300,7 +319,7 @@ def nme(event):
 
 
 def rem(event):
-    "remove feed"
+    """remove feed"""
     if len(event.args) != 1:
         event.reply('rem <stringinurl>')
         return
@@ -313,7 +332,7 @@ def rem(event):
 
 
 def rss(event):
-    "add feed"
+    """add feed"""
     if not event.rest:
         nrs = 0
         for feed in find('rss'):

@@ -184,9 +184,13 @@
 """
 
 
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+__version__ = 1
+
+
 import random
 
 
 def wsd(event):
-    "present wisdom"
+    """present wisdom"""
     event.reply(random.choice(__doc__.split("\n")).strip()[2:])

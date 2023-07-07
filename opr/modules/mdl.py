@@ -7,6 +7,13 @@
 "genocide model for here in the netherlands"
 
 
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+__version__ = 1
+
+
+# IMPORTS
+
+
 import datetime
 import time
 
@@ -18,12 +25,7 @@ from opr.threads import launch
 from opr.utility import elapsed
 
 
-def __dir__():
-    return (
-        'mdl',
-        'now',
-        'start'
-    )
+# DEFINES
 
 
 def start():
@@ -294,6 +296,9 @@ jaar["totaal"] = 168678
 oorzaken = Object()
 
 
+# UTILITY
+
+
 def boot():
     _nr = -1
     for key in keys(oorzaak):
@@ -448,6 +453,9 @@ def tpc(event):
                 bot.topic(channel, txt)
         except AttributeError:
             pass
+
+
+# RUNTIME
 
 
 boot()

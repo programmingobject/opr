@@ -4,12 +4,22 @@
 "find"
 
 
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+__version__ = 1
+
+
+# IMPORTS
+
+
 import time
 
 
 from opr.objects import keys, prt
 from opr.persist import files, find, fntime
 from opr.utility import elapsed
+
+
+# COMMANDS
 
 
 def fnd(event):
