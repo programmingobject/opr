@@ -334,12 +334,12 @@ def parse(obj, txt):
     obj.args = []
     obj.rest = ""
     splitted = txt.split()
-    if splitted:
-        obj.cmd = splitted[0]
-        try:
-            obj.args.extend(splitted[1:])
-        except ValueError:
-            pass
+    for spli in splitted:
+        if spli in Commands.cmds:
+            obj.cmd = spli
+            continue
+        if "=" not in spli and "==" not in spli:
+            obj.args.append(spli)
     if obj.args:
         obj.rest = str(" ".join(obj.args))
 

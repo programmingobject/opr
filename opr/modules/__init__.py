@@ -4,7 +4,7 @@
 "modules"
 
 
-from opr.modules import fnd, irc, log, mdl, req, rss, shp, tdo, wsd
+from opr.modules import fnd, irc, log, mdl, req, rss, shp, tdo, wsd, wsh
 
 
 def __dir__():
@@ -17,7 +17,8 @@ def __dir__():
             "rss",
             "shp",
             "tdo",
-            "wsd"
+            "wsd",
+            "wsh"
            )
 
 
