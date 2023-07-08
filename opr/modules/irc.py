@@ -53,12 +53,15 @@ def stop():
             bot.stop()
 
 
-# CLASSES
+# EXCEPTIONS
 
 
 class NoUser(Exception):
 
     """user is not found"""
+
+
+# CLASSES
 
 
 class Config(Default):

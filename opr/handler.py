@@ -19,7 +19,7 @@ import traceback
 
 from opr.objects import Default, Object, keys
 from opr.threads import launch
-from opr.utility import Logging, spl
+from opr.utility import spl
 
 
 # INTERFACE
@@ -42,10 +42,6 @@ __all__ = __dir__()
 
 
 # DEFINES
-
-
-MODNAMES = {
-           }
 
 
 NAME = __name__.split(".", maxsplit=1)[0]
@@ -146,7 +142,6 @@ class Commands(Object):
             modname = getattr(Commands.modnames, evt.cmd, None)
             mod = None
             if modname:
-                Logging.debug(f"load {modname}")
                 pkg = sys.modules.get("opr.modules")
                 mod = getattr(
                               pkg,
@@ -396,6 +391,7 @@ def scanstr(pkg, mods, init=None, doall=False, wait=False) -> None:
 def waiter(clear=True):
     """poll for errors"""
     got = []
+    result = []
     for ex in Errors.errors:
         stream = io.StringIO(
                              traceback.print_exception(
@@ -405,8 +401,9 @@ def waiter(clear=True):
                                                       )
                             )
         for line in stream.readlines():
-            Logging.debug(line)
+            result.append(line)
         got.append(ex)
     if clear:
         for exc in got:
             Errors.errors.remove(exc)
+    return result
