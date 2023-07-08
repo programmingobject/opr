@@ -8,11 +8,12 @@ import unittest
 
 
 from opr.handler import parse
+from opr.objects import Object
 
 
 class TestDecoder(unittest.TestCase):
 
     def test_parse(self):
-        prs = {}
+        prs = Object()
         parse(prs, "cmd")
         self.assertEqual(prs["cmd"], "cmd")
