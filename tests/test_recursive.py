@@ -10,7 +10,7 @@
     >>> o.o = opr.Object()
     >>> o.o.a = "test"
     >>> print(o)
-    {'o': {'a': 'test'}}
+    {"o": {"a": "test"}}
 
 """
 
