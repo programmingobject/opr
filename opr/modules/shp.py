@@ -22,12 +22,12 @@ class Shop(Object):
     """shop item"""
 
     def __init__(self):
-        Object.__init__(self)
+        super().__init__()
         self.txt = ''
 
-    def sizeof(self):
-        """size"""
-        return len(self.txt)
+    def size(self):
+        """sizeing"""
+        return len(self.__dict__)
 
     def length(self):
         """len"""
@@ -45,7 +45,7 @@ def got(event):
     for obj in find('shop', selector):
         obj.__deleted__ = True
         write(obj)
-        event.reply('ok')
+        event.reply('ok') # okdan
 
 
 def shp(event):

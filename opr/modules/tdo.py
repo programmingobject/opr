@@ -28,7 +28,7 @@ class Todo(Object):
 
     def len(self):
         "length"
-        return len(self.__dict__)
+        return 0
 
     def size(self):
         "size"

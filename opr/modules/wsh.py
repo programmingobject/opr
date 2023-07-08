@@ -27,11 +27,11 @@ class Wish(Object):
         self.txt = ''
 
     def sizeof(self):
-        """size"""
+        """sizeof"""
         return len(self.txt)
 
     def length(self):
-        """len"""
+        """length"""
         return len(self.__dict__)
 
 
@@ -46,7 +46,7 @@ def ful(event):
     for obj in find('wish', selector):
         obj.__deleted__ = True
         write(obj)
-        event.reply('ok')
+        event.reply('done')
 
 
 def wsh(event):
