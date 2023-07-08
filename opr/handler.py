@@ -207,7 +207,7 @@ class Event(Default):
     def parse(self):
         """parse this event"""
         parse(self, self.txt)
-        
+
     def ready(self) -> None:
         """signal event as ready"""
         self._ready.set()
@@ -341,7 +341,7 @@ def parse(obj, txt):
     for spli in txt.split():
         if spli.startswith("-"):
             try:
-               obj.index = int(spli[1:])
+                obj.index = int(spli[1:])
             except ValueError:
                 obj.opts += spli[1:]
             continue
@@ -365,7 +365,7 @@ def parse(obj, txt):
         obj.rest = str(" ".join(obj.args))
         if obj.rest:
             obj.txt += " " + obj.rest
-    
+
 def scanstr(pkg, mods, init=None, doall=False, wait=False) -> None:
     """scan a package for list of modules"""
     res = []
