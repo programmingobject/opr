@@ -4,10 +4,6 @@
 "log text"
 
 
-__author__ = "Bart Thate <programmingobject@gmail.com>"
-__version__ = 1
-
-
 # IMPORTS
 
 

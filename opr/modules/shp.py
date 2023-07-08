@@ -4,13 +4,6 @@
 "shopping lists"
 
 
-# AUTHOR
-
-
-__author__ = "Bart Thate <programmingobject@gmail.com>"
-__version__ = 1
-
-
 # IMPORTS
 
 
@@ -53,6 +46,7 @@ def got(event):
         obj.__deleted__ = True
         write(obj)
         event.reply('ok')
+
 
 def shp(event):
     """add shop"""

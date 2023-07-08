@@ -4,13 +4,6 @@
 """udp to irc relay"""
 
 
-# AUTHOR
-
-
-__author__ = "Bart Thate <programmingobject@gmail.com>"
-__version__ = 1
-
-
 # IMPORTS
 
 
@@ -18,6 +11,7 @@ import select
 import socket
 import sys
 import time
+
 
 from opr.handler import Bus
 from opr.objects import Default, Object
@@ -54,6 +48,7 @@ class Cfg(Default):
     def size(self):
         """size"""
         return self.port
+
 
 class UDP(Object):
 

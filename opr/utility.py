@@ -4,13 +4,6 @@
 """utility"""
 
 
-# AUTHOR
-
-
-__author__ = "Bart Thate <programmingobject@gmail.com>"
-__version__ = 1
-
-
 # IMPORTS
 
 
@@ -23,6 +16,7 @@ import pathlib
 
 def __dir__():
     return (
+            'Logging',
             'cdir',
             'doskip',
             'elapsed',
@@ -33,6 +27,27 @@ def __dir__():
 
 
 __all__ = __dir__()
+
+
+# CLASSES
+
+
+class Logging:
+
+    """stub to echo to stdout"""
+
+    skip = 'PING,PONG,PRIVMSG'
+    verbose = False
+
+    @staticmethod
+    def debug(txt) -> None:
+        """check for verbose"""
+        if Logging.verbose and not doskip(txt, Logging.skip):
+            Logging.raw(txt)
+
+    @staticmethod
+    def raw(txt) -> None:
+        """override this with print"""
 
 
 # UTILITY

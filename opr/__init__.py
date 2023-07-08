@@ -5,11 +5,11 @@
 
 
 __author__ = "Bart Thate <programmingobject@gmail.com>"
-__version__ = 1
+__version__ = 240
 
 
 # IMPORTS
 
 
 from opr.objects import *
-from opr.objects import __all__, __dir__, __author__
+from opr.objects import __all__, __dir__

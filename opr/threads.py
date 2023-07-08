@@ -4,14 +4,8 @@
 """threads"""
 
 
-# AUTHOR
-
-
-__author__ = "Bart Thate <programmingobject@gmail.com>"
-__version__ = 1
-
-
 # IMPORTS
+
 
 import functools
 import queue
@@ -69,6 +63,9 @@ class Thread(threading.Thread):
         """run workload"""
         func, args = self.queue.get()
         self._result = func(*args)
+
+
+# UTILITY
 
 
 def launch(func, *args, **kwargs) -> Thread:

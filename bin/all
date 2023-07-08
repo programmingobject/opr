@@ -5,13 +5,6 @@
 "build all"
 
 
-# AUTHOR
-
-
-__author__ = "Bart Thate <programmingobject@gmail.com>"
-__version__ = 1
-
-
 # IMPORTS
 
 
@@ -23,8 +16,10 @@ import time
 
 # DEFINES
 
+
 DATE = time.ctime(time.time()).replace("  ", " ")
 NAME = "opr"
+
 
 os.environ["PATH"] += ":bin"
 

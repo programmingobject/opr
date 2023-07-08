@@ -184,19 +184,14 @@
 """
 
 
-# AUTHOR
-
-
-__author__ = "Bart Thate <programmingobject@gmail.com>"
-__version__ = 1
-
-
 # IMPORTS
+
 
 import random
 
 
 # COMMANDS
+
 
 def wsd(event):
     """present wisdom"""

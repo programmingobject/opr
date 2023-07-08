@@ -4,13 +4,6 @@
 "mailbox"
 
 
-# AUTHOR
-
-
-__author__ = "Bart Thate <programmingobject@gmail.com>"
-__version__ = 1
-
-
 # IMPORTS
 
 
@@ -139,6 +132,7 @@ def cor(event):
         txt = prt(email, txt, plain=True)
         event.reply(f"{nrs} {txt} {lsp}")
 
+
 def eml(event):
     """search emails"""
     if not event.args:
@@ -151,6 +145,7 @@ def eml(event):
             txt = prt(email, "From,Subject")
             lsp = elapsed(time.time() - fntime(email.__oid__))
             event.reply(f"{nrs} {txt} {lsp}")
+
 
 def mbx(event):
     # pylint: disable=W0212

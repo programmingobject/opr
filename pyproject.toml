@@ -11,7 +11,7 @@ include_package_data = true
 [project]
 name = "opr"
 description = "Object Programming Runtime"
-version = "230"
+version = "240"
 authors = [
     {name = "Bart Thate", email = "programmingobject@gmail.com" },
 ]

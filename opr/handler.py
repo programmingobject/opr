@@ -4,13 +4,6 @@
 """handler"""
 
 
-# AUTHOR
-
-
-__author__ = "Bart Thate <programmingobject@gmail.com>"
-__version__ = 1
-
-
 # IMPORTS
 
 
@@ -23,10 +16,10 @@ import sys
 import threading
 import traceback
 
-from opr.loggers import Logging
+
 from opr.objects import Default, Object, keys
 from opr.threads import launch
-from opr.utility import spl
+from opr.utility import Logging, spl
 
 
 # INTERFACE
@@ -44,6 +37,7 @@ def __dir__():
             'waiter'
            )
 
+
 __all__ = __dir__()
 
 
@@ -52,6 +46,10 @@ __all__ = __dir__()
 
 MODNAMES = {
            }
+
+
+NAME = __name__.split(".", maxsplit=1)[0]
+
 
 Cfg = Default()
 Cfg.debug = False
@@ -78,6 +76,7 @@ class Errors(Object):
     def size():
         """return number of errors"""
         return len(Errors.errors)
+
 
 class Bus(Object):
 
@@ -121,6 +120,7 @@ class Bus(Object):
                 listener.say(channel, txt)
             else:
                 listener.raw(txt)
+
 
 class Commands(Object):
 
@@ -186,6 +186,7 @@ class Commands(Object):
             if 'event' in cmd.__code__.co_varnames:
                 Commands.add(cmd)
 
+
 class Event(Default):
 
     """event occured"""
@@ -227,6 +228,7 @@ class Event(Default):
             self.thr.join()
         self._ready.wait()
         return self.result
+
 
 class Handler(Object):
 
@@ -318,6 +320,7 @@ def command(cli, txt) -> Event:
     evt.ready()
     return evt
 
+
 def dispatch(func, evt) -> None:
     # pylint: disable=W0718
     """basic dispatcher"""
@@ -327,6 +330,7 @@ def dispatch(func, evt) -> None:
         exc = ex.with_traceback(ex.__traceback__)
         Errors.errors.append(exc)
         evt.ready()
+
 
 def parse(obj, txt):
     """parse text for commands"""
@@ -366,6 +370,7 @@ def parse(obj, txt):
         if obj.rest:
             obj.txt += " " + obj.rest
 
+
 def scanstr(pkg, mods, init=None, doall=False, wait=False) -> None:
     """scan a package for list of modules"""
     res = []
@@ -386,6 +391,7 @@ def scanstr(pkg, mods, init=None, doall=False, wait=False) -> None:
         for thread in threads:
             thread.join()
     return res
+
 
 def waiter(clear=True):
     """poll for errors"""

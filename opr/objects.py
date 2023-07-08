@@ -4,13 +4,6 @@
 """"clean namespace"""
 
 
-# NAME
-
-
-__author__ = "Bart Thate <programmingobject@gmail.com>"
-__version__ = 1
-
-
 # IMPORTS
 
 
@@ -18,7 +11,6 @@ import datetime
 import json
 import os
 import uuid
-import _thread
 
 
 # INTERFACE
@@ -46,12 +38,6 @@ def __dir__():
 
 
 __all__ = __dir__()
-
-
-# DEFINES
-
-
-disklock = _thread.allocate_lock()
 
 
 # CLASSES
@@ -153,6 +139,7 @@ def dumprec(obj) -> str:
             continue
         oooo[key] = value
     return oooo
+
 
 def edit(obj, setter, skip=False):
     """change object values with values from a setter dict"""
