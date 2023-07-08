@@ -207,7 +207,7 @@ class Event(Default):
     def parse(self):
         """parse this event"""
         parse(self, self.txt)
-
+        
     def ready(self) -> None:
         """signal event as ready"""
         self._ready.set()
@@ -332,17 +332,40 @@ def parse(obj, txt):
     """parse text for commands"""
     obj.cmd = ""
     obj.args = []
+    obj.gets = {}
+    obj.mod = ""
+    obj.opts = ""
+    obj.otxt = txt
     obj.rest = ""
-    splitted = txt.split()
-    for spli in splitted:
-        if spli in Commands.cmds:
+    obj.sets = {}
+    for spli in txt.split():
+        if spli.startswith("-"):
+            try:
+               obj.index = int(spli[1:])
+            except ValueError:
+                obj.opts += spli[1:]
+            continue
+        if "=" in spli:
+            key, value = spli.split("=", maxsplit=1)
+            if key == "mod":
+                obj.mod += f",{value}"
+                continue
+            obj.sets[key] = value
+            continue
+        if "==" in spli:
+            key, value = spli.split("==", maxsplit=1)
+            obj.gets[key] = value
+            continue
+        if not obj.cmd:
             obj.cmd = spli
             continue
-        if "=" not in spli and "==" not in spli:
-            obj.args.append(spli)
+        obj.args.append(spli)
+    obj.txt = obj.cmd
     if obj.args:
         obj.rest = str(" ".join(obj.args))
-
+        if obj.rest:
+            obj.txt += " " + obj.rest
+    
 def scanstr(pkg, mods, init=None, doall=False, wait=False) -> None:
     """scan a package for list of modules"""
     res = []

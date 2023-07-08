@@ -25,10 +25,9 @@ import textwrap
 import threading
 import _thread
 
-from opr.handler import Bus, Commands, Errors, Event, Handler
+from opr.handler import Bus, Commands, Errors, Event, Handler, parse
 from opr.loggers import Logging
 from opr.objects import Default, Object, edit, keys, prt, update
-from opr.parsers import parse
 from opr.persist import find, fntime, last, write
 from opr.threads import launch
 from opr.utility import elapsed
