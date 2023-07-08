@@ -19,7 +19,7 @@ import traceback
 
 from opr.objects import Default, Object, keys
 from opr.threads import launch
-from opr.utility import spl
+from opr.utility import Logging, spl
 
 
 # INTERFACE
@@ -391,7 +391,6 @@ def scanstr(pkg, mods, init=None, doall=False, wait=False) -> None:
 def waiter(clear=True):
     """poll for errors"""
     got = []
-    result = []
     for ex in Errors.errors:
         stream = io.StringIO(
                              traceback.print_exception(
@@ -401,9 +400,8 @@ def waiter(clear=True):
                                                       )
                             )
         for line in stream.readlines():
-            result.append(line)
+            Logging.debug(line)
         got.append(ex)
     if clear:
         for exc in got:
             Errors.errors.remove(exc)
-    return result
