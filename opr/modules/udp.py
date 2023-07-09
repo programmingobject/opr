@@ -31,7 +31,7 @@ def start():
 # CLASSES
 
 
-class Cfg(Default):
+class Cfg(Object):
 
     """udp configuration"""
 
