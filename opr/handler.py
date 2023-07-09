@@ -17,9 +17,9 @@ import threading
 import traceback
 
 
-from opr.objects import Object, keys
+from opr.loggers import Logging
+from opr.objects import Object, keys, spl
 from opr.threads import launch
-from opr.utility import Logging, spl
 
 
 # INTERFACE

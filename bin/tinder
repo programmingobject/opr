@@ -24,8 +24,7 @@ sys.path.insert(0, os.getcwd())
 
 
 from opr.handler import Cfg, Commands, Errors, Event, Handler, parse
-from opr.objects import Object, keys, update
-from opr.persist import Persist
+from opr.objects import Object, Persist, keys, update
 from opr.threads import launch
 from opr.utility import Logging, elapsed, spl
 

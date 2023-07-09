@@ -11,7 +11,7 @@ import time
 
 
 from opr.objects import Object, find, fntime, write
-from opr.utility import elapsed
+from opr.repeats import elapsed
 
 
 # CLASSES

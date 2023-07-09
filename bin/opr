@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # This file is placed in the Public Domain.
 #
-# pylint: disable=E0001
+# pylint: disable=E0001,C0413,W0212
 
 
 """object programming runtime"""
@@ -23,11 +23,12 @@ import traceback
 sys.path.insert(0, os.getcwd())
 
 
-from opr.handler import Bus, Cfg, Commands, Errors, Event, Handler
+from opr.handler import Bus, Cfg, Commands, Errors, Handler
 from opr.handler import command, parse, scanstr, waiter
-from opr.objects import Object, Persist, keys, kind, prt, update
+from opr.objects import Object, Persist, keys, prt, spl, update
+from opr.repeats import elapsed
 from opr.threads import launch, name
-from opr.utility import Logging, elapsed, spl
+from opr.loggers import Logging
 
 
 import opr.modules
@@ -37,11 +38,14 @@ import opr.modules
 
 
 DATE = time.ctime(time.time()).replace("  ", " ")
-NAME = sys.argv[0].split(os.sep)[-1]
+NAME = sys.argv[0].split(os.sep, maxsplit=1)[-1]
 STARTTIME = time.time()
 
 
 Persist.workdir = os.path.expanduser(f"~/.{NAME}")
+
+
+readline.redisplay()
 
 
 # CLASSES
@@ -174,7 +178,7 @@ def rld(event):
             continue
         Commands.scan(mods)
         if "start" in dir(mods):
-            thr = launch(mods.start)
+            launch(mods.start)
         event.reply(f"reloaded {modname}")
 
 

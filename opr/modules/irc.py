@@ -20,10 +20,11 @@ import _thread
 
 
 from opr.handler import NAME, Bus, Commands, Errors, Event, Handler, parse
+from opr.loggers import Logging
 from opr.objects import Object, edit, keys, prt, update
 from opr.objects import find, fntime, last, write
+from opr.repeats import elapsed
 from opr.threads import launch
-from opr.utility import Logging, elapsed
 
 
 from opr import __version__

@@ -11,7 +11,7 @@ import time
 
 
 from opr.objects import Object, find, fntime, write
-from opr.utility import elapsed
+from opr.repeats import elapsed
 
 
 # CLASSES
@@ -25,7 +25,7 @@ class Wish(Object):
         Object.__init__(self)
         self.txt = ''
 
-    def gettxt(self, txt):
+    def gettxt(self):
         """get text"""
         return self.txt
 

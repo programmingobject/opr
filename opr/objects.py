@@ -381,6 +381,14 @@ def cdir(pth) -> None:
     os.makedirs(pth, exist_ok=True)
 
 
+def doskip(txt, skipping) -> bool:
+    "check if text needs to be skipped"
+    for skip in spl(skipping):
+        if skip in txt:
+            return True
+    return False
+
+
 def files() -> []:
     """show all files in store"""
     res = []

@@ -16,9 +16,8 @@ import time
 
 from opr.handler import Bus, Event
 from opr.objects import Object, copy, keys
-from opr.repeats import Repeater
+from opr.repeats import Repeater, elapsed
 from opr.threads import launch
-from opr.utility import elapsed
 
 
 # SERVICES

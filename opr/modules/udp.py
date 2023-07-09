@@ -14,8 +14,7 @@ import time
 
 
 from opr.handler import Bus
-from opr.objects import Default, Object
-from opr.persist import last
+from opr.objects import Object, last
 from opr.threads import launch
 
 

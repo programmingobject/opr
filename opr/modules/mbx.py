@@ -12,7 +12,7 @@ import os
 import time
 
 from opr.objects import Object, prt, update
-from opr.persist import find, fntime, write
+from opr.objects import find, fntime, write
 from opr.utility import elapsed
 
 
