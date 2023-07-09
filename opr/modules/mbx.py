@@ -11,9 +11,10 @@ import mailbox
 import os
 import time
 
+
 from opr.objects import Object, prt, update
 from opr.objects import find, fntime, write
-from opr.utility import elapsed
+from opr.repeats import elapsed
 
 
 # DEFINES
