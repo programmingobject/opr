@@ -20,8 +20,8 @@ import _thread
 
 
 from opr.handler import NAME, Bus, Commands, Errors, Event, Handler, parse
-from opr.objects import Default, Object, edit, keys, prt, update
-from opr.persist import find, fntime, last, write
+from opr.objects import Object, edit, keys, prt, update
+from opr.objects import find, fntime, last, write
 from opr.threads import launch
 from opr.utility import Logging, elapsed
 
@@ -64,7 +64,7 @@ class NoUser(Exception):
 # CLASSES
 
 
-class Config(Default):
+class Config(Object):
 
     """irc config"""
 
@@ -86,7 +86,7 @@ class Config(Default):
     version = __version__
 
     def __init__(self):
-        Default.__init__(self)
+        Object.__init__(self)
         self.channel = Config.channel
         self.nick = Config.nick
         self.port = Config.port
@@ -206,13 +206,13 @@ class IRC(Handler, Output):
         Output.__init__(self)
         self.buffer = []
         self.cfg = Config()
-        self.events = Default()
+        self.events = Object()
         self.events.authed = threading.Event()
         self.events.connected = threading.Event()
         self.events.joined = threading.Event()
         self.channels = []
         self.sock = None
-        self.state = Default()
+        self.state = Object()
         self.state.keeprunning = False
         self.state.nrconnect = 0
         self.state.nrsend = 0

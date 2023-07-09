@@ -10,8 +10,7 @@
 import time
 
 
-from opr.objects import keys, prt
-from opr.persist import files, find, fntime
+from opr.objects import files, find, fntime, keys, prt
 from opr.utility import elapsed
 
 

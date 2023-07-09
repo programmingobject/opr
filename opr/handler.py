@@ -17,7 +17,7 @@ import threading
 import traceback
 
 
-from opr.objects import Default, Object, keys
+from opr.objects import Object, keys
 from opr.threads import launch
 from opr.utility import Logging, spl
 
@@ -47,7 +47,7 @@ __all__ = __dir__()
 NAME = __name__.split(".", maxsplit=1)[0]
 
 
-Cfg = Default()
+Cfg = Object()
 Cfg.debug = False
 Cfg.mod = ""
 Cfg.verbose = False
@@ -182,14 +182,14 @@ class Commands(Object):
                 Commands.add(cmd)
 
 
-class Event(Default):
+class Event(Object):
 
     """event occured"""
 
     __slots__ = ('_ready', '_thr')
 
     def __init__(self, *args, **kwargs):
-        Default.__init__(self, *args, **kwargs)
+        Object.__init__(self, *args, **kwargs)
         self._ready = threading.Event()
         self._thr = None
         self.result = []

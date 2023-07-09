@@ -10,8 +10,7 @@
 import time
 
 
-from opr.objects import Object
-from opr.persist import find, fntime, write
+from opr.objects import Object, find, fntime, write
 from opr.utility import elapsed
 
 
@@ -26,13 +25,13 @@ class Wish(Object):
         Object.__init__(self)
         self.txt = ''
 
-    def sizeof(self):
-        """sizeof"""
-        return len(self.txt)
+    def gettxt(self, txt):
+        """get text"""
+        return self.txt
 
-    def length(self):
-        """length"""
-        return len(self.__dict__)
+    def settxt(self, txt):
+        """set txt"""
+        self.txt = txt
 
 
 # COMMANDS

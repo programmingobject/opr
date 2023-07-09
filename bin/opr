@@ -25,8 +25,7 @@ sys.path.insert(0, os.getcwd())
 
 from opr.handler import Bus, Cfg, Commands, Errors, Event, Handler
 from opr.handler import command, parse, scanstr, waiter
-from opr.objects import Default, Object, keys, kind, prt, update
-from opr.persist import Persist
+from opr.objects import Object, Persist, keys, kind, prt, update
 from opr.threads import launch, name
 from opr.utility import Logging, elapsed, spl
 

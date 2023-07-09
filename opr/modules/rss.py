@@ -21,8 +21,8 @@ from urllib.request import Request, urlopen
 
 
 from opr.handler import Bus, Cfg
-from opr.objects import Default, Object, prt, update
-from opr.persist import find, fntime, last, write
+from opr.objects import Object, prt, update
+from opr.objects import find, fntime, last, write
 from opr.repeats import Repeater
 from opr.threads import launch, threaded
 from opr.utility import elapsed, spl
@@ -48,7 +48,7 @@ fetchlock = _thread.allocate_lock()
 # CLASSES
 
 
-class Feed(Default):
+class Feed(Object):
 
     """represent a rss feed"""
 

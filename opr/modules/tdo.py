@@ -10,8 +10,7 @@
 import time
 
 
-from opr.objects import Object
-from opr.persist import find, fntime, write
+from opr.objects import Object, find, fntime, write
 from opr.utility import elapsed
 
 
