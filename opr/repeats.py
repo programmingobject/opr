@@ -1,7 +1,10 @@
 # This file is placed in the Public Domain.
 
 
-"""clock"""
+"""repeaters"""
+
+
+__author__ = "Bart Thate <programmingobject@gmail.com>"
 
 
 # IMPORTS

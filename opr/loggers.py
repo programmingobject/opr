@@ -3,6 +3,10 @@
 
 """logging"""
 
+
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+
+
 # IMPORTS
 
 
@@ -40,3 +44,23 @@ class Logging:
     @staticmethod
     def raw(txt) -> None:
         """override this with print"""
+
+
+# UTILITY
+
+
+def doskip(txt, skipping) -> bool:
+    """check if text needs to be skipped"""
+    for skip in dosplit(skipping):
+        if skip in txt:
+            return True
+    return False
+
+
+def dosplit(txt) -> []:
+    """split comma seperated string"""
+    try:
+        result = txt.split(',')
+    except (TypeError, ValueError):
+        result = txt
+    return [x for x in result if x]

@@ -7,6 +7,9 @@
 "genocide model for here in the netherlands"
 
 
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+
+
 # IMPORTS
 
 

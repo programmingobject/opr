@@ -4,6 +4,9 @@
 """rich site syndicate"""
 
 
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+
+
 # IMPORTS
 
 

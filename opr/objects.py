@@ -374,19 +374,11 @@ class Persist:
 
 
 def cdir(pth) -> None:
-    "Create directory"
+    """create directory"""
     if not pth.endswith(os.sep):
         pth = os.path.dirname(pth)
     pth = pathlib.Path(pth)
     os.makedirs(pth, exist_ok=True)
-
-
-def doskip(txt, skipping) -> bool:
-    "check if text needs to be skipped"
-    for skip in spl(skipping):
-        if skip in txt:
-            return True
-    return False
 
 
 def files() -> []:
@@ -472,28 +464,12 @@ def hook(otp) -> type:
     read(obj, otp)
     return obj
 
-
-def spl(txt) -> []:
-    """split comma seperated string"""
-    try:
-        res = txt.split(',')
-    except (TypeError, ValueError):
-        res = txt
-    return [x for x in res if x]
-
-
 def strip(pth) -> str:
-    "strip path to ident part"
+    """strip path to ident part"""
     return os.sep.join(pth.split(os.sep)[-4:])
 
 
-def touch(fname) -> None:
-    "touch a file"
-    fds = os.open(fname, os.O_WRONLY | os.O_CREAT)
-    os.close(fds)
-
-
-## METHODS
+# METHODS
 
 
 def last(obj, selector=None) -> None:

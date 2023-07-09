@@ -4,7 +4,10 @@
 """handler"""
 
 
-# IMPORTS
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+
+
+# IMPORT
 
 
 import inspect
@@ -386,6 +389,15 @@ def scanstr(pkg, mods, init=None, doall=False, wait=False) -> None:
         for thread in threads:
             thread.join()
     return res
+
+
+def spl(txt) -> []:
+    """split comma seperated string"""
+    try:
+        res = txt.split(',')
+    except (TypeError, ValueError):
+        res = txt
+    return [x for x in res if x]
 
 
 def waiter(clear=True):

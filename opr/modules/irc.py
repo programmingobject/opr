@@ -4,6 +4,9 @@
 """internet relay chat"""
 
 
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+
+
 # IMPORTS
 
 

@@ -77,6 +77,9 @@ p.s.
 """
 
 
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+
+
 # COMMANDS
 
 
