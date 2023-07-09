@@ -8,11 +8,7 @@ import os
 import unittest
 
 
-from opr.objects import Object
-from opr.persist import Persist, write
-
-
-from opr import persist
+from opr.objects import Object, Persist, write
 
 
 Persist.workdir = '.test'
@@ -45,14 +41,9 @@ class TestStorage(unittest.TestCase):
         clz = obj.__class__()
         self.assertTrue('Persist' in str(type(clz)))
 
-    def test_dirmodule(self):
-        self.assertEqual(
-                         dir(persist),
-                         list(ATTRS1)
-                        )
 
     def test_module(self):
-        self.assertTrue(Persist().__module__, 'persist')
+        self.assertTrue(Persist().__module__, 'objects')
 
     def test_save(self):
         Persist.workdir = '.test'

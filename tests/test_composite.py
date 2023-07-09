@@ -7,8 +7,7 @@
 import unittest
 
 
-from opr.objects  import Object
-from opr.persist import read, write
+from opr.objects import Object, read, write
 
 
 class TestComposite(unittest.TestCase):

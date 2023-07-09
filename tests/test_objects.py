@@ -91,7 +91,7 @@ class TestObject(unittest.TestCase):
 
     def test_doc(self):
         obj = Object()
-        self.assertEqual(obj.__doc__, "clean namespace")
+        self.assertEqual(obj.__doc__, "doesn't have any methods, just dunders")
 
     def test_format(self):
         obj = Object()

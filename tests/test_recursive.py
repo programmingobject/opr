@@ -5,7 +5,7 @@
 
 
 """
-    >>> import opr.objects as opr
+    >>> import opr
     >>> o = opr.Object()
     >>> o.o = opr.Object()
     >>> o.o.a = "test"
@@ -18,8 +18,7 @@
 import unittest
 
 
-from opr.objects import Object
-from opr.persist import readrec, writerec
+from opr.objects import Object, readrec, writerec
 
 
 class TestRecursive(unittest.TestCase):
