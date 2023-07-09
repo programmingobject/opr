@@ -21,7 +21,7 @@ import traceback
 
 
 from opr.loggers import Logging
-from opr.objects import Object, keys, spl
+from opr.objects import Object, keys
 from opr.threads import launch
 
 

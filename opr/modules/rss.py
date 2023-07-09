@@ -23,8 +23,8 @@ from urllib.parse import quote_plus, urlencode
 from urllib.request import Request, urlopen
 
 
-from opr.handler import Bus, Cfg
-from opr.objects import Object, prt, update, spl
+from opr.handler import Bus, Cfg, spl
+from opr.objects import Object, prt, update
 from opr.objects import find, fntime, last, write
 from opr.repeats import Repeater, elapsed
 from opr.threads import launch, threaded

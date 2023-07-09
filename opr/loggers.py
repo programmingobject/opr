@@ -7,12 +7,6 @@
 __author__ = "Bart Thate <programmingobject@gmail.com>"
 
 
-# IMPORTS
-
-
-from opr.objects import doskip
-
-
 # INTERFACE
 
 
