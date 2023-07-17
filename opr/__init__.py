@@ -28,9 +28,6 @@ from .utility import banner, laps, spl
 from .brokers import Broker
 
 
-from . import modules
-
-
 def __dir__():
     return (
             "Broker",

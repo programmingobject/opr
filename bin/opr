@@ -20,15 +20,18 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from opr import Broker, Cfg, Command, Event, Logging, Persist, Reactor
-from opr import banner, parse, scan, waiter
-from opr import modules
+from opr.configs import Cfg
 
 
 Cfg.mod = "bsc"
 Cfg.name = "opr"
 Cfg.verbose = False
 Cfg.version = 241
+
+
+from opr import Broker, Cfg, Command, Event, Logging, Persist, Reactor
+from opr import banner, parse, scan, waiter
+from opr import modules
 
 
 Persist.workdir = os.path.expanduser("~/.{Cfg.name}")
