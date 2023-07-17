@@ -7,7 +7,7 @@
 import unittest
 
 
-from opr.objects import Object
+from opr import Object
 
 
 class A(Object):

@@ -7,7 +7,7 @@
 import unittest
 
 
-from opr.objects import Object, items, keys, kind, prt, update, values
+from opr import Object, items, keys, kind, prt, update, values
 
 
 VALIDJSON = '{"test": "bla"}'
@@ -91,7 +91,7 @@ class TestObject(unittest.TestCase):
 
     def test_doc(self):
         obj = Object()
-        self.assertEqual(obj.__doc__, "doesn't have any methods, just dunders")
+        self.assertEqual(obj.__doc__, None)
 
     def test_format(self):
         obj = Object()

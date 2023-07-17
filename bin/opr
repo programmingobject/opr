@@ -28,7 +28,7 @@ from opr import modules
 Cfg.mod = "bsc"
 Cfg.name = "opr"
 Cfg.verbose = False
-Cfg.version = 20
+Cfg.version = 241
 
 
 Persist.workdir = os.path.expanduser("~/.{Cfg.name}")

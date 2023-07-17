@@ -7,8 +7,7 @@
 import unittest
 
 
-from opr.handler import parse
-from opr.objects import Object
+from opr import Object, parse
 
 
 class TestDecoder(unittest.TestCase):

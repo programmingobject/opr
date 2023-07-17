@@ -18,7 +18,8 @@
 import unittest
 
 
-from opr.objects import Object, readrec, writerec
+from opr import Object
+from opr.recurse import readrec, writerec
 
 
 class TestRecursive(unittest.TestCase):

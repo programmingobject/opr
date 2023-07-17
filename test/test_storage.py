@@ -8,7 +8,7 @@ import os
 import unittest
 
 
-from opr.objects import Object, Persist, write
+from opr import Object, Persist, write
 
 
 Persist.workdir = '.test'

@@ -7,7 +7,7 @@
 import unittest
 
 
-from opr.objects import Object, loads, dumps
+from opr import Object, loads, dumps
 
 
 class TestDecoder(unittest.TestCase):

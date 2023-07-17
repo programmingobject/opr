@@ -7,7 +7,7 @@
 import unittest
 
 
-from opr.objects  import Object, dumps
+from opr import Object, dumps
 
 
 VALIDJSON = '{"test": "bla"}'
