@@ -1,13 +1,12 @@
 # This file is placed in the Public Domain.
+#
+# pylint: disable=C,I,R,W0401
 
 
-"""rich site syndicate"""
+"rich site syndicte"
 
 
 __author__ = "Bart Thate <programmingobject@gmail.com>"
-
-
-# IMPORTS
 
 
 import html.parser
@@ -23,49 +22,31 @@ from urllib.parse import quote_plus, urlencode
 from urllib.request import Request, urlopen
 
 
-from opr.handler import Bus, Cfg, spl
-from opr.objects import Object, prt, update
-from opr.objects import find, fntime, last, write
-from opr.repeats import Repeater, elapsed
-from opr.threads import launch, threaded
-
-
-# SERVICES
+from .. import Broker, Cfg, Object, Repeater
+from .. import find, fntime, laps, prt, update, write
+from .. import launch, last, spl
 
 
 def start():
-    """start a fetcher"""
-    time.sleep(60.0)
+    time.sleep(15.0)
     fetcher = Fetcher()
     fetcher.start()
     return fetcher
 
 
-# DEFINES
-
-
 fetchlock = _thread.allocate_lock()
-
-
-# CLASSES
 
 
 class Feed(Object):
 
-    """represent a rss feed"""
-
     def len(self):
-        """length"""
         return len(self.__dict__)
 
     def size(self):
-        """size"""
         return len(self.__dict__)
 
 
 class Rss(Object):
-
-    """save rss item"""
 
     def __init__(self):
         super().__init__()
@@ -74,34 +55,26 @@ class Rss(Object):
         self.rss = ''
 
     def len(self):
-        """length"""
         return len(self.__dict__)
 
     def size(self):
-        """size"""
         return len(self.__dict__)
 
 
 class Seen(Object):
-
-    """list of seen urls"""
 
     def __init__(self):
         super().__init__()
         self.urls = []
 
     def len(self):
-        """length"""
         return len(self.__dict__)
 
     def size(self):
-        """size"""
         return len(self.__dict__)
 
 
 class Fetcher(Object):
-
-    """rss feed fetcher"""
 
     dosave = False
     seen = Seen()
@@ -112,7 +85,6 @@ class Fetcher(Object):
 
     @staticmethod
     def display(obj):
-        """display rss item"""
         result = ''
         displaylist = []
         try:
@@ -133,7 +105,6 @@ class Fetcher(Object):
         return result[:-2].rstrip()
 
     def fetch(self, feed):
-        """fetch updates"""
         with fetchlock:
             counter = 0
             objs = []
@@ -162,18 +133,16 @@ class Fetcher(Object):
             txt = f'[{feedname}] '
         for obj in objs:
             txt2 = txt + self.display(obj)
-            Bus.announce(txt2.rstrip())
+            Broker.announce(txt2.rstrip())
         return counter
 
     def run(self):
-        "run fetching updates of all feeds"
         thrs = []
         for feed in find('rss'):
             thrs.append(launch(self.fetch, feed))
         return thrs
 
     def start(self, repeat=True):
-        "start fetcher"
         last(Fetcher.seen)
         if repeat:
             repeater = Repeater(300.0, self.run)
@@ -182,11 +151,8 @@ class Fetcher(Object):
 
 class Parser(Object):
 
-    """parse rss feed"""
-
     @staticmethod
     def getitem(line, item):
-        """return xml items in rss feed"""
         lne = ''
         try:
             index1 = line.index(f'<{item}>') + len(item) + 2
@@ -202,7 +168,6 @@ class Parser(Object):
 
     @staticmethod
     def parse(txt, item='title,link'):
-        """parse text for xml items"""
         res = []
         for line in txt.split('<item>'):
             line = line.strip()
@@ -213,11 +178,7 @@ class Parser(Object):
         return res
 
 
-# UTILITY
-
-
 def getfeed(url, item):
-    """fetch feed"""
     if Cfg.debug:
         return [Object(), Object()]
     try:
@@ -230,7 +191,6 @@ def getfeed(url, item):
 
 
 def gettinyurl(url):
-    """fetch feed using tinyurl"""
     postarray = [
         ('submit', 'submit'),
         ('url', url),
@@ -249,7 +209,6 @@ def gettinyurl(url):
 
 
 def geturl(url):
-    """fetch url"""
     url = urllib.parse.urlunparse(urllib.parse.urlparse(url))
     req = urllib.request.Request(url)
     req.add_header('User-agent', useragent("rss fetcher"))
@@ -259,27 +218,20 @@ def geturl(url):
 
 
 def striphtml(text):
-    """strip html"""
     clean = re.compile('<.*?>')
     return re.sub(clean, '', text)
 
 
 def unescape(text):
-    """unescape html"""
     txt = re.sub(r'\s+', ' ', text)
     return html.unescape(txt)
 
 
 def useragent(txt):
-    """return useragent string"""
     return 'Mozilla/5.0 (X11; Linux x86_64) ' + txt
 
 
-# COMMANDS
-
-
 def dpl(event):
-    """set items to display"""
     if len(event.args) < 2:
         event.reply('dpl <stringinurl> <item1,item2>')
         return
@@ -291,9 +243,7 @@ def dpl(event):
     event.reply('ok')
 
 
-@threaded
 def ftc(event):
-    """fetch feeds"""
     res = []
     thrs = []
     fetcher = Fetcher()
@@ -307,7 +257,6 @@ def ftc(event):
 
 
 def nme(event):
-    """give feed an display name"""
     if len(event.args) != 2:
         event.reply('name <stringinurl> <name>')
         return
@@ -320,7 +269,6 @@ def nme(event):
 
 
 def rem(event):
-    """remove feed"""
     if len(event.args) != 1:
         event.reply('rem <stringinurl>')
         return
@@ -333,11 +281,10 @@ def rem(event):
 
 
 def rss(event):
-    """add feed"""
     if not event.rest:
         nrs = 0
         for feed in find('rss'):
-            elp = elapsed(time.time()-fntime(feed.__oid__))
+            elp = laps(time.time()-fntime(feed.__oid__))
             txt = prt(feed)
             event.reply(f'{nrs} {txt} {elp}')
             nrs += 1

@@ -1,4 +1,6 @@
 # This file is placed in the Public Domain.
+#
+# pylint: disable=C,I,R
 
 
 "log text"
@@ -7,22 +9,14 @@
 __author__ = "Bart Thate <programmingobject@gmail.com>"
 
 
-# IMPORTS
-
-
 import time
 
 
-from opr.objects import Object, find, fntime, write
-from opr.repeats import elapsed
-
-
-# CLASSES
+from .. import Object
+from .. import find, fntime, laps, write
 
 
 class Log(Object):
-
-    "log objects"
 
     def __init__(self):
         super().__init__()
@@ -36,15 +30,11 @@ class Log(Object):
         return self.createtime
 
 
-# COMMANDS
-
-
 def log(event):
-    "log text"
     if not event.rest:
         nmr = 0
         for obj in find('log'):
-            lap = elapsed(time.time() - fntime(obj.__oid__))
+            lap = laps(time.time() - fntime(obj.__oid__))
             event.reply(f'{nmr} {obj.txt} {lap}')
             nmr += 1
         if not nmr:

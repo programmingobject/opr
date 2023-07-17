@@ -1,29 +1,21 @@
 # This file is placed in the Public Domain.
 #
-# pylint: disable=C,I,R,,W0613,E1101,E0402
+# pylint: disable=C,I,R,W0613,E1101,E0402,W0401
 # pylama: ignore=E225,E501
 
 
-"genocide model for here in the netherlands"
+"genocide model of the netherlands"
 
 
 __author__ = "Bart Thate <programmingobject@gmail.com>"
-
-
-# IMPORTS
 
 
 import datetime
 import time
 
 
-from opr.handler import Bus, Event
-from opr.objects import Object, copy, keys
-from opr.repeats import Repeater, elapsed
-from opr.threads import launch
-
-
-# SERVICES
+from .. import Broker, Event, Object, Repeater
+from .. import laps, launch, keys
 
 
 def start():
@@ -38,9 +30,6 @@ def start():
             repeater = Repeater(sec, cbstats, evt, thrname=aliases.get(key))
             repeater.start()
     launch(daily, name="daily")
-
-
-# DEFINES
 
 
 DAY=24*60*60
@@ -281,12 +270,8 @@ jaar["Wfz"] = 23820
 jaar["totaal"] = 168678
 
 
-oorzaak = Object()
-copy(oorzaak, zip(oor, aantal))
+oorzaak = Object(zip(oor, aantal))
 oorzaken = Object()
-
-
-# UTILITY
 
 
 def boot():
@@ -322,16 +307,16 @@ def boot():
 def daily():
     time.sleep(10.0)
     while 1:
-        event = Event()
-        cbnow(event)
+        evt = Event()
+        cbnow(evt)
         time.sleep(24*60*60)
 
 
 def hourly():
     while 1:
         time.sleep(60*60)
-        event = Event()
-        cbnow(event)
+        evt = Event()
+        cbnow(evt)
 
 
 def seconds(nrs):
@@ -368,7 +353,7 @@ def iswanted(k, line):
 
 def cbnow(evt):
     delta = time.time() - STARTTIME
-    txt = elapsed(delta) + " "
+    txt = laps(delta) + " "
     for name in sorted(keys(oorzaken), key=lambda x: seconds(getnr(x))):
         needed = seconds(getnr(name))
         if needed > 60*60:
@@ -376,7 +361,7 @@ def cbnow(evt):
         nrtimes = int(delta/needed)
         txt += "%s: %s " % (getalias(name), nrtimes)
     txt += " http://genocide.rtfd.io"
-    Bus.announce(txt)
+    Broker.announce(txt)
 
 
 def cbstats(evt):
@@ -389,21 +374,20 @@ def cbstats(evt):
         nrday = int(DAY/needed)
         delta2 = time.time() - getday()
         thisday = int(delta2/needed)
-        #onday = (24*60*60/needed)
         txt = "patient #%s died from %s (%s/%s) every %s (%s/year)" % (
                                                                nrtimes,
                                                                getalias(name),
                                                                thisday,
                                                                nrday,
-                                                               elapsed(needed),
+                                                               laps(needed),
                                                                nryear,
                                                               )
-        Bus.announce(txt)
+        Broker.announce(txt)
 
 
 def now(event):
     delta = time.time() - STARTTIME
-    txt = elapsed(delta) + " "
+    txt = laps(delta) + " "
     for name in sorted(keys(oorzaken), key=lambda x: seconds(getnr(x))):
         needed = seconds(getnr(name))
         if needed > 60*60:
@@ -429,13 +413,13 @@ def mdl(event):
                                                                thisday,
                                                                nrday,
                                                                nryear,
-                                                               elapsed(needed)
+                                                               laps(needed)
                                                               )
         event.reply(txt)
 
 
 def tpc(event):
-    txt = "%ss " % elapsed(time.time() - STARTTIME)
+    txt = "%ss " % laps(time.time() - STARTTIME)
     for name in sorted(oorzaken, key=lambda x: seconds(getnr(x))):
         needed = seconds(getnr(name))
         delta = time.time() - STARTTIME
@@ -443,15 +427,12 @@ def tpc(event):
         if needed > 60*60:
             continue
         txt += "%s %s " % (getalias(name), nrtimes)
-    for bot in Bus.objs:
+    for bot in Broker.objs:
         try:
             for channel in bot.channels:
                 bot.topic(channel, txt)
         except AttributeError:
             pass
-
-
-# RUNTIME
 
 
 boot()

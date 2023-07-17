@@ -1,23 +1,23 @@
 # This file is placed in the Public Domain.
 
 
-"modules"
+"object programming modules"
 
 
-from opr.modules import fnd, irc, log, mdl, req, rss, shp, tdo, wsd, wsh
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+
+
+from . import bsc, irc, log, rss, shp, tdo, wsh
 
 
 def __dir__():
     return (
-            "fnd",
+            "bsc",
             "irc",
             "log",
-            "mdl",
-            "req",
             "rss",
             "shp",
             "tdo",
-            "wsd",
             "wsh"
            )
 

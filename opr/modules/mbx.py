@@ -1,4 +1,6 @@
 # This file is placed in the Public Domain.
+#
+# pylint: disable=C,I,R,W0212,W0401
 
 
 "mailbox"
@@ -7,20 +9,13 @@
 __author__ = "Bart Thate <programmingobject@gmail.com>"
 
 
-# IMPORTS
-
-
 import mailbox
 import os
 import time
 
 
-from opr.objects import Object, prt, update
-from opr.objects import find, fntime, write
-from opr.repeats import elapsed
-
-
-# DEFINES
+from .. import Object
+from .. import find, fntime, laps, prt, update, write
 
 
 bdmonths = [
@@ -55,32 +50,20 @@ monthint = {
            }
 
 
-# CLASSES
-
-
 class Email(Object):
-
-    """email object"""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.text = ""
 
     def len(self):
-        "length"
         return len(self.__dict__)
 
     def size(self):
-        "size"
         return len(self.__dict__)
 
 
-# UTILITY
-
-
 def to_date(date):
-    # pylint: disable=C0209
-    """parse date out of string"""
     date = date.replace("_", ":")
     res = date.split()
     ddd = ""
@@ -116,11 +99,7 @@ def to_date(date):
     return ddd
 
 
-# COMMANDS
-
-
 def cor(event):
-    """trace correspondence"""
     if not event.args:
         event.reply("cor <email>")
         return
@@ -132,13 +111,12 @@ def cor(event):
             txt = ",".join(event.args[1:])
         else:
             txt = "From,Subject"
-        lsp = elapsed(time.time() - fntime(email.__oid__))
+        lsp = laps(time.time() - fntime(email.__oid__))
         txt = prt(email, txt, plain=True)
         event.reply(f"{nrs} {txt} {lsp}")
 
 
 def eml(event):
-    """search emails"""
     if not event.args:
         event.reply("eml <searchtxtinemail>")
         return
@@ -147,13 +125,11 @@ def eml(event):
         if event.rest in email.text:
             nrs += 1
             txt = prt(email, "From,Subject")
-            lsp = elapsed(time.time() - fntime(email.__oid__))
+            lsp = laps(time.time() - fntime(email.__oid__))
             event.reply(f"{nrs} {txt} {lsp}")
 
 
 def mbx(event):
-    # pylint: disable=W0212
-    """scan mailbox/maildir"""
     if not event.args:
         return
     path = os.path.expanduser(event.args[0])

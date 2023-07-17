@@ -1,46 +1,35 @@
 # This file is placed in the Public Domain.
+#
+# pylint: disable=C,I,R
 
 
-"shopping lists"
+"shopping list"
 
 
 __author__ = "Bart Thate <programmingobject@gmail.com>"
 
 
-# IMPORTS
-
-
 import time
 
-from opr.objects import Object, find, fntime, write
-from opr.repeats import elapsed
 
-
-# CLASSES
+from .. import Cfg, Object 
+from .. import find, fntime, laps, write
 
 
 class Shop(Object):
-
-    """shop item"""
 
     def __init__(self):
         super().__init__()
         self.txt = ''
 
     def size(self):
-        """sizeing"""
         return len(self.__dict__)
 
     def length(self):
-        """len"""
         return len(self.__dict__)
 
 
-# COMMANDS
-
-
 def got(event):
-    """got shop"""
     if not event.args:
         return
     selector = {'txt': event.args[0]}
@@ -51,11 +40,10 @@ def got(event):
 
 
 def shp(event):
-    """add shop"""
     if not event.rest:
         nmr = 0
-        for obj in find('shop'):
-            lap = elapsed(time.time()-fntime(obj.__oid__))
+        for obj in find(Cfg.workdir, 'shop'):
+            lap = laps(time.time()-fntime(obj.__oid__))
             event.reply(f'{nmr} {obj.txt} {lap}')
             nmr += 1
         if not nmr:

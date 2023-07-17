@@ -1,47 +1,35 @@
 # This file is placed in the Public Domain.
+#
+# pylint: disable=C,I,R,W0401,W0614
 
 
-"wish lists"
+"wish list"
 
 
 __author__ = "Bart Thate <programmingobject@gmail.com>"
 
 
-# IMPORTS
-
-
 import time
 
 
-from opr.objects import Object, find, fntime, write
-from opr.repeats import elapsed
-
-
-# CLASSES
+from .. import Object
+from .. import find, fntime, laps, write
 
 
 class Wish(Object):
-
-    """wish item"""
 
     def __init__(self):
         Object.__init__(self)
         self.txt = ''
 
     def gettxt(self):
-        """get text"""
         return self.txt
 
     def settxt(self, txt):
-        """set txt"""
         self.txt = txt
 
 
-# COMMANDS
-
-
 def ful(event):
-    """full filled a wish"""
     if not event.args:
         return
     selector = {'txt': event.args[0]}
@@ -52,11 +40,10 @@ def ful(event):
 
 
 def wsh(event):
-    """add wish"""
     if not event.rest:
         nmr = 0
         for obj in find('wish'):
-            lap = elapsed(time.time()-fntime(obj.__oid__))
+            lap = laps(time.time()-fntime(obj.__oid__))
             event.reply(f'{nmr} {obj.txt} {lap}')
             nmr += 1
         if not nmr:

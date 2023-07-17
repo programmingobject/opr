@@ -1,4 +1,6 @@
 # This file is placed in the Public Domain.
+#
+# pylint: disable=C,I,R
 
 
 """| wijsheid, wijs !
@@ -187,15 +189,8 @@
 __author__ = "Bart Thate <programmingobject@gmail.com>"
 
 
-# IMPORTS
-
-
 import random
 
 
-# COMMANDS
-
-
 def wsd(event):
-    """present wisdom"""
     event.reply(random.choice(__doc__.split("\n")).strip()[2:])

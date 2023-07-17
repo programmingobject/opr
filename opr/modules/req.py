@@ -1,4 +1,6 @@
 # This file is placed in the Public Domain.
+#
+# pylint: disable=C,I,R
 
 
 """| **Information and Evidence Unit**
@@ -80,9 +82,5 @@ p.s.
 __author__ = "Bart Thate <programmingobject@gmail.com>"
 
 
-# COMMANDS
-
-
 def req(event):
-    """show request to the prosecutor"""
     event.reply(__doc__)

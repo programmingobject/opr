@@ -1,13 +1,12 @@
 # This file is placed in the Public Domain.
+#
+# pylint: disable=C,I,R
 
 
-"""udp to irc relay"""
+"udp to irc relay"
 
 
 __author__ = "Bart Thate <programmingobject@gmail.com>"
-
-
-# IMPORTS
 
 
 import select
@@ -16,27 +15,17 @@ import sys
 import time
 
 
-from opr.handler import Bus
-from opr.objects import Object, last
-from opr.threads import launch
-
-
-# SERVICES
+from .. import Broker, Object
+from .. import last, launch
 
 
 def start():
-    """start udp server"""
     udpd = UDP()
     udpd.start()
     return udpd
 
 
-# CLASSES
-
-
 class Cfg(Object):
-
-    """udp configuration"""
 
     def __init__(self):
         super().__init__()
@@ -44,17 +33,13 @@ class Cfg(Object):
         self.port = 5500
 
     def len(self):
-        """length"""
         return self.server
 
     def size(self):
-        """size"""
         return self.port
 
 
 class UDP(Object):
-
-    """udp to irc relay"""
 
     def __init__(self):
         super().__init__()
@@ -68,13 +53,11 @@ class UDP(Object):
         self.cfg.addr = ""
 
     def output(self, txt, addr=None):
-        """output text on listeners bus"""
         if addr:
             self.cfg.addr = addr
-        Bus.announce(txt.replace("\00", ""))
+        Broker.announce(txt.replace("\00", ""))
 
     def server(self):
-        """listen on udp socket"""
         try:
             self._sock.bind((self.cfg.host, self.cfg.port))
         except socket.gaierror:
@@ -89,31 +72,21 @@ class UDP(Object):
             self.output(data, addr)
 
     def exit(self):
-        """exit loop"""
         self.stopped = True
         self._sock.settimeout(0.01)
         self._sock.sendto(bytes("exit", "utf-8"), (self.cfg.host, self.cfg.port))
 
     def start(self):
-        """start udp listening loop"""
         last(self.cfg)
         launch(self.server)
 
 
-# UTILITY
-
-
 def toudp(host, port, txt):
-    """function to send udp text"""
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.sendto(bytes(txt.strip(), "utf-8"), (host, port))
 
 
-# COMMANDS
-
-
 def udp(event):
-    """command to send udp"""
     cfg = Cfg()
     last(cfg)
     if len(sys.argv) > 2:
