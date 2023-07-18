@@ -42,7 +42,7 @@ def got(event):
 def shp(event):
     if not event.rest:
         nmr = 0
-        for obj in find(Cfg.workdir, 'shop'):
+        for obj in find('shop'):
             lap = laps(time.time()-fntime(obj.__oid__))
             event.reply(f'{nmr} {obj.txt} {lap}')
             nmr += 1
