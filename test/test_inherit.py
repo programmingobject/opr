@@ -1,6 +1,6 @@
 # This file is placed in the Public Domain.
 #
-# pylint: disable=C0114,C0115,C0116,W0703,C0413,C0103,R0903,C0103
+# pylint: disable=C,I,R
 # pylama: ignore=E402,E302,E265
 
 
@@ -100,7 +100,7 @@ class TestInherit(unittest.TestCase):
         k = K()
         self.assertEqual(type(k), K)
 
-    def testobjectObjectObjectobject(self):
+    def testaggregate(self):
         def check():
             class I(object):
                 pass
@@ -109,6 +109,6 @@ class TestInherit(unittest.TestCase):
             class K(J, H):
                 pass
             k = K()
+            k["a"] = "b"
         with self.assertRaises(TypeError):
             check()
-
