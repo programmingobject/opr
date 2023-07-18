@@ -33,10 +33,10 @@ def popen(txt):
 
 def main():
     """main program"""
-    popen("rm -fRv DEAD* build dist MANIFEST *.egg-info *.whl")
-    popen("rm -fRv .pytest_cache .test  __pycache__ *~ .*~")
-    popen("loop . rm -fRv *~")
-    popen("loop . rm -fRv __pycache__")
+    popen("rm -fR DEAD* build dist MANIFEST *.egg-info *.whl")
+    popen("rm -fR .pytest_cache .test  __pycache__ *~ .*~")
+    popen("loop . rm -fR *~")
+    popen("loop . rm -fR __pycache__")
 
 
 if __name__ == "__main__":
