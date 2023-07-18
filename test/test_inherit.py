@@ -4,6 +4,12 @@
 # pylama: ignore=E402,E302,E265
 
 
+"inheritence"
+
+
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+
+
 import unittest
 
 

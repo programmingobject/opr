@@ -4,6 +4,12 @@
 # pylama: ignore=E402
 
 
+"clean namespace"
+
+
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+
+
 import unittest
 
 

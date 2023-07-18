@@ -48,7 +48,7 @@ class CLI(Reactor):
         self.register("event", Command.handle)
 
     def announce(self, txt):
-        self.raw(txt)
+        pass
 
     def raw(self, txt):
         print(txt)

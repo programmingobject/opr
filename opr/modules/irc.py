@@ -20,12 +20,10 @@ import textwrap
 import threading
 
 
-from .. import Broker, Command, Errors, Event, Logging, Object, Reactor
+from .. import Broker, Cfg, Command, Errors, Event, Logging, Object, Reactor
 from .. import edit, find, fntime, keys, laps, last, prt, write
 from .. import launch, parse, update
 
-
-from opr.configs import Cfg
 
 from ..locking import saylock
 
@@ -47,8 +45,6 @@ class NoUser(Exception):
 
     pass
 
-
-print(Cfg.name)
 
 class Config(Object):
 

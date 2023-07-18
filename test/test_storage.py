@@ -4,6 +4,12 @@
 # pylama: ignore=E402
 
 
+"persistence"
+
+
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+
+
 import os
 import unittest
 
