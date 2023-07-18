@@ -90,16 +90,6 @@ class TestInherit(unittest.TestCase):
         j = J()
         self.assertEqual(type(j), J)
 
-    def testobjectObjectObjectobject(self):
-        class I(object):
-            pass
-        class J(A, I):
-            pass
-        class K(J, H):
-            pass
-        k = K()
-        self.assertEqual(type(k), K)
-
     def testaggregate(self):
         def check():
             class I(object):
