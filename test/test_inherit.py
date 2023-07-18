@@ -50,39 +50,64 @@ class H(dict):
     pass
 
 
-#class I(object):
-
-#    pass
-
-
-#class J(A, I):
-
-#    pass
-
-
-#class K(J, H):
-
-#    pass
-
 
 class TestInherit(unittest.TestCase):
 
-    def testinherit1(self):
+    def testbare(self):
+        d = D()
+        self.assertEqual(type(d), D)
+
+    def testObjectObject(self):
         c = C()
         self.assertEqual(type(c), C)
 
-    def testinherit2(self):
+    def testObjectbare(self):
         e = E()
         self.assertEqual(type(e), E)
 
-    def testinherit3(self):
+    def testinheritObjectObjectbare(self):
         f = F()
         self.assertEqual(type(f), F)
 
-    def testinherit4(self):
+    def testobjectobjectbarecontent(self):
         f = F()
         self.assertEqual(f.bla, "mekker")
 
-    def testinherit5(self):
+    def testdict(self):
         h = H()
         self.assertEqual(type(h), H)
+
+    def testobject(self):
+        class I(object):
+            pass
+        i = I()
+        self.assertEqual(type(i), I)
+
+    def testobjectobject(self):
+        class I(object):
+            pass
+        class J(A, I):
+            pass
+        j = J()
+        self.assertEqual(type(j), J)
+
+    def testobjectObjectObjectobject(self):
+        class I(object):
+            pass
+        class J(A, I):
+            pass
+        class K(J, H):
+            pass
+        k = K()
+        self.assertEqual(type(k), K)
+
+    def testobjectObjectObjectobject(self):
+        class I(object):
+            pass
+        class J(A, I):
+            pass
+        class K(J, H):
+            pass
+        k = K()
+        self.assertEqual(type(k), K)
+        

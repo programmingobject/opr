@@ -4,6 +4,9 @@
 "test imports"
 
 
+__author__ = "Bart Thate <programmingobject@gmail.com>"
+
+
 import sys
 
 
