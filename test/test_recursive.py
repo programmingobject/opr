@@ -4,7 +4,8 @@
 # pylama: ignore=W0611,E303,E402
 
 
-"""
+"""recursive functions
+
     >>> import opr
     >>> o = opr.Object()
     >>> o.o = opr.Object()
@@ -13,9 +14,6 @@
     {"o": {"a": "test"}}
 
 """
-
-
-"recursive functions"
 
 
 __author__ = "Bart Thate <programmingobject@gmail.com>"

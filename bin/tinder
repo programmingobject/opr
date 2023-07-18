@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 # This file is placed in the Public Domain.
 #
-# pylint: disable=C0413,E0611,I1101
+# pylint: disable=C,I,R,E0611,I1101,W0401,W0614
 
 
-"tinder"
+"self created clients test"
 
 
-# IMPORTS
+__author__ = "Bart Thate <programmingobject@gmail.com>"
 
 
 import os
@@ -23,16 +23,12 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from opr.handler import Cfg, Commands, Errors, Event, Handler, parse
-from opr.objects import Object, Persist, keys, update
-from opr.threads import launch
-from opr.utility import Logging, elapsed, spl
-
+from opr import Broker, Cfg, Command, Errors, Event, Logging, Persist, Reactor
+from opr import Object
+from opr import laps, keys, launch, parse, spl, update
 
 import opr.modules
 
-
-# DEFINES
 
 DATE = time.ctime(time.time()).replace("  ", " ")
 NAME = "tinder"
@@ -57,13 +53,16 @@ events = []
 
 
 param = Object()
-param.add = ["test@shell", "bart", ""]
 param.cfg = ["server=localhost", ""]
+param.cmd = [""]
+param.dlt = ["~bart@127.0.0.1"]
 param.dne = ["test4", ""]
-param.rem = ["reddit", ""]
 param.dpl = ["reddit title,summary,link", ""]
-param.flt = ["0", ""]
+param.err = [""]
+param.flt = ["", "0"]
+param.rem = ["reddit", ""]
 param.fnd = [
+             'log',
              "cfg",
              "tdo",
              "rss",
@@ -72,20 +71,36 @@ param.fnd = [
              "rss rss==reddit"
             ]
 param.log = ["test1", ""]
+param.mdl = [""]
+param.met = ["~bart@127.0.0.1"]
+param.mod = [""]
 param.nme = ["reddit reddit"]
-param.dpl = ["reddit title,link"]
+param.now = [""]
+param.pwd = ["bla bla"]
 param.rem = ["reddit"]
+param.req = [""]
+param.rld = ["bsc"]
 param.rss = ["https://www.reddit.com/r/python/.rss"]
+param.shp = ["bread", "butter", "cheese"]
 param.tdo = ["test4", ""]
 param.thr = [""]
+param.tpc = [""]
+param.unl = ["udp"]
+param.wsd = [""]
+param.wsh = [""]
 
 
-# CLASSES
+def cprint(txt):
+    print(txt)
+    sys.stdout.flush()
 
 
-class CLI(Handler):
+class CLI(Reactor):
 
-    "verbose command line interface"
+    def __init__(self):
+        Reactor.__init__(self)
+        Broker.add(self)
+        self.register("event", Command.handle)
 
     def raw(self, txt):
         with outlock:
@@ -93,17 +108,7 @@ class CLI(Handler):
                 cprint(txt.rstrip())
 
 
-# UTILITY
-
-
-def cprint(txt):
-    """flushed print"""
-    print(txt)
-    sys.stdout.flush()
-
-
 def consume(evts):
-    """wait for events to be processed"""
     fixed = []
     res = []
     for evt in evts:
@@ -118,16 +123,17 @@ def consume(evts):
 
 
 def parse_cli(txt) -> Cfg:
-    """parse commad line interface"""
     evt = Event()
     parse(evt, txt)
+    if "v" in Cfg.opts:
+        Logging.verbose = True
+        Logging.raw = print
     update(Cfg, evt, False)
     Cfg.mod += evt.mods
     return Cfg
 
 
 def scanstr(pkg, mods, init=None, doall=False, wait=False) -> None:
-    """scan a package for list of modules"""
     res = []
     path = pkg.__path__[0]
     if doall:
@@ -136,9 +142,9 @@ def scanstr(pkg, mods, init=None, doall=False, wait=False) -> None:
     threads = []
     for modname in spl(mods):
         module = getattr(opr.modules, modname, None)
+        print(modname, module)
         if module:
-            if not init:
-                Commands.scan(module)
+            Command.scan(module)
         if init and "start" in dir(module):
             threads.append(launch(module.start))
         res.append(module)
@@ -149,22 +155,22 @@ def scanstr(pkg, mods, init=None, doall=False, wait=False) -> None:
 
 
 def payload(clt) -> None:
-    """run payload"""
-    cmds = list(keys(Commands.cmds))
+    cmds = list(keys(Command.cmds))
     random.shuffle(cmds)
+    print(cmds)
     with paylock:
         nmr = 0
         for cmnd in cmds:
             for ex in getattr(param, cmnd, [""]):
+                print(cmnd + " "  + ex)
                 evt = clt.event(cmnd + " " + ex)
-                clt.put(evt)
+                clt.handle(evt)
                 events.append(evt)
                 nmr += 1
         return nmr
 
 
 def waiter() -> None:
-    """wait for errros"""
     got = []
     for ex in Errors.errors:
         if not Cfg.silent:
@@ -175,7 +181,6 @@ def waiter() -> None:
 
 
 def wrap(func) -> None:
-    """wrap function"""
     old = termios.tcgetattr(sys.stdin.fileno())
     try:
         func()
@@ -187,18 +192,15 @@ def wrap(func) -> None:
         waiter()
 
 
-# RUNTIME
-
-
 def main() -> None:
-    """main program"""
     print(f"{NAME.upper()} started {DATE}")
     if os.path.exists(Persist.workdir):
         shutil.rmtree(Persist.workdir)
     parse_cli(" ".join(sys.argv[1:]))
     if "v" in Cfg.opts:
         Logging.verbose = True
-    scanstr(opr.modules, Cfg.mod, doall=True)
+        Logging.raw = cprint
+    scanstr(opr.modules, Cfg.mod, False, doall=True)
     nrs = Cfg.index or 1
     cli = CLI()
     cli.start()
@@ -210,7 +212,7 @@ def main() -> None:
         result += wtr.join() or 1
     consume(events)
     endtime = time.time()
-    lap = elapsed(endtime - STARTTIME)
+    lap = laps(endtime - STARTTIME)
     percall = (endtime - STARTTIME)/result
     waiter()
     print(f"{lap} {result} {percall}")
