@@ -12,7 +12,7 @@ __author__ = "Bart Thate <programmingobject@gmail.com>"
 import time
 
 
-from .. import Cfg, Object 
+from .. import Object 
 from .. import find, fntime, laps, write
 
 
