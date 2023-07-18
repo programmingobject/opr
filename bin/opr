@@ -20,7 +20,7 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from opr.configs import Cfg
+from opr import Cfg
 
 
 Cfg.mod = "bsc"
@@ -29,7 +29,7 @@ Cfg.verbose = False
 Cfg.version = 241
 
 
-from opr import Broker, Cfg, Command, Event, Logging, Persist, Reactor
+from opr import Broker, Command, Event, Logging, Persist, Reactor
 from opr import banner, parse, scan, waiter
 from opr import modules
 

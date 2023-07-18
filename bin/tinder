@@ -26,8 +26,7 @@ sys.path.insert(0, os.getcwd())
 from opr import Broker, Cfg, Command, Errors, Event, Logging, Persist, Reactor
 from opr import Object
 from opr import laps, keys, launch, parse, spl, update
-
-import opr.modules
+from opr import modules
 
 
 DATE = time.ctime(time.time()).replace("  ", " ")
@@ -141,7 +140,7 @@ def scanstr(pkg, mods, init=None, doall=False, wait=False) -> None:
         mods = ",".join(sorted(modlist))
     threads = []
     for modname in spl(mods):
-        module = getattr(opr.modules, modname, None)
+        module = getattr(modules, modname, None)
         print(modname, module)
         if module:
             Command.scan(module)
@@ -200,7 +199,7 @@ def main() -> None:
     if "v" in Cfg.opts:
         Logging.verbose = True
         Logging.raw = cprint
-    scanstr(opr.modules, Cfg.mod, False, doall=True)
+    scanstr(modules, Cfg.mod, False, doall=True)
     nrs = Cfg.index or 1
     cli = CLI()
     cli.start()
