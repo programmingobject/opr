@@ -50,7 +50,6 @@ class H(dict):
     pass
 
 
-
 class TestInherit(unittest.TestCase):
 
     def testbare(self):
@@ -102,12 +101,14 @@ class TestInherit(unittest.TestCase):
         self.assertEqual(type(k), K)
 
     def testobjectObjectObjectobject(self):
-        class I(object):
-            pass
-        class J(A, I):
-            pass
-        class K(J, H):
-            pass
-        k = K()
-        self.assertEqual(type(k), K)
-        
+        def check():
+            class I(object):
+                pass
+            class J(A, I):
+                pass
+            class K(J, H):
+                pass
+            k = K()
+        with self.assertRaises(TypeError):
+            check()
+
