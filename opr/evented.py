@@ -26,7 +26,6 @@ def __dir__():
 __all__ = __dir__()
 
 
-
 class Event(Object):
 
     __slots__ = ('_ready', '_thr')

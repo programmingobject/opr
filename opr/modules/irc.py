@@ -330,7 +330,6 @@ class IRC(Reactor, Output):
         self.command(f'NICK {nck}')
         self.command(f'USER {nck} {server} {server} {nck}')
 
-
     def parsing(self, txt):
         rawstr = str(txt)
         rawstr = rawstr.replace('\u0001', '')

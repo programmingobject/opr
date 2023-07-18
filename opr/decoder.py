@@ -26,7 +26,6 @@ def __dir__():
 __all__ = __dir__()
 
 
-
 class ObjectDecoder(json.JSONDecoder):
 
     def __init__(self, *args, **kwargs):
