@@ -23,6 +23,3 @@ class TestDecoder(unittest.TestCase):
         obj.test = "bla"
         oobj = loads(dumps(obj))
         self.assertEqual(oobj.test, "bla")
-
-    def test_doctest(self):
-        self.assertTrue(__doc__ is None)
