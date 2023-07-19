@@ -53,6 +53,6 @@ class Broker(Object):
         obj = Broker.byorig(orig)
         if obj:
             if channel:
-                obj.say(channel, txt)
+                obj.say(channel , txt)
             else:
                 obj.raw(txt)

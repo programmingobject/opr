@@ -60,12 +60,20 @@ class ObjectEncoder(json.JSONEncoder):
         ""
         return json.JSONEncoder.encode(self, o)
 
-    def iterencode(self, o, _one_shot=False) -> str:
+    def iterencode(
+                   self,
+                   o,
+                   _one_shot=False
+                  ) -> str:
         ""
-        return json.JSONEncoder.iterencode(self, o, _one_shot)
+        return json.JSONEncoder.iterencode(
+                                           self,
+                                           o,
+                                           _one_shot
+                                          )
 
 
-def dump(*args, **kw) -> None:
+def dump(*args , **kw)-> None:
     kw["cls"] = ObjectEncoder
     return json.dump(*args, **kw)
 

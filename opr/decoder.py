@@ -44,8 +44,8 @@ class ObjectDecoder(json.JSONDecoder):
         return json.JSONDecoder.raw_decode(self, s, idx)
 
 
-def load(fpt, *args, **kw) :
-    return json.load(fpt, *args, cls=ObjectDecoder, **kw)
+def load(fpt, *args, **kw):
+    return json.load(fpt ,*args ,cls=ObjectDecoder, **kw )
 
 
 def loads(string, *args, **kw):
