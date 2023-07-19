@@ -43,7 +43,6 @@ def parse(obj, txt):
                 obj.mod += "," + value
                 continue
             obj.sets[key] = value
-            print(obj.sets)
             continue
         if "==" in spli:
             key, value = spli.split("==", maxsplit=1)
@@ -58,4 +57,3 @@ def parse(obj, txt):
         obj.rest = str(" ".join(obj.args))
         if obj.rest:
             obj.txt += " " + obj.rest
-    print(obj)
