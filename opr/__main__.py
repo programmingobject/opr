@@ -33,7 +33,7 @@ from opr import banner, parse, scan, waiter
 from opr import modules
 
 
-Persist.workdir = os.path.expanduser("~/.{Cfg.name}")
+Persist.workdir = os.path.expanduser(f"~/.{Cfg.name}")
 
 
 readline.redisplay()
