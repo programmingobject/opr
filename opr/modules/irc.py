@@ -633,6 +633,7 @@ class Users(Object):
 
 
 def cfg(event):
+    print(event)
     config = Config()
     last(config)
     if not event.sets:

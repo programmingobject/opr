@@ -100,7 +100,7 @@ def main():
         scan(modules, Cfg.mod, False, True)
         evt = Event()
         evt.orig = repr(cli)
-        evt.txt = Cfg.txt
+        evt.txt = Cfg.otxt
         Command.handle(evt)
 
 
