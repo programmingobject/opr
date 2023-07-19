@@ -7,7 +7,7 @@
 __author__ = "Bart Thate <programmingobject@gmail.com>"
 
 
-from . import bsc, irc, log, rss, shp, tdo, wsh
+from . import bsc, irc, log, mdl, req, rss, shp, tdo, wsd, wsh
 
 
 def __dir__():
@@ -15,9 +15,12 @@ def __dir__():
             "bsc",
             "irc",
             "log",
+            "mdl",
+            "req",
             "rss",
             "shp",
             "tdo",
+            "wsd",
             "wsh"
            )
 
