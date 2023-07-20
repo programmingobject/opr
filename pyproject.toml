@@ -47,3 +47,12 @@ namespaces = false
 
 [tool.setuptools.package-data]
 "*" = ["bin/opr*"]
+
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = [
+    "tests",
+    "integration",
+]
