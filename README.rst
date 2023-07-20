@@ -126,6 +126,29 @@ COMMANDS
     thr - show the running threads
 
 
+SYSTEMD
+
+::
+
+[Unit]
+Description=Object Programming Runtime
+Requires=network.target
+After=network.target
+
+[Service]
+DynamicUser=True
+Type=fork
+User=bart
+Group=bart
+PIDFile=opr.pid
+WorkingDirectory=/home/bart/.opr
+ExecStart=/home/bart/.local/pipx/venvs/opr/bin/opr mod=irc,rss,mdl -d
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+
+
 FILES
 
 ::

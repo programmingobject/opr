@@ -41,7 +41,7 @@ script-files = ["bin/opr"]
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["opr*"]
-exclude = ["tests*",]
+exclude = ["test*",]
 namespaces = false
 
 
@@ -52,4 +52,4 @@ namespaces = false
 [tool.pytest.ini_options]
 minversion = "6.0"
 addopts = ""
-testpaths = ["test"]
+testpaths = ["bin"]
