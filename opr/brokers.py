@@ -6,7 +6,7 @@
 "object brokers"
 
 
-__author__ = "Bart Thate <programmingobject@gmail.com>"
+__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
 
 
 from .objects import Object
@@ -53,6 +53,6 @@ class Broker(Object):
         obj = Broker.byorig(orig)
         if obj:
             if channel:
-                obj.say(channel , txt)
+                obj.say(channel, txt)
             else:
                 obj.raw(txt)

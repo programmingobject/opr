@@ -6,13 +6,29 @@
 "utilities"
 
 
-__author__ = "Bart Thate <programmingobject@gmail.com>"
+__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
 
 
 import os
 import pathlib
 import time
 import types
+
+
+def __dir__():
+    return (
+            "banner",
+            "cdir",
+            "laps",
+            "name",
+            "skip",
+            "spl",
+            "strip",
+            "wait"
+           )
+
+
+__all__ = __dir__()
 
 
 def banner(names, version):
@@ -87,6 +103,13 @@ def name(obj) -> str:
     return None
 
 
+def skip(txt, skipping) -> bool:
+    for skp in spl(skipping):
+        if skp in txt:
+            return True
+    return False
+
+
 def spl(txt) -> []:
     try:
         res = txt.split(',')
@@ -97,3 +120,8 @@ def spl(txt) -> []:
 
 def strip(path) -> str:
     return os.sep.join(path.split(os.sep)[-4:])
+
+
+def wait():
+    while 1:
+        time.sleep(1.0)

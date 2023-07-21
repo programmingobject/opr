@@ -1,12 +1,13 @@
 # This file is placed in the Public Domain.
 #
 # pylint: disable=C,I,R
+# flake8: noqa=C901
 
 
 "parse events"
 
 
-__author__ = "Bart Thate <programmingobject@gmail.com>"
+__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
 
 
 from .objects import Object
@@ -23,12 +24,12 @@ __all__ = __dir__()
 
 def parse(obj, txt):
     obj.cmd = obj.cmd or ""
-    obj.args = obj.args or []
+    obj.args = []
     obj.gets = obj.gets or Object()
     obj.mod = obj.mod or ""
     obj.opts = obj.opts or ""
     obj.otxt = txt or ""
-    obj.rest = obj.rest or ""
+    obj.rest = ""
     obj.sets = obj.sets or Object()
     for spli in txt.split():
         if spli.startswith("-"):

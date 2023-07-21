@@ -1,32 +1,27 @@
 #!/usr/bin/env python3
 # This file is placed in the Public Domain.
+#
+# pylint: disable=C,I,R
 
 
-"create environment"
+"environment"
 
 
-# IMPORTS
+__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
 
 
 import os
 
 
-# DEFINES
-
-
-name = os.getcwd().split(os.sep)[-1]
 os.environ["PATH"] += ":bin"
 
 
-# UTILITY
-
 def popen(txt):
-    "run text in popen"
     for line in os.popen(txt).readlines():
         print(line.strip())
 
 
-# RUNTIME
+name = os.getcwd()
 
 
 if not os.path.exists("dist"):
@@ -34,4 +29,4 @@ if not os.path.exists("dist"):
 
 
 popen("python3 -mvirtualenv --system-site-packages env")
-popen(f"env/bin/pip3 install {name} -f dist --upgrade")
+popen("env/bin/pip3 install %s -f dist --upgrade" % name)

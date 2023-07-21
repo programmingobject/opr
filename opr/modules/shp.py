@@ -6,13 +6,13 @@
 "shopping list"
 
 
-__author__ = "Bart Thate <programmingobject@gmail.com>"
+__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
 
 
 import time
 
 
-from .. import Object 
+from .. import Object
 from .. import find, fntime, laps, write
 
 
@@ -36,7 +36,7 @@ def got(event):
     for obj in find('shop', selector):
         obj.__deleted__ = True
         write(obj)
-        event.reply('ok') # okdan
+        event.reply('ok')
 
 
 def shp(event):

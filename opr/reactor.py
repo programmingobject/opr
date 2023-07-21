@@ -6,7 +6,7 @@
 "reacting"
 
 
-__author__ = "Bart Thate <programmingobject@gmail.com>"
+__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
 
 
 import queue
@@ -23,7 +23,6 @@ from .threads import launch
 def __dir__():
     return (
             'Reactor',
-            "dispatch"
            )
 
 
@@ -41,6 +40,18 @@ class Reactor(Object):
     def announce(self, txt) -> None:
         self.raw(txt)
 
+    @staticmethod
+    def dispatch(func, evt) -> None:
+        try:
+            func(evt)
+        except Exception as ex:
+            exc = ex.with_traceback(ex.__traceback__)
+            Errors.errors.append(exc)
+            try:
+                evt.ready()
+            except AttributeError:
+                pass
+
     def event(self, txt) -> Event:
         msg = Event()
         msg.type = 'event'
@@ -51,7 +62,7 @@ class Reactor(Object):
     def handle(self, evt) -> Event:
         func = getattr(self.cbs, evt.type, None)
         if func:
-            evt._thr = launch(dispatch, func, evt, name=evt.cmd)
+            evt._thr = launch(Reactor.dispatch, func, evt, name=evt.cmd)
             evt._thr.join()
         return evt
 
@@ -92,15 +103,3 @@ class Reactor(Object):
     def stop(self) -> None:
         self.stopped.set()
         self.queue.put_nowait(None)
-
-
-def dispatch(func, evt) -> None:
-    try:
-        func(evt)
-    except Exception as ex:
-        exc = ex.with_traceback(ex.__traceback__)
-        Errors.errors.append(exc)
-        try:
-            evt.ready()
-        except AttributeError:
-            pass

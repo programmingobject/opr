@@ -2,27 +2,29 @@
 # This file is placed in the Public Domain
 
 
-"build package"
+"build the package"
 
 
-# IMPORTS
+__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
 
 
 import os
 
 
-# UTILITY
+os.environ["PATH"] += ":bin"
 
 
 def popen(txt):
-    """run in popen"""
     for line in os.popen(txt).readlines():
         print(line.strip())
 
 
-# RUNTIME
-
-
+print("\nCLEAN\n")
+popen("clean")
+print("\nSETUPTOOLS\n")
 popen("python3 setup.py sdist")
+print("\nWHEEL\n")
 popen("python3 -m pip wheel -e .")
 popen("mv *.whl dist")
+print("\nTWINE\n")
+popen("twine check dist/*")

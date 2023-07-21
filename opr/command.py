@@ -6,7 +6,7 @@
 "commands"
 
 
-__author__ = "Bart Thate <programmingobject@gmail.com>"
+__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
 
 
 import inspect
@@ -34,7 +34,6 @@ class Command(Object):
 
     cmds = Object()
 
-
     @staticmethod
     def add(func):
         Command.cmds[func.__name__] = func
@@ -43,18 +42,14 @@ class Command(Object):
     def handle(evt):
         if "txt" in evt:
             parse(evt, evt.txt)
-            func = get(
-                       Command.cmds,
-                       evt.cmd,
-                       None
-                      )
+            func = get(Command.cmds, evt.cmd, None)
             if func:
                 try:
-                    func( evt )
+                    func(evt)
                     evt.show()
                 except Exception as ex:
-                    exc = ex.with_traceback( ex.__traceback__ )
-                    Errors.errors.append( exc ) 
+                    exc = ex.with_traceback(ex.__traceback__)
+                    Errors.errors.append(exc)
         evt.ready()
 
     @staticmethod
@@ -73,28 +68,18 @@ class Command(Object):
                 Command.add(cmd)
 
 
-def scan(
-         pkg,
-         mods,
-         init=None,
-         doall=False,
-         wait=False
-        ) -> None:
+def scan(pkg, mods, init=None, doall=False, wait=False) -> None:
     path = pkg.__path__[0]
     if doall:
         modlist = [
                    x[:-3] for x in os.listdir(path)
                    if x.endswith(".py")
-                   and x not in [ "__init__.py", "__main__.py"]
+                   and x not in ["__init__.py", "__main__.py"]
                   ]
-        mods = ",".join(sorted( modlist ))
+        mods = ",".join(sorted(modlist))
     threads = []
     for modname in spl(mods):
-        module = getattr(
-                         pkg,
-                         modname,
-                         None
-                        )
+        module = getattr(pkg, modname, None)
         if module:
             Command.scan(module)
         if init and "start" in dir(module):

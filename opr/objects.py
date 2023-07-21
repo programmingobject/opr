@@ -1,12 +1,13 @@
 # This file is placed in the Public Domain.
 #
 # pylint: disable=C,I,R
+# flake8: noqa=C901
 
 
 "clean namespace"
 
 
-__author__ = "Bart Thate <programmingobject@gmail.com>"
+__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
 
 
 import datetime
@@ -40,11 +41,10 @@ __all__ = __dir__()
 
 class Object:
 
-    __slots__ = ("__dict__", "__oid__")
-
-    default = ""
+    __slots__ = ("__dict__", "__default__", "__oid__")
 
     def __init__(self, *args, **kwargs):
+        self.__default__ = ""
         self.__oid__ = ident(self)
         if args:
             val = args[0]
@@ -66,7 +66,7 @@ class Object:
         return self.__dict__.__delitem__(key)
 
     def __getattr__(self, key):
-        return self.__dict__.get(key, Object.default)
+        return self.__dict__.get(key, self.__default__)
 
     def __getitem__(self, key):
         return self.__dict__.__getitem__(key)

@@ -1,12 +1,13 @@
 # This file is placed in the Public Domain.
 #
 # pylint: disable=C,I,R,W0401,W0614
+# flake8: noqa=F401
 
 
-"object programming runtime"
+"Skull, Bones and Number (OTP-CR-117/19)"
 
 
-__author__ = "Bart Thate <programmingobject@gmail.com>"
+__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
 
 
 from .command import Command, scan
@@ -22,7 +23,7 @@ from .persist import Persist, find, fntime, last, read, write
 from .reactor import Reactor
 from .repeats import Repeater
 from .threads import launch
-from .utility import banner, laps, spl
+from .utility import banner, laps, spl, wait
 
 
 from .brokers import Broker
@@ -56,6 +57,7 @@ def __dir__():
             "read",
             "scan",
             "spl",
+            "wait",
             "waiter",
             "write"
            )

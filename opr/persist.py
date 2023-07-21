@@ -6,7 +6,7 @@
 "persistence"
 
 
-__author__ = "Bart Thate <programmingobject@gmail.com>"
+__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
 
 
 import os
@@ -36,26 +36,20 @@ def __dir__():
 __all__ = __dir__()
 
 
-
 class Persist:
-
-    """directory to persist to"""
 
     workdir = ""
 
     @staticmethod
     def path(pth) -> str:
-        """return store path"""
         return os.path.join(Persist.workdir, 'store', pth)
 
     @staticmethod
     def storedir() -> str:
-        """return storage directory"""
         return os.path.join(Persist.workdir, "store", "")
 
 
 def files() -> []:
-    """show all files in store"""
     res = []
     path = Persist.storedir()
     if os.path.exists(path):
@@ -64,7 +58,6 @@ def files() -> []:
 
 
 def find(mtc, selector=None) -> []:
-    """locate specific objects"""
     if selector is None:
         selector = {}
     for fnm in fns(mtc):
@@ -77,7 +70,6 @@ def find(mtc, selector=None) -> []:
 
 
 def fnclass(pth) -> str:
-    """return class from filename"""
     try:
         *_rest, mpth = pth.split("store")
         splitted = mpth.split(os.sep)
@@ -88,7 +80,6 @@ def fnclass(pth) -> str:
 
 
 def fns(mtc) -> []:
-    """return matching filenames"""
     dname = ''
     lst = mtc.lower().split(".")[-1]
     for rootdir, dirs, _files in os.walk(Persist.storedir(), topdown=False):
@@ -105,7 +96,6 @@ def fns(mtc) -> []:
 
 
 def fntime(daystr) -> float:
-    """return time from filename"""
     daystr = daystr.replace('_', ':')
     datestr = ' '.join(daystr.split(os.sep)[-2:])
     if '.' in datestr:
@@ -121,7 +111,6 @@ def fntime(daystr) -> float:
 
 
 def hook(otp) -> type:
-    """return object from filename"""
     clz = fnclass(otp)
     splitted = clz.split(".")
     modname = ".".join(splitted[:1])
@@ -142,7 +131,6 @@ def hook(otp) -> type:
 
 
 def last(obj, selector=None) -> None:
-    """update with last saved version"""
     if selector is None:
         selector = {}
     result = sorted(
@@ -157,7 +145,6 @@ def last(obj, selector=None) -> None:
 
 
 def read(obj, pth) -> str:
-    """read object from path"""
     pth = Persist.path(pth)
     with disklock:
         with open(pth, 'r', encoding='utf-8') as ofile:
@@ -181,7 +168,6 @@ def search(self, selector) -> bool:
 
 
 def write(obj) -> str:
-    """write object to disk"""
     try:
         pth = obj.__oid__
     except TypeError:

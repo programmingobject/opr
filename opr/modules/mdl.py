@@ -2,12 +2,13 @@
 #
 # pylint: disable=C,I,R,W0613,E1101,E0402,W0401
 # pylama: ignore=E225,E501
+# flake8: noqa=E501
 
 
 "genocide model of the netherlands"
 
 
-__author__ = "Bart Thate <programmingobject@gmail.com>"
+__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
 
 
 import datetime
@@ -19,7 +20,7 @@ from .. import laps, launch, keys
 
 
 def start():
-    time.sleep(60.0)
+    time.sleep(30.0)
     for key in keys(oorzaken):
         val = getattr(oorzaken, key, None)
         if val and int(val) > 10000:
@@ -32,7 +33,7 @@ def start():
     launch(daily, name="daily")
 
 
-DAY=24*60*60
+DAY = 24*60*60
 YEAR = 365*DAY
 SOURCE = "https://github.com/bthate/genocide"
 STARTDATE = "2020-01-01 00:00:00"
@@ -235,7 +236,7 @@ aantal = """
          """.split(";")
 
 
-#oorzaak.Suicide = 1859
+# oorzaak.Suicide = 1859
 
 
 aliases = {}
@@ -275,6 +276,9 @@ jaar["totaal"] = 168678
 
 oorzaak = Object(zip(oor, aantal))
 oorzaken = Object()
+
+
+# UTILITY
 
 
 def boot():
@@ -354,6 +358,9 @@ def iswanted(k, line):
     return False
 
 
+# CALLBACKS
+
+
 def cbnow(evt):
     delta = time.time() - STARTTIME
     txt = laps(delta) + " "
@@ -386,6 +393,9 @@ def cbstats(evt):
                                                                nryear,
                                                               )
         Broker.announce(txt)
+
+
+# COMMANDS
 
 
 def now(event):
@@ -436,6 +446,9 @@ def tpc(event):
                 bot.topic(channel, txt)
         except AttributeError:
             pass
+
+
+# RUNTIME
 
 
 boot()

@@ -1,12 +1,12 @@
 # This file is placed in the Public Domain.
 #
 # pylint: disable=C,I,R
-
+# flake8: noqa=E501
 
 "udp to irc relay"
 
 
-__author__ = "Bart Thate <programmingobject@gmail.com>"
+__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
 
 
 import select
@@ -93,12 +93,21 @@ def udp(event):
         txt = " ".join(sys.argv[2:])
         toudp(cfg.host, cfg.port, txt)
         return
-    if not select.select([sys.stdin, ], [], [], 0.0)[0]:
+    if not select.select(
+                         [sys.stdin, ],
+                         [],
+                         [],
+                         0.0
+                        )[0]:
         return
     size = 0
     while 1:
         try:
-            (inp, _out, err) = select.select([sys.stdin,], [], [sys.stderr,])
+            (inp, _out, err) = select.select(
+                                             [sys.stdin,],
+                                             [],
+                                             [sys.stderr,]
+                                            )
         except KeyboardInterrupt:
             return
         if err:

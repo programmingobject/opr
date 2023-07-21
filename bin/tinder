@@ -4,10 +4,10 @@
 # pylint: disable=C,I,R,E0611,I1101,W0401,W0614
 
 
-"self created clients test"
+"tinder tests"
 
 
-__author__ = "Bart Thate <programmingobject@gmail.com>"
+__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
 
 
 import os
@@ -23,10 +23,10 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from opr import Broker, Cfg, Command, Errors, Event, Logging, Persist, Reactor
-from opr import Object
-from opr import laps, keys, launch, parse, spl, update
-from opr import modules
+from sbn import Broker, Cfg, Command, Errors, Event, Logging, Persist, Reactor
+from sbn import Object
+from sbn import laps, keys, launch, parse, spl, update
+from sbn import modules
 
 
 DATE = time.ctime(time.time()).replace("  ", " ")

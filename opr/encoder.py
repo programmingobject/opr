@@ -6,7 +6,7 @@
 "encoding objects"
 
 
-__author__ = "Bart Thate <programmingobject@gmail.com>"
+__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
 
 
 import json
@@ -66,14 +66,10 @@ class ObjectEncoder(json.JSONEncoder):
                    _one_shot=False
                   ) -> str:
         ""
-        return json.JSONEncoder.iterencode(
-                                           self,
-                                           o,
-                                           _one_shot
-                                          )
+        return json.JSONEncoder.iterencode(self, o, _one_shot)
 
 
-def dump(*args , **kw)-> None:
+def dump(*args, **kw) -> None:
     kw["cls"] = ObjectEncoder
     return json.dump(*args, **kw)
 

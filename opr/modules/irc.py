@@ -1,12 +1,13 @@
 # This file is placed in the Public Domain.
 #
 # pylint: disable=C,I,R,W0401
+# flake8: noqa=C901
 
 
 "internet relay chat"
 
 
-__author__ = "Bart Thate <programmingobject@gmail.com>"
+__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
 
 
 import base64
@@ -22,7 +23,7 @@ import threading
 
 from .. import Broker, Cfg, Command, Errors, Event, Logging, Object, Reactor
 from .. import edit, find, fntime, keys, laps, last, prt, write
-from .. import launch, parse, update
+from .. import launch, update
 
 
 from ..locking import saylock
@@ -383,6 +384,8 @@ class IRC(Reactor, Output):
         spl = obj.txt.split()
         if len(spl) > 1:
             obj.args = spl[1:]
+        if obj.args:
+            obj.rest = " ".join(obj.args)
         obj.orig = repr(self)
         obj.txt = obj.txt.strip()
         obj.type = obj.command
@@ -489,6 +492,72 @@ class IRC(Reactor, Output):
         self.disconnect()
 
 
+class User(Object):
+
+    def __init__(self, val=None):
+        Object.__init__(self)
+        self.user = ''
+        self.perms = []
+        if val:
+            update(self, val)
+
+    def isok(self):
+        return True
+
+    def isthere(self):
+        return True
+
+
+class Users(Object):
+
+    @staticmethod
+    def allowed(origin, perm):
+        perm = perm.upper()
+        user = Users.get_user(origin)
+        val = False
+        if user and perm in user.perms:
+            val = True
+        return val
+
+    @staticmethod
+    def delete(origin, perm):
+        res = False
+        for user in Users.get_users(origin):
+            try:
+                user.perms.remove(perm)
+                write(user)
+                res = True
+            except ValueError:
+                pass
+        return res
+
+    @staticmethod
+    def get_users(origin=''):
+        selector = {'user': origin}
+        return find('user', selector)
+
+    @staticmethod
+    def get_user(origin):
+        users = list(Users.get_users(origin))
+        res = None
+        if len(users) > 0:
+            res = users[-1]
+        return res
+
+    @staticmethod
+    def perm(origin, permission):
+        user = Users.get_user(origin)
+        if not user:
+            raise NoUser(origin)
+        if permission.upper() not in user.perms:
+            user.perms.append(permission.upper())
+            write(user)
+        return user
+
+
+# CALLBACKS
+
+
 def cb_auth(evt):
     bot = evt.bot()
     assert evt
@@ -558,7 +627,6 @@ def cb_privmsg(evt):
         if bot.cfg.users and not Users.allowed(evt.origin, 'USER'):
             return
         Logging.debug(f"command from {evt.origin}: {evt.txt}")
-        parse(evt, evt.txt)
         Command.handle(evt)
 
 
@@ -569,67 +637,7 @@ def cb_quit(evt):
         bot.stop()
 
 
-class User(Object):
-
-    def __init__(self, val=None):
-        Object.__init__(self)
-        self.user = ''
-        self.perms = []
-        if val:
-            update(self, val)
-
-    def isok(self):
-        return True
-
-    def isthere(self):
-        return True
-
-
-class Users(Object):
-
-    @staticmethod
-    def allowed(origin, perm):
-        perm = perm.upper()
-        user = Users.get_user(origin)
-        val = False
-        if user and perm in user.perms:
-            val = True
-        return val
-
-    @staticmethod
-    def delete(origin, perm):
-        res = False
-        for user in Users.get_users(origin):
-            try:
-                user.perms.remove(perm)
-                write(user)
-                res = True
-            except ValueError:
-                pass
-        return res
-
-    @staticmethod
-    def get_users(origin=''):
-        selector = {'user': origin}
-        return find('user', selector)
-
-    @staticmethod
-    def get_user(origin):
-        users = list(Users.get_users(origin))
-        res = None
-        if len(users) > 0:
-            res = users[-1]
-        return res
-
-    @staticmethod
-    def perm(origin, permission):
-        user = Users.get_user(origin)
-        if not user:
-            raise NoUser(origin)
-        if permission.upper() not in user.perms:
-            user.perms.append(permission.upper())
-            write(user)
-        return user
+# COMMANDS
 
 
 def cfg(event):

@@ -2,10 +2,10 @@
 # This file is placed in the Public Domain.
 
 
-"""sed <txt1> <txt2>"""
+"sed <txt1> <txt2>"
 
 
-# IMPORTS
+__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
 
 
 import os
@@ -13,17 +13,31 @@ import subprocess
 import sys
 
 
-# DEFINES
+SKIP = [
+        "env"
+       ]
 
 
-os.environ["PATH"] += ":bin"
-
-
-# UTILITY
+def files(path, end, txt):
+    older = os.getcwd()
+    os.chdir(path)
+    for fnn in os.listdir(path):
+        if fnn.startswith(".") or fnn.startswith("_"):
+            continue
+        if fnn in SKIP:
+            continue
+        fpath = os.path.abspath(os.path.join(path, fnn))
+        if os.path.isdir(fpath):
+            files(fpath, end, txt)
+            continue
+        if end and not fnn.endswith(end):
+            continue
+        print(fpath, txt)
+        popen(txt + " " + fpath)
+    os.chdir(older)
 
 
 def popen(txt):
-    "run in popen"
     with subprocess.Popen(txt.split(),
                           stdin=sys.stdin,
                           stdout=sys.stdout,
@@ -34,14 +48,8 @@ def popen(txt):
         prok.wait()
 
 
-
-# RUNTIME
-
 try:
     OLD, *NEW = sys.argv[1:]
+    files(".", ".py", f"sed -s -u -i s/{OLD}/{NEW[0]}/")
 except ValueError:
     print("sed <OLD> <NEW>")
-    sys.exit()
-
-
-popen(f"files . sed -s -u -i s/{OLD}/{NEW[0]}/")

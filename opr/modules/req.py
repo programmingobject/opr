@@ -79,7 +79,7 @@ p.s.
 """
 
 
-__author__ = "Bart Thate <programmingobject@gmail.com>"
+__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
 
 
 def req(event):

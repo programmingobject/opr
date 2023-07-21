@@ -2,41 +2,50 @@
 # This file is placed in the Public Domain.
 
 
-"cleanup"
+"clean directories"
 
 
-# IMPORTS
+__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
 
 
 import os
 import sys
 
 
-# DEFINES
+SKIP = ["env",]
 
 
-os.environ["PATH"] += ":bin"
-
-
-# UTILITY
+def loop(path, txt):
+    old = os.getcwd()
+    os.chdir(path)
+    for fnn in os.listdir(path):
+        if fnn in SKIP:
+            continue
+        old = os.getcwd()
+        fpath = os.path.abspath(os.path.join(path, fnn))
+        if os.path.isdir(fpath):
+            loop(fpath, txt)
+        if not os.path.isdir(fpath):
+            continue
+        os.chdir(fpath)
+        popen(txt)
+        os.chdir(old)
+        #os.chdir("..")
+    os.chdir(old)
 
 
 def popen(txt):
-    """run in popen"""
     for line in os.popen(txt).readlines():
         print(line.rstrip())
         sys.stdout.flush()
 
 
-# RUNTIME
-
-
 def main():
-    """main program"""
     popen("rm -fR DEAD* build dist MANIFEST *.egg-info *.whl")
     popen("rm -fR .pytest_cache .test  __pycache__ *~ .*~")
-    popen("loop . rm -fR *~")
-    popen("loop . rm -fR __pycache__")
+    popen("rm -fR env html docs/sbn*.rst")
+    loop(".", "rm -fRv *~")
+    loop(".", "rm -fR __pycache__")
 
 
 if __name__ == "__main__":

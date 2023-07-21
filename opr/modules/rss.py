@@ -6,7 +6,7 @@
 "rich site syndicte"
 
 
-__author__ = "Bart Thate <programmingobject@gmail.com>"
+__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
 
 
 import html.parser
@@ -28,7 +28,7 @@ from .. import launch, last, spl
 
 
 def start():
-    time.sleep(15.0)
+    time.sleep(30.0)
     fetcher = Fetcher()
     fetcher.start()
     return fetcher
@@ -178,6 +178,9 @@ class Parser(Object):
         return res
 
 
+# UTILITY
+
+
 def getfeed(url, item):
     if Cfg.debug:
         return [Object(), Object()]
@@ -229,6 +232,9 @@ def unescape(text):
 
 def useragent(txt):
     return 'Mozilla/5.0 (X11; Linux x86_64) ' + txt
+
+
+# COMMANDS
 
 
 def dpl(event):
