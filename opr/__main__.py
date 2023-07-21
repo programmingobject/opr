@@ -21,9 +21,9 @@ from . import Cfg
 
 
 Cfg.mod = "bsc"
-Cfg.name = "sbn"
+Cfg.name = __file__.split(os.sep)[-2]
 Cfg.verbose = False
-Cfg.version = 30
+Cfg.version = 241
 
 
 from . import Broker, Command, Event, Logging, Persist, Reactor
