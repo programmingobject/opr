@@ -4,10 +4,7 @@
 # flake8: noqa=F401
 
 
-"Skull, Bones and Number (OTP-CR-117/19)"
-
-
-__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
+"main package"
 
 
 from .command import Command, scan

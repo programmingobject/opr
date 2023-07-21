@@ -7,9 +7,6 @@
 "clean namespace"
 
 
-__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
-
-
 import datetime
 import os
 import uuid

@@ -7,9 +7,6 @@
 "parse events"
 
 
-__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
-
-
 from .objects import Object
 
 

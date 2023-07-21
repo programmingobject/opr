@@ -7,9 +7,6 @@
 "configure tests"
 
 
-__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
-
-
 def pytest_sessionfinish(session, exitstatus):
     if exitstatus == 5:
         session.exitstatus = 0

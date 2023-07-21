@@ -7,9 +7,6 @@
 "tinder tests"
 
 
-__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
-
-
 import os
 import random
 import shutil
@@ -23,10 +20,10 @@ import _thread
 sys.path.insert(0, os.getcwd())
 
 
-from sbn import Broker, Cfg, Command, Errors, Event, Logging, Persist, Reactor
-from sbn import Object
-from sbn import laps, keys, launch, parse, spl, update
-from sbn import modules
+from opr import Broker, Cfg, Command, Errors, Event, Logging, Persist, Reactor
+from opr import Object
+from opr import laps, keys, launch, parse, spl, update
+from opr import modules
 
 
 DATE = time.ctime(time.time()).replace("  ", " ")

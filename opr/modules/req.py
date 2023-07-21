@@ -79,8 +79,5 @@ p.s.
 """
 
 
-__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
-
-
 def req(event):
     event.reply(__doc__)

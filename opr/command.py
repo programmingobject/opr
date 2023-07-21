@@ -6,9 +6,6 @@
 "commands"
 
 
-__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
-
-
 import inspect
 import os
 

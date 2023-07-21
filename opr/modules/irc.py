@@ -7,9 +7,6 @@
 "internet relay chat"
 
 
-__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
-
-
 import base64
 import os
 import queue

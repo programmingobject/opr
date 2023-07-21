@@ -8,9 +8,6 @@
 "genocide model of the netherlands"
 
 
-__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
-
-
 import datetime
 import time
 

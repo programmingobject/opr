@@ -6,9 +6,6 @@
 "logging"
 
 
-__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
-
-
 from .utility import skip
 
 

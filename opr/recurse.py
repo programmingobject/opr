@@ -6,9 +6,6 @@
 "recursive functions"
 
 
-__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
-
-
 from .objects import Object, items, update
 from .persist import read, write
 

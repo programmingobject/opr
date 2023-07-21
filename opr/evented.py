@@ -6,9 +6,6 @@
 "events happen"
 
 
-__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
-
-
 import threading
 
 

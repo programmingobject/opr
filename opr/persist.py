@@ -6,9 +6,6 @@
 "persistence"
 
 
-__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
-
-
 import os
 import sys
 import time

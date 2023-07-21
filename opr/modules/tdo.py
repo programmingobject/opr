@@ -6,9 +6,6 @@
 "todo list"
 
 
-__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
-
-
 import time
 
 

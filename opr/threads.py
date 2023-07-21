@@ -6,9 +6,6 @@
 "running threads"
 
 
-__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
-
-
 import functools
 import queue
 import threading

@@ -3,10 +3,8 @@
 # pylint: disable=C,I,R
 # flake8: noqa=E501
 
+
 "udp to irc relay"
-
-
-__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
 
 
 import select

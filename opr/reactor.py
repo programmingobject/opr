@@ -6,9 +6,6 @@
 "reacting"
 
 
-__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
-
-
 import queue
 import ssl
 import threading

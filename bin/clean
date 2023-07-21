@@ -5,9 +5,6 @@
 "clean directories"
 
 
-__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
-
-
 import os
 import sys
 
@@ -42,8 +39,9 @@ def popen(txt):
 
 def main():
     popen("rm -fR DEAD* build dist MANIFEST *.egg-info *.whl")
-    popen("rm -fR .pytest_cache .test  __pycache__ *~ .*~")
-    popen("rm -fR env html docs/sbn*.rst")
+    popen("rm -fR .pytest_cache .test  __pycache__")
+    popen("rm -fRv .*~ .*~")
+    popen("rm -fR env")
     loop(".", "rm -fRv *~")
     loop(".", "rm -fR __pycache__")
 

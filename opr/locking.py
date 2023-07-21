@@ -6,9 +6,6 @@
 "module with the locks"
 
 
-__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
-
-
 import _thread
 
 

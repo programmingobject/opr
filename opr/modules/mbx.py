@@ -7,9 +7,6 @@
 "mailbox"
 
 
-__author__ = "Bart Thate <skullbonesandnumber@gmail.com>"
-
-
 import mailbox
 import os
 import time
