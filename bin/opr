@@ -1,3 +1,0 @@
-# This file is placed in the Public Domain.
-
-python3 -m opr $* ;

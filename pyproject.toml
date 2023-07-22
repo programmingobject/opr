@@ -31,22 +31,18 @@ classifiers = [
 "bugs" = "https://github.com/bthate/opr/issues"
 "source" = "https://github.com/bthate/opr"
 
+[project.scripts]
+opr = "opr.__main__:wrapped"
+
 
 [project.optional-dependencies]
 dev = []
-
-[tool.setuptools]
-script-files = ["bin/opr"]
 
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["opr*"]
 exclude = ["test*",]
 namespaces = false
-
-
-[tool.setuptools.package-data]
-"*" = ["bin/opr*"]
 
 
 [tool.pytest.ini_options]
