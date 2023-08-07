@@ -9,15 +9,15 @@
 import time
 
 
-from ..objects import Object
 from ..persist import find, write
+from ..storage import Data
 from. .utility import fntime, laps
 
 
-class Todo(Object):
+class Todo(Data):
 
     def __init__(self):
-        Object.__init__(self)
+        Data.__init__(self)
         self.txt = ''
 
 

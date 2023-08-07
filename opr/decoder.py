@@ -12,6 +12,10 @@ import json
 from json import JSONDecoder
 
 
+from .objects import construct
+from .storage import Data
+
+
 class ObjectDecoder(JSONDecoder):
 
     def __init__(self, *args, **kwargs):
@@ -23,7 +27,9 @@ class ObjectDecoder(JSONDecoder):
         val = JSONDecoder.decode(self, s)
         if not val:
             val = {}
-        return Object(val)
+        data = Data()
+        construct(data, val)
+        return data
 
     def raw_decode(self, s, idx=0):
         ""

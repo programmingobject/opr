@@ -9,12 +9,12 @@
 import time
 
 
-from ..objects import Object
 from ..persist import find, write
+from ..storage import Data
 from ..utility import fntime, laps
 
 
-class Log(Object):
+class Log(Data):
 
     def __init__(self):
         super().__init__()

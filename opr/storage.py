@@ -25,11 +25,11 @@ def __dir__():
 class Data(Object):
 
 
-    __slots__ = ("__oid__")
+    __slots__ = ("__oid__",)
 
 
-    def __init__(self, *args, **kwargs):
-        Object.__init__(self, *args, **kwargs)
+    def __init__(self):
+        Object.__init__(self)
         self.__oid__ = ident(self)
 
 

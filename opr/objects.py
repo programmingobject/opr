@@ -8,7 +8,6 @@
 
 class Object:
 
-
     def __contains__(self, key):
         return key in self.__dict__
 
@@ -50,18 +49,18 @@ def copy(self, obj2):
 
 
 def construct(self, *args, **kwargs):
-        if args:
-            val = args[0]
-            if isinstance(val, list):
-                update(self, dict(val))
-            elif isinstance(val, zip):
-                update(self, dict(val))
-            elif isinstance(val, dict):
-                update(self, val)
-            elif isinstance(val, Object):
-                update(self, vars(val))
-        if kwargs:
-            update(self, kwargs)
+    if args:
+        val = args[0]
+        if isinstance(val, list):
+            update(self, dict(val))
+        elif isinstance(val, zip):
+            update(self, dict(val))
+        elif isinstance(val, dict):
+            update(self, val)
+        elif isinstance(val, Object):
+            update(self, vars(val))
+    if kwargs:
+        update(self, kwargs)
 
 
 def fromkeys(self, keyz, value):
@@ -81,13 +80,6 @@ def items(self) -> []:
 
 def keys(self) -> []:
     return self.__dict__.keys()
-
-
-def kind(self) -> str:
-    kin = str(type(self)).split()[-1][1:-2]
-    if kin == "type":
-        kin = self.__name__
-    return kin
 
 
 def pop(self, key, default=None):

@@ -7,7 +7,11 @@
 
 
 import os
+import pathlib
 import time
+
+
+from .objects import keys
 
 
 def __dir__():
@@ -86,12 +90,12 @@ def fntime(daystr) -> float:
         datestr, rest = datestr.rsplit('.', 1)
     else:
         rest = ''
-    tme = time.mktime(time.strptime(datestr, '%Y-%m-%d %H:%M:%S'))
+    timed = time.mktime(time.strptime(datestr, '%Y-%m-%d %H:%M:%S'))
     if rest:
-        tme += float('.' + rest)
+        timed += float('.' + rest)
     else:
-        tme = 0
-    return tme
+        timed = 0
+    return timed
 
 
 def laps(seconds, short=True) -> str:

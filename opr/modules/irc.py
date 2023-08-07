@@ -26,6 +26,7 @@ from ..message import Event
 from ..objects import Object, keys, update
 from ..persist import find, last, write
 from ..reactor import Reactor
+from ..storage import Data
 from ..threads import launch
 from ..utility import edit, fntime, laps, prt
 
@@ -54,7 +55,7 @@ class NoUser(Exception):
     pass
 
 
-class Config(Object):
+class Config(Data):
 
     channel = f'#{NAME}'
     control = '!'
@@ -73,7 +74,7 @@ class Config(Object):
     verbose = False
 
     def __init__(self):
-        Object.__init__(self)
+        Data.__init__(self)
         self.channel = Config.channel
         self.nick = Config.nick
         self.port = Config.port
@@ -500,10 +501,10 @@ class IRC(Reactor, Output):
         self.disconnect()
 
 
-class User(Object):
+class User(Data):
 
     def __init__(self, val=None):
-        Object.__init__(self)
+        Data.__init__(self)
         self.user = ''
         self.perms = []
         if val:

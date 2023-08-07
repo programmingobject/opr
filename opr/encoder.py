@@ -12,6 +12,9 @@ import json
 from json import JSONEncoder
 
 
+from .storage import Data
+
+
 class ObjectEncoder(JSONEncoder):
 
     def __init__(self, *args, **kwargs):
@@ -22,7 +25,7 @@ class ObjectEncoder(JSONEncoder):
         ""
         if isinstance(o, dict):
             return o.items()
-        if isinstance(o, Object):
+        if isinstance(o, Data):
             return vars(o)
         if isinstance(o, list):
             return iter(o)

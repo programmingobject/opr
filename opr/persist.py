@@ -6,30 +6,28 @@
 "persistence"
 
 
-import datetime
 import inspect
 import os
 import sys
-import uuid
 
 
 from .decoder import load
 from .encoder import dump
 from .locking import disklock, hooklock
 from .objects import Object, keys, search, update
-from .storage import ident, kind
-from .utility import cdir, fntime, strip
+from .storage import Data, ident, kind
+from .utility import cdir, fntime, nme, strip
 
 
 class NoClass(Exception):
 
-     pass
+    pass
 
 
 class Persist(Object):
 
     classes = Object()
-    workdir = ""
+    workdir = f'.{nme()}'
 
     @staticmethod
     def add(clz):
@@ -39,12 +37,12 @@ class Persist(Object):
         Persist.classes[name] = clz
 
     @staticmethod
-    def long(nme):
-        split = nme.split(".")[-1].lower()
+    def long(name):
+        split = name.split(".")[-1].lower()
         res = None
-        for name in keys(Persist.classes):
-            if split in name.split(".")[-1].lower():
-                res = name
+        for named in keys(Persist.classes):
+            if split in named.split(".")[-1].lower():
+                res = named
                 break
         return res
 
@@ -57,21 +55,13 @@ class Persist(Object):
         for key, clz in inspect.getmembers(mod, inspect.isclass):
             if key.startswith("cb"):
                 continue
-            if not issubclass(clz, Object):
+            if not issubclass(clz, Data):
                 continue
             Persist.add(clz)
 
     @staticmethod
     def store(pth=""):
         return os.path.join(Persist.workdir, "store", pth)
-
-
-def ident(self) -> str:
-    return "/".join(
-                    kind(self),
-                    str(uuid.uuid4().hex),
-                    "/".join(str(datetime.datetime.now()).split())
-                   )
 
 
 def files() -> []:
@@ -151,13 +141,12 @@ def read(self, pth) -> str:
 
 
 def write(self) -> str:
-    with disklock:
-        try:
-            pth = self.__oid__
-        except TypeError:
-            pth = ident(self)
-        pth = os.path.join(Persist.workdir, "store", pth)
-        cdir(pth)
-        with open(pth, 'w', encoding='utf-8') as ofile:
-            dump(self, ofile)
-        return os.sep.join(pth.split(os.sep)[-4:])
+    try:
+        pth = self.__oid__
+    except (AttributeError, TypeError):
+        pth = ident(self)
+    pth = os.path.join(Persist.workdir, "store", pth)
+    cdir(pth)
+    with open(pth, 'w', encoding='utf-8') as ofile:
+        dump(self, ofile)
+    return os.sep.join(pth.split(os.sep)[-4:])
