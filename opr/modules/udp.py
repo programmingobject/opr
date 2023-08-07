@@ -93,6 +93,7 @@ def udp(event):
     if len(sys.argv) > 2:
         txt = " ".join(sys.argv[2:])
         toudp(cfg.host, cfg.port, txt)
+        event.reply(f"{len(txt)} characters send")
         return
     if not select.select(
                          [sys.stdin, ],
