@@ -7,7 +7,7 @@
 "modules"
 
 
-from . import bsc, err, flt, irc, log, mod, rss, shp, sts, tdo, thr, udp
+from . import bsc, err, flt, irc, log, mdl, mod, req, rss, shp, sts, tdo, thr, udp
 
 
 def __dir__():
@@ -17,9 +17,9 @@ def __dir__():
             'flt',
             'irc',
             'log',
+            'mdl',
+            'req',
             'rss',
-            'shp',
-            'tdo',
             'thr',
             'udp'
            )

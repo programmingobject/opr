@@ -2,3 +2,6 @@
 
 
 "object programming runtime"
+
+
+__author__ = "Bart Thate <bthate@dds.nl>"

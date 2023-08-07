@@ -37,7 +37,7 @@ def __dir__():
 __all__ = __dir__()
 
 
-Cfg.mod = "bsc,err,sts,thr"
+Cfg.mod = "bsc,err,mdl,req,sts,thr"
 
 
 Persist.workdir = os.path.expanduser(f"~/.{Cfg.name}")
