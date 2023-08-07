@@ -42,6 +42,10 @@ USAGE
 
 ::
 
+    for ease of use, use an alias
+
+        $ alias opr="python3 -m opr"
+
     list of commands
 
         $ opr cmd
