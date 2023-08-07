@@ -15,7 +15,7 @@ from .command import Commands
 from .console import CLI, Console
 from .errored import Errors
 from .message import Event
-from .objects import Persist
+from .persist import Persist
 from .runtime import Cfg, scan
 from .threads import launch
 from .utility import banner, parse, wait

@@ -14,13 +14,14 @@ import time
 
 from ..listens import Bus
 from ..message import Event
-from ..objects import Object, keys, laps
+from ..objects import Object, construct, keys
 from ..repeats import Repeater
 from ..threads import launch
+from ..utility import laps
 
 
 def init():
-    time.sleep(30.0)
+    time.sleep(10.0)
     for key in keys(oorzaken):
         val = getattr(oorzaken, key, None)
         if val and int(val) > 10000:
@@ -274,7 +275,8 @@ jaar["Wfz"] = 23820
 jaar["totaal"] = 168678
 
 
-oorzaak = Object(zip(oor, aantal))
+oorzaak = Object()
+construct(zip(oor, aantal))
 oorzaken = Object()
 
 

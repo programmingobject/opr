@@ -19,12 +19,14 @@ from urllib.parse import quote_plus, urlencode
 from urllib.request import Request, urlopen
 
 
+from ..default import Default
 from ..listens import Bus
-from ..objects import Default, Object
-from ..objects import find, fntime, laps, last, prt, spl, write, update
+from ..objects import Object, update
+from ..persist import find, last, write
 from ..runtime import Cfg
 from ..repeats import Repeater
 from ..threads import launch
+from ..utility import fntime, laps, prt, spl
 
 
 def init():

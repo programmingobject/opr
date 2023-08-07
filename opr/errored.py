@@ -10,7 +10,7 @@ import io
 import traceback
 
 
-from .objects import doskip
+from .utility import doskip
 
 
 def __dir__():

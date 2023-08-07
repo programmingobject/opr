@@ -14,8 +14,8 @@ import threading
 
 from .errored import Errors
 from .message import Event
-from .objects import spl
 from .threads import launch
+from .utility import spl
 
 
 def __dir__():

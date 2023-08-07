@@ -9,7 +9,7 @@
 import threading
 
 
-from .objects import Default
+from .default import Default
 
 
 def __dir__():
