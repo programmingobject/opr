@@ -233,8 +233,7 @@ class IRC(Reactor, Output):
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.sock = ctx.wrap_socket(sock)
             self.sock.connect((server, port))
-            time.sleep(1.0)
-            self.command('CAP LS 302')
+            self.direct('CAP LS 302')
         else:
             addr = socket.getaddrinfo(server, port, socket.AF_INET)[-1][-1]
             self.sock = socket.create_connection(addr)
@@ -249,7 +248,9 @@ class IRC(Reactor, Output):
 
     def direct(self, txt):
         Errors.debug(txt)
-        self.sock.send(bytes(txt.rstrip()+'\r\n', 'utf-8'))
+        with saylock:
+            time.sleep(1.0)
+            self.sock.send(bytes(txt.rstrip()+'\r\n', 'utf-8'))
 
     def disconnect(self):
         try:
@@ -570,9 +571,9 @@ def cb_auth(evt):
 def cb_cap(evt):
     bot = Bus.byorig(evt.orig)
     if bot.cfg.password and 'ACK' in evt.arguments:
-        bot.command('AUTHENTICATE PLAIN')
+        bot.direct('AUTHENTICATE PLAIN')
     else:
-        bot.command('CAP REQ :sasl')
+        bot.direct('CAP REQ :sasl')
 
 
 def cb_command(evt):
@@ -589,14 +590,14 @@ def cb_error(evt):
 def cb_h903(evt):
     assert evt
     bot = Bus.byorig(evt.orig)
-    bot.command('CAP END')
+    bot.direct('CAP END')
     bot.events.authed.set()
 
 
 def cb_h904(evt):
     assert evt
     bot = Bus.byorig(evt.orig)
-    bot.command('CAP END')
+    bot.direct('CAP END')
     bot.events.authed.set()
 
 
