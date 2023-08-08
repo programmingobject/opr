@@ -14,7 +14,9 @@ from json import JSONEncoder
 
 
 from .persist import Persist
+from .threads import name
 from .utility import cdir
+
 
 def __dir__():
     return (
@@ -35,6 +37,7 @@ class ObjectEncoder(JSONEncoder):
 
     def default(self, o) -> str:
         ""
+        o.__type__ = name(o)
         if isinstance(o, dict):
             return o.items()
         if isinstance(o, Persist):
