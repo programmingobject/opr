@@ -17,7 +17,7 @@ from. .utility import fntime, laps
 class Todo(Persist):
 
     def __init__(self):
-        Data.__init__(self)
+        Persist.__init__(self)
         self.txt = ''
 
 

@@ -23,7 +23,7 @@ from ..default import Default
 from ..errored import Errors
 from ..listens import Bus
 from ..message import Event
-from ..objects import Object, keys, update
+from ..objects import Object, keys
 from ..persist import Persist
 from ..reactor import Reactor
 from ..storage import find, last, write

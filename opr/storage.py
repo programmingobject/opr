@@ -11,9 +11,9 @@ import os
 import sys
 
 
-from .decoder import hook, load
+from .decoder import load
 from .encoder import dump
-from .locking import disklock, hooklock
+from .locking import disklock
 from .objects import Object, keys, update
 from .persist import Persist, ident, kind
 from .utility import cdir, fnclass, fntime, nme, search, strip
@@ -90,7 +90,7 @@ def find(mtc, selector=None) -> []:
         if not clz:
             clz = Persist
         obj = clz()
-        read(obj, fnm) 
+        read(obj, fnm)
         if '__deleted__' in obj:
             continue
         if selector and not search(obj, selector):

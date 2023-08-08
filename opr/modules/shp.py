@@ -10,7 +10,7 @@ import time
 
 
 from ..objects import Object
-from ..persist import find, write
+from ..storage import find, write
 from ..utility import fntime, laps
 
 

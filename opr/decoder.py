@@ -7,18 +7,16 @@
 
 
 import json
-import os
 import sys
 
 
 from json import JSONDecoder
 
 
-from .locking import disklock, hooklock, jsonlock
-from .objects import Object, construct
+from .locking import hooklock, jsonlock
+from .objects import construct
 from .persist import Persist
 from .threads import name
-from .utility import cdir, strip
 
 
 def __dir__():
@@ -26,7 +24,7 @@ def __dir__():
             'ObjectDecoder',
             'load',
             'loads'
-           ) 
+           )
 
 
 __all__ = __dir__()

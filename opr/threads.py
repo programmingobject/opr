@@ -9,17 +9,16 @@
 import queue
 import threading
 import time
-import types
 
 
 from .errored import Errors
+from .utility import name
 
 
 def __dir__():
     return (
             'Thread',
-            'launch',
-            'name'
+            'launch'
            )
 
 
@@ -71,18 +70,3 @@ def launch(func, *args, **kwargs):
     thread = Thread(func, thrname, *args)
     thread.start()
     return thread
-
-
-def name(obj) -> str:
-    typ = type(obj)
-    if isinstance(typ, types.ModuleType):
-        return obj.__name__
-    if '__self__' in dir(obj):
-        return f'{obj.__self__.__class__.__name__}.{obj.__name__}'
-    if '__class__' in dir(obj) and '__name__' in dir(obj):
-        return f'{obj.__class__.__name__}.{obj.__name__}'
-    if '__class__' in dir(obj):
-        return f"{obj.__class__.__module__}.{obj.__class__.__name__}"
-    if '__name__' in dir(obj):
-        return f'{obj.__class__.__name__}.{obj.__name__}'
-    return None

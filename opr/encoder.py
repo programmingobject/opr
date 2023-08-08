@@ -7,7 +7,6 @@
 
 
 import json
-import os
 
 
 from json import JSONEncoder
@@ -15,7 +14,6 @@ from json import JSONEncoder
 
 from .persist import Persist
 from .threads import name
-from .utility import cdir
 
 
 def __dir__():
@@ -58,7 +56,7 @@ class ObjectEncoder(JSONEncoder):
         try:
             return JSONEncoder.default(self, o)
         except TypeError:
-            return str(o)
+            return repr(o)
 
     def encode(self, o) -> str:
         ""

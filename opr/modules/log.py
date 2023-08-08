@@ -9,7 +9,7 @@
 import time
 
 
-from ..storage import Storage, find, write
+from ..storage import find, write
 from ..persist import Persist
 from ..utility import fntime, laps
 

@@ -15,7 +15,7 @@ import time
 from ..default import Default
 from ..listens import Bus
 from ..objects import Object
-from ..persist import last
+from ..storage import last
 from ..threads import launch
 
 
