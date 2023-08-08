@@ -27,17 +27,7 @@ class Object:
         return self.__dict__.__setitem__(key, value)
 
     def __str__(self):
-        res = "{"
-        for key, value in items(self):
-            if issubclass(type(value), Object):
-                cur = str(value)
-                res += f"'{key}': {cur}, "
-            else:
-                res += f"'{key}': '{value}', "
-        if len(res) > 2:
-            res = res[:-2]
-        res += "}"
-        return res
+        return str(self.__dict__)
 
 
 def clear(self):

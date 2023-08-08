@@ -58,6 +58,7 @@ def hook(objdict) -> type:
         cls = Persist
         if "__type__" in objdict:
             clz = objdict["__type__"]
+            del objdict["__type__"]
         else:
             clz = name(Persist)
         splitted = clz.split(".")
