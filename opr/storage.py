@@ -40,7 +40,7 @@ class NoClass(Exception):
 class Storage(Object):
 
     classes = Object()
-    workdir = f'.{nme()}'
+    workdir = os.path.expanduser(f'~/.{nme()}')
 
     @staticmethod
     def add(clz):

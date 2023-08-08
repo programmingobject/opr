@@ -55,7 +55,6 @@ class ObjectDecoder(JSONDecoder):
 
 def hook(objdict) -> type:
     with hooklock:
-        print(objdict)
         cls = Persist
         if "__type__" in objdict:
             clz = objdict["__type__"]
