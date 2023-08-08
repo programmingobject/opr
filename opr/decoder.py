@@ -48,9 +48,9 @@ class ObjectDecoder(JSONDecoder):
             construct(data, val)
             return data
 
-    #def raw_decode(self, s, idx=0):
-    #    ""
-    #    return JSONDecoder.raw_decode(self, s, idx)
+    def raw_decode(self, s, idx=0):
+        ""
+        return JSONDecoder.raw_decode(self, s, idx)
 
 
 def hook(objdict) -> type:

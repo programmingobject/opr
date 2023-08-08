@@ -413,6 +413,8 @@ def now(event):
                                                                  laps(needed)
                                                                 )
         event.reply(txt)
+    else:
+        event.reply("not needed")
 
 
 boot()
