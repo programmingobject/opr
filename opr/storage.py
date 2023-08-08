@@ -140,12 +140,13 @@ def read(self, pth) -> str:
 
 
 def write(self) -> str:
-    try:
-        pth = self.__oid__
-    except (AttributeError, TypeError):
-        pth = ident(self)
-    pth = os.path.join(Storage.store(), pth)
-    cdir(pth)
-    with open(pth, 'w', encoding='utf-8') as ofile:
-        dump(self, ofile)
-    return os.sep.join(pth.split(os.sep)[-4:])
+    with disklock:
+        try:
+            pth = self.__oid__
+        except (AttributeError, TypeError):
+            pth = ident(self)
+        pth = os.path.join(Storage.store(), pth)
+        cdir(pth)
+        with open(pth, 'w', encoding='utf-8') as ofile:
+            dump(self, ofile)
+        return os.sep.join(pth.split(os.sep)[-4:])

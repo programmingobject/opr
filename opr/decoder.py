@@ -40,17 +40,17 @@ class ObjectDecoder(JSONDecoder):
 
     def decode(self, s, _w=None):
         ""
-        val = JSONDecoder.decode(self, s)
-        if not val:
-            val = {}
-        data = Persist()
-        construct(data, val)
-        return data
-
-    def raw_decode(self, s, idx=0):
-        ""
         with jsonlock:
-            return JSONDecoder.raw_decode(self, s, idx)
+            val = JSONDecoder.decode(self, s)
+            if not val:
+                val = {}
+            data = Persist()
+            construct(data, val)
+            return data
+
+    #def raw_decode(self, s, idx=0):
+    #    ""
+    #    return JSONDecoder.raw_decode(self, s, idx)
 
 
 def hook(objdict) -> type:

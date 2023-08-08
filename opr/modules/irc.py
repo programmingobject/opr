@@ -503,12 +503,10 @@ class IRC(Reactor, Output):
 
 class User(Persist):
 
-    def __init__(self, val=None):
+    def __init__(self):
         Persist.__init__(self)
         self.user = ''
         self.perms = []
-        if val:
-            update(self, val)
 
     def isok(self):
         return True
