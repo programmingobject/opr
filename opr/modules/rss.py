@@ -22,9 +22,10 @@ from urllib.request import Request, urlopen
 from ..default import Default
 from ..listens import Bus
 from ..objects import Object, update
-from ..persist import find, last, write
+from ..persist import Persist
 from ..runtime import Cfg
 from ..repeats import Repeater
+from ..storage import find, last, write
 from ..threads import launch
 from ..utility import fntime, laps, prt, spl
 
@@ -48,7 +49,7 @@ class Feed(Default):
         return len(self.__dict__)
 
 
-class Rss(Default):
+class Rss(Default, Persist):
 
     def __init__(self):
         super().__init__()
@@ -63,7 +64,7 @@ class Rss(Default):
         return len(self.__dict__)
 
 
-class Seen(Default):
+class Seen(Default, Persist):
 
     def __init__(self):
         super().__init__()

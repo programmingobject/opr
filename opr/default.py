@@ -6,18 +6,23 @@
 "default"
 
 
-from .storage import Data
+from .objects import Object
 
 
-class Default(Data):
+def __dir__():
+    return (
+            'Default',
+           ) 
 
-    __slots__ = ("__default__",)
 
-    def __init__(self):
-        Data.__init__(self)
-        self.__default__ = ""
+__all__ = __dir__()
+
+
+class Default(Object):
+
+    __default__ = ""
 
     def __getattr__(self, key):
         if key in self:
             return self[key]
-        return self.__default__
+        return Default.__default__

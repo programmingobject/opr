@@ -99,19 +99,6 @@ def popitem(self):
         yield key, value
 
 
-def search(self, selector) -> bool:
-    res = False
-    for key, value in items(selector):
-        try:
-            val = self[key]
-            if str(value) in str(val):
-                res = True
-                break
-        except KeyError:
-            continue
-    return res
-
-
 def setdefault(self, key, default):
     if key not in self:
         self[key] = default

@@ -11,7 +11,7 @@ import pathlib
 import time
 
 
-from .objects import keys
+from .objects import items, keys
 
 
 def __dir__():
@@ -81,6 +81,10 @@ def edit(obj, setter, skip=False):
         else:
             setattr(obj, key, val)
     return count
+
+
+def fnclass(fnm):
+    return fnm.split(os.sep)[-4]
 
 
 def fntime(daystr) -> float:
@@ -221,6 +225,20 @@ def prt(obj, args="", skip="", plain=False):
         res.append(txt)
     txt = " ".join(res)
     return txt.strip()
+
+
+def search(obj, selector) -> bool:
+    res = False
+    for key, value in items(selector):
+        try:
+            val = obj[key]
+            if str(value) in str(val):
+                res = True
+                break
+        except KeyError:
+            continue
+    return res
+
 
 
 def spl(txt) -> []:

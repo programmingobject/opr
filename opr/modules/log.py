@@ -9,12 +9,12 @@
 import time
 
 
-from ..persist import find, write
-from ..storage import Data
+from ..storage import Storage, find, write
+from ..persist import Persist
 from ..utility import fntime, laps
 
 
-class Log(Data):
+class Log(Persist):
 
     def __init__(self):
         super().__init__()
@@ -32,6 +32,7 @@ def log(event):
     if not event.rest:
         nmr = 0
         for obj in find('log'):
+            print(obj)
             lap = laps(time.time() - fntime(obj.__oid__))
             event.reply(f'{nmr} {obj.txt} {lap}')
             nmr += 1

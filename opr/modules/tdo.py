@@ -9,12 +9,12 @@
 import time
 
 
-from ..persist import find, write
-from ..storage import Data
+from ..persist import Persist
+from ..storage import find, write
 from. .utility import fntime, laps
 
 
-class Todo(Data):
+class Todo(Persist):
 
     def __init__(self):
         Data.__init__(self)

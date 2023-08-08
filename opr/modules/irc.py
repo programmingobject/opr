@@ -24,9 +24,9 @@ from ..errored import Errors
 from ..listens import Bus
 from ..message import Event
 from ..objects import Object, keys, update
-from ..persist import find, last, write
+from ..persist import Persist
 from ..reactor import Reactor
-from ..storage import Data
+from ..storage import find, last, write
 from ..threads import launch
 from ..utility import edit, fntime, laps, prt
 
@@ -55,7 +55,7 @@ class NoUser(Exception):
     pass
 
 
-class Config(Data):
+class Config(Persist):
 
     channel = f'#{NAME}'
     control = '!'
@@ -74,7 +74,7 @@ class Config(Data):
     verbose = False
 
     def __init__(self):
-        Data.__init__(self)
+        Persist.__init__(self)
         self.channel = Config.channel
         self.nick = Config.nick
         self.port = Config.port
@@ -501,10 +501,10 @@ class IRC(Reactor, Output):
         self.disconnect()
 
 
-class User(Data):
+class User(Persist):
 
     def __init__(self, val=None):
-        Data.__init__(self)
+        Persist.__init__(self)
         self.user = ''
         self.perms = []
         if val:

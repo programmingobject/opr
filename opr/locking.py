@@ -9,5 +9,17 @@
 import _thread
 
 
+def __dir__():
+    return (
+            'disklock',
+            'hooklock',
+            'jsonlock'
+           )
+
+
+__all__ = __dir__()
+
+
 disklock = _thread.allocate_lock()
 hooklock = _thread.allocate_lock()
+jsonlock = _thread.allocate_lock()

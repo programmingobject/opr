@@ -7,13 +7,29 @@
 
 
 import json
+import os
+import sys
 
 
 from json import JSONDecoder
 
 
-from .objects import construct
-from .storage import Data
+from .locking import disklock, hooklock, jsonlock
+from .objects import Object, construct
+from .persist import Persist
+from .threads import name
+from .utility import cdir, strip
+
+
+def __dir__():
+    return (
+            'ObjectDecoder',
+            'load',
+            'loads'
+           ) 
+
+
+__all__ = __dir__()
 
 
 class ObjectDecoder(JSONDecoder):
@@ -27,19 +43,42 @@ class ObjectDecoder(JSONDecoder):
         val = JSONDecoder.decode(self, s)
         if not val:
             val = {}
-        data = Data()
+        data = Persist()
         construct(data, val)
         return data
 
     def raw_decode(self, s, idx=0):
         ""
-        return JSONDecoder.raw_decode(self, s, idx)
+        with jsonlock:
+            return JSONDecoder.raw_decode(self, s, idx)
 
+
+def hook(objdict) -> type:
+    with hooklock:
+        print(objdict)
+        cls = Persist
+        if "__type__" in objdict:
+            clz = objdict["__type__"]
+        else:
+            clz = name(Persist)
+        splitted = clz.split(".")
+        modname = ".".join(splitted[:1])
+        clz = splitted[-1]
+        mod = sys.modules.get(modname, None)
+        if mod:
+            cls = getattr(mod, clz, cls)
+        obj = cls()
+        construct(obj, objdict)
+        return obj
 
 
 def load(fpt, *args, **kw):
-    return json.load(fpt, *args, cls=ObjectDecoder, **kw)
+    kw["cls"] = ObjectDecoder
+    kw["object_hook"] = hook
+    return json.load(fpt, *args, **kw)
 
 
 def loads(string, *args, **kw):
-    return json.loads(string, *args, cls=ObjectDecoder, **kw)
+    kw["cls"] = ObjectDecoder
+    kw["object_hook"] = hook
+    return json.loads(string, *args, **kw)

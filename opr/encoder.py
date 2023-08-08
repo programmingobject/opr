@@ -7,12 +7,24 @@
 
 
 import json
+import os
 
 
 from json import JSONEncoder
 
 
-from .storage import Data
+from .persist import Persist
+from .utility import cdir
+
+def __dir__():
+    return (
+            'ObjectEncoder',
+            'dump',
+            'dumps'
+           )
+
+
+__all__ = __dir__()
 
 
 class ObjectEncoder(JSONEncoder):
@@ -25,7 +37,7 @@ class ObjectEncoder(JSONEncoder):
         ""
         if isinstance(o, dict):
             return o.items()
-        if isinstance(o, Data):
+        if isinstance(o, Persist):
             return vars(o)
         if isinstance(o, list):
             return iter(o)

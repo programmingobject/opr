@@ -13,7 +13,7 @@ import time
 from .command import Commands
 from .default import Default
 from .errored import Errors
-from .persist import Persist
+from .storage import Storage
 from .threads import launch
 from .utility import listmods, spl
 
@@ -57,7 +57,7 @@ def scan(pkg, modstr, initer=None, doall=False) -> None:
             continue
         Errors.debug(f"scan {modname}")
         Commands.scan(module)
-        Persist.scan(module)
+        Storage.scan(module)
         if initer and "init" in dir(module):
             Errors.debug(f"init {modname}")
             threads.append(launch(module.init, name=f"init {modname}"))
