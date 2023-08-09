@@ -6,6 +6,7 @@
 "a clean namespace"
 
 
+
 class Object:
 
     def __contains__(self, key):
@@ -27,80 +28,97 @@ class Object:
         return self.__dict__.__setitem__(key, value)
 
     def __str__(self):
-        return str(self.__dict__)
+        return dumps(self.__dict__)
 
 
-def clear(self):
-    self.__dict__ = {}
+def clear(obj):
+    obj.__dict__ = {}
 
 
-def copy(self, obj2):
-    self.__dict__.update(obj2.__dict__)
+def copy(obj, obj2):
+    obj.__dict__.update(obj2.__dict__)
 
 
-def construct(self, *args, **kwargs):
+def construct(obj, *args, **kwargs):
     if args:
         val = args[0]
         if isinstance(val, list):
-            update(self, dict(val))
+            update(obj, dict(val))
         elif isinstance(val, zip):
-            update(self, dict(val))
+            update(obj, dict(val))
         elif isinstance(val, dict):
-            update(self, val)
+            update(obj, val)
         elif isinstance(val, Object):
-            update(self, vars(val))
+            update(obj, vars(val))
     if kwargs:
-        update(self, kwargs)
+        update(obj, kwargs)
 
 
-def fromkeys(self, keyz, value):
+def fromkeys(obj, keyz, value):
     for key in keyz:
-        self[key] = value
+        obj[key] = value
 
 
-def get(self, key, default=None):
-    return getattr(self, key, default)
+def get(obj, key, default=None):
+    return getattr(obj, key, default)
 
 
-def items(self) -> []:
-    if isinstance(self, type({})):
-        return self.items()
-    return self.__dict__.items()
+def items(obj) -> []:
+    if isinstance(obj, type({})):
+        return obj.items()
+    return obj.__dict__.items()
 
 
-def keys(self) -> []:
-    return self.__dict__.keys()
+def keys(obj) -> []:
+    return obj.__dict__.keys()
 
 
-def pop(self, key, default=None):
-    if key in self:
-        val = self[key]
-        del self[key]
+def pop(obj, key, default=None):
+    if key in obj:
+        val = obj[key]
+        del obj[key]
         return val
     if default:
         return default
     raise KeyError(key)
 
 
-def popitem(self):
-    if not self:
+def popitem(obj):
+    if not obj:
         raise KeyError
-    for key, value in items(self):
+    for key, value in items(obj):
         yield key, value
 
 
-def setdefault(self, key, default):
-    if key not in self:
-        self[key] = default
-    return self[key]
+def search(obj, selector) -> bool:
+    res = False
+    for key, value in items(selector):
+        try:
+            val = obj[key]
+            if str(value) in str(val):
+                res = True
+                break
+        except KeyError:
+            continue
+    return res
 
 
-def update(self, data, empty=True) -> None:
+def setdefault(obj, key, default):
+    if key not in obj:
+        obj[key] = default
+    return obj[key]
+
+
+def update(obj, data, empty=True) -> None:
     for key, value in items(data):
         if empty and not value:
             continue
-        self[key] = value
+        obj[key] = value
 
 
-def values(self) -> []:
-    return self.__dict__.values()
+def values(obj) -> []:
+    return obj.__dict__.values()
+
+
+from .encoder import dumps
+

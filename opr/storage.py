@@ -14,9 +14,9 @@ import sys
 from .decoder import load
 from .encoder import dump
 from .locking import disklock
-from .objects import Object, keys, update
+from .objects import Object, keys, search, update
 from .persist import Persist, ident, kind
-from .utility import cdir, fnclass, fntime, nme, search, strip
+from .utility import cdir, fnclass, fntime, nme, strip
 
 
 def __dir__():

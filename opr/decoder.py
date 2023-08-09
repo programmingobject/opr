@@ -14,8 +14,7 @@ from json import JSONDecoder
 
 
 from .locking import hooklock, jsonlock
-from .objects import construct
-from .persist import Persist
+from .objects import Object, construct
 from .threads import name
 
 
@@ -42,9 +41,7 @@ class ObjectDecoder(JSONDecoder):
             val = JSONDecoder.decode(self, s)
             if not val:
                 val = {}
-            data = Persist()
-            construct(data, val)
-            return data
+            return hook(val)
 
     def raw_decode(self, s, idx=0):
         ""
@@ -53,18 +50,16 @@ class ObjectDecoder(JSONDecoder):
 
 def hook(objdict) -> type:
     with hooklock:
-        cls = Persist
+        cls = Object
         if "__type__" in objdict:
             clz = objdict["__type__"]
             del objdict["__type__"]
-        else:
-            clz = name(Persist)
-        splitted = clz.split(".")
-        modname = ".".join(splitted[:1])
-        clz = splitted[-1]
-        mod = sys.modules.get(modname, None)
-        if mod:
-            cls = getattr(mod, clz, cls)
+            splitted = clz.split(".")
+            modname = ".".join(splitted[:1])
+            clz = splitted[-1]
+            mod = sys.modules.get(modname, None)
+            if mod:
+                cls = getattr(mod, clz, cls)
         obj = cls()
         construct(obj, objdict)
         return obj

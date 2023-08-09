@@ -246,20 +246,6 @@ def prt(obj, args="", skip="", plain=False):
     return txt.strip()
 
 
-def search(obj, selector) -> bool:
-    res = False
-    for key, value in items(selector):
-        try:
-            val = obj[key]
-            if str(value) in str(val):
-                res = True
-                break
-        except KeyError:
-            continue
-    return res
-
-
-
 def spl(txt) -> []:
     try:
         res = txt.split(',')

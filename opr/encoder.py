@@ -12,7 +12,6 @@ import json
 from json import JSONEncoder
 
 
-from .persist import Persist
 from .threads import name
 
 
@@ -36,12 +35,18 @@ class ObjectEncoder(JSONEncoder):
     def default(self, o) -> str:
         ""
         o.__type__ = name(o)
-        if isinstance(o, dict):
+        try:
             return o.items()
-        if isinstance(o, Persist):
+        except AttributeError:
+            pass
+        try:
             return vars(o)
-        if isinstance(o, list):
+        except ValueError:
+            pass
+        try:
             return iter(o)
+        except ValueError:
+            pass
         if isinstance(
                       o,
                       (
