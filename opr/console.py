@@ -44,6 +44,9 @@ class Console(CLI):
 
     prompting = threading.Event()
 
+    def announce(self, txt):
+        self.raw(txt)
+
     def handle(self, evt):
         Commands.handle(evt)
         evt.wait()

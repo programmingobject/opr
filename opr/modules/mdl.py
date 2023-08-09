@@ -276,7 +276,7 @@ jaar["totaal"] = 168678
 
 
 oorzaak = Object()
-construct(zip(oor, aantal))
+construct(oorzaak, zip(oor, aantal))
 oorzaken = Object()
 
 
@@ -314,7 +314,7 @@ def boot():
 
 
 def daily():
-    time.sleep(10.0)
+    time.sleep(11.0)
     while 1:
         evt = Event()
         cbnow(evt)

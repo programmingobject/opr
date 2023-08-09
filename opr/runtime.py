@@ -48,6 +48,8 @@ def init(pkg, modstr):
 
 def scan(pkg, modstr, initer=None, doall=False) -> None:
     path = pkg.__path__[0]
+    inited = []
+    scanned = []
     threads = []
     for modname in listmods(path):
         if not doall and modname not in modstr:
@@ -55,10 +57,12 @@ def scan(pkg, modstr, initer=None, doall=False) -> None:
         module = getattr(pkg, modname, None)
         if not module:
             continue
-        Errors.debug(f"scan {modname}")
+        scanned.append(modname)
         Commands.scan(module)
         Storage.scan(module)
         if initer and "init" in dir(module):
-            Errors.debug(f"init {modname}")
+            inited.append(modname)
             threads.append(launch(module.init, name=f"init {modname}"))
+    Errors.debug("scanned %s" % ",".join(scanned))
+    Errors.debug("init %s" % ",".join(inited))
     return threads
