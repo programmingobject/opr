@@ -12,9 +12,6 @@ import time
 import types
 
 
-from .objects import items, keys
-
-
 def __dir__():
     return (
             'banner',
@@ -222,7 +219,7 @@ def prt(obj, args="", skip="", plain=False):
     if "," in args:
         keyz = args.split(",")
     if not keyz:
-        keyz = keys(obj)
+        keyz = obj.__dict__.keys()
     for key in sorted(keyz):
         if key.startswith("_"):
             continue
