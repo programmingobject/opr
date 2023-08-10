@@ -11,7 +11,7 @@ import time
 
 from ..persist import Persist
 from ..storage import find, write
-from. .utility import fntime, laps
+from ..utility import fntime, laps
 
 
 "classes"

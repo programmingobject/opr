@@ -18,7 +18,7 @@ DESCRIPTION
 
     OPR is a python3 runtime is intended to be programmable  in a
     static, only code, no popen, no user imports and no reading
-    modules from a directory, way. 
+    modules from a directory, way.
 
     OPR provides some functionality, it can connect to IRC, fetch
     and display RSS feeds, take todo notes, keep a shopping list and
@@ -30,7 +30,7 @@ SYNOPSIS
 
 ::
 
-    opr <cmd> [key=val] 
+    opr <cmd> [key=val]
     opr <cmd> [key==val]
     opr [-c] [-d] [-v]
 
@@ -85,7 +85,7 @@ USAGE
     start as daemon
 
         $ opr  mod=irc,rss -d
-        $ 
+        $
 
 
 CONFIGURATION
@@ -122,7 +122,7 @@ COMMANDS
     dlt - remove a user
     dpl - sets display items
     ftc - runs a fetching batch
-    fnd - find objects 
+    fnd - find objects
     flt - instances registered
     log - log some text
     met - add a user

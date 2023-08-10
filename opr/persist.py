@@ -27,9 +27,7 @@ __all__ = __dir__()
 
 class Persist(Object):
 
-
     __slots__ = ("__oid__",)
-
 
     def __init__(self):
         Object.__init__(self)
