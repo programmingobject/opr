@@ -26,7 +26,6 @@ __all__ = __dir__()
 class Commands:
 
     cmds = {}
-    errors = []
 
     @staticmethod
     def add(func):
