@@ -60,6 +60,9 @@ def daemon():
 
 
 def wrap(func) -> None:
+    if "d" in Cfg.opts:
+        Errors.debug("terminal disabled")
+        return
     old = termios.tcgetattr(sys.stdin.fileno())
     try:
         func()
@@ -72,7 +75,6 @@ def wrap(func) -> None:
 
 
 def main():
-    parse(Cfg, " ".join(sys.argv[1:]))
     if "v" in Cfg.opts:
         Errors.raw = print
         Errors.verbose = True
@@ -97,7 +99,11 @@ def main():
 
 
 def wrapped():
-    wrap(main)
+    parse(Cfg, " ".join(sys.argv[1:]))
+    if "d" in Cfg.opts:
+        main()
+    else:
+        wrap(main)
 
 
 if __name__ == "__main__":

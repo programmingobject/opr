@@ -36,7 +36,6 @@ INSTALL
 
     $ pipx install opr
 
-
 USAGE
 
 
