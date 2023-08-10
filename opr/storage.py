@@ -12,7 +12,8 @@ import sys
 
 
 from .locking import disklock
-from .objects import Object, dump, keys, load, search, update
+from .objects import Object, dump, keys, load, update
+from .objfunc import search
 from .persist import Persist, ident, kind
 from .utility import cdir, fnclass, fntime, nme, strip
 

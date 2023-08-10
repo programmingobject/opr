@@ -24,11 +24,12 @@ from ..errored import Errors
 from ..listens import Bus
 from ..message import Event
 from ..objects import Object, keys
+from ..objfunc import edit, prt
 from ..persist import Persist
 from ..reactor import Reactor
 from ..storage import find, last, write
 from ..threads import launch
-from ..utility import edit, fntime, laps, prt
+from ..utility import fntime, laps
 
 
 NAME = __file__.split(os.sep)[-3]

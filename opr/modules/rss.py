@@ -22,12 +22,13 @@ from urllib.request import Request, urlopen
 from ..default import Default
 from ..listens import Bus
 from ..objects import Object, update
+from ..objfunc import prt
 from ..persist import Persist
 from ..runtime import Cfg
 from ..repeats import Repeater
 from ..storage import find, last, write
 from ..threads import launch
-from ..utility import fntime, laps, prt, spl
+from ..utility import fntime, laps, spl
 
 
 def init():

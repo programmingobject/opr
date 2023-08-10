@@ -15,13 +15,12 @@ from .default import Default
 from .errored import Errors
 from .storage import Storage
 from .threads import launch
-from .utility import listmods, spl
+from .utility import listmods
 
 
 def __dir__():
     return (
             "Cfg",
-            'init',
             'scan'
            )
 
@@ -36,17 +35,7 @@ Cfg = Default()
 Cfg.name = __file__.split(os.sep)[-2]
 
 
-def init(pkg, modstr):
-    res = []
-    for modname in spl(modstr):
-        mod = getattr(pkg, modname, None)
-        if mod and "init" in dir(mod):
-            Errors.debug(f"init {modname}")
-            res.append(launch(mod.init))
-    return res
-
-
-def scan(pkg, modstr, initer=None, doall=False) -> None:
+def scan(pkg, modstr, initer=False, doall=False) -> None:
     path = pkg.__path__[0]
     inited = []
     scanned = []
@@ -63,6 +52,6 @@ def scan(pkg, modstr, initer=None, doall=False) -> None:
         if initer and "init" in dir(module):
             inited.append(modname)
             threads.append(launch(module.init, name=f"init {modname}"))
-    Errors.debug("scanned %s" % ",".join(scanned))
-    Errors.debug("init %s" % ",".join(inited))
+    Errors.debug(f"scanned {','.join(scanned)}")
+    Errors.debug(f"init {','.join(inited)}")
     return threads

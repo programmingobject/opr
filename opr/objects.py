@@ -9,6 +9,7 @@
 import json
 import sys
 
+
 from json import JSONDecoder, JSONEncoder
 
 
@@ -28,11 +29,13 @@ def __dir__():
             'keys',
             'pop',
             'popitem',
-            'search',
             'setdefault',
             'update',
             'values'
            )
+
+
+__all__ = __dir__()
 
 
 class Object:
@@ -116,19 +119,6 @@ def popitem(obj):
         raise KeyError
     for key, value in items(obj):
         yield key, value
-
-
-def search(obj, selector) -> bool:
-    res = False
-    for key, value in items(selector):
-        try:
-            val = obj[key]
-            if str(value) in str(val):
-                res = True
-                break
-        except KeyError:
-            continue
-    return res
 
 
 def setdefault(obj, key, default):

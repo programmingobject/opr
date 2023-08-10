@@ -11,7 +11,7 @@ import inspect
 
 from .listens import Bus
 from .errored import Errors
-from .utility import parse
+from .objfunc import parse
 
 
 def __dir__():

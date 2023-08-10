@@ -1,6 +1,6 @@
 # This file is placed in the Public Domain.
 #
-# pylint: disable=C0116,W0212
+# pylint: disable=C0116,W0212,W0611
 
 
 "main"
@@ -16,10 +16,11 @@ from .command import Commands
 from .console import CLI, Console
 from .errored import Errors
 from .message import Event
+from .objfunc import parse
 from .persist import Persist
 from .runtime import Cfg, scan
 from .threads import launch
-from .utility import banner, parse, wait
+from .utility import banner, wait
 
 
 from . import modules

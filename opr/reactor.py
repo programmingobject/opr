@@ -8,14 +8,12 @@
 
 import queue
 import ssl
-import sys
 import threading
 
 
 from .errored import Errors
 from .message import Event
 from .threads import launch
-from .utility import spl
 
 
 def __dir__():
@@ -67,13 +65,6 @@ class Reactor:
                               name=evt.cmd or evt.type
                              )
         return evt
-
-    def init(self, mods):
-        for modname in spl(mods):
-            oprmod = sys.modules.get("modules", None)
-            mod = getattr(oprmod, modname, None)
-            if mod and "init" in dir(mod):
-                mod.init(self)
 
     def loop(self) -> None:
         while not self.stopped.is_set():
