@@ -1,6 +1,6 @@
 # This file is placed in the Public Domain.
 #
-# pylint: disable=C0115,C0116
+# pylint: disable=C0115,C0116,W0105
 
 
 "rich site syndicte"
@@ -31,6 +31,9 @@ from ..threads import launch
 from ..utility import fntime, laps, spl
 
 
+"defines"
+
+
 def init():
     time.sleep(5.0)
     fetcher = Fetcher()
@@ -39,6 +42,9 @@ def init():
 
 
 fetchlock = _thread.allocate_lock()
+
+
+"classes"
 
 
 class Feed(Default):
@@ -182,6 +188,9 @@ class Parser(Object):
         return res
 
 
+"utility"
+
+
 def getfeed(url, item):
     if Cfg.debug:
         return [Object(), Object()]
@@ -233,6 +242,9 @@ def unescape(text):
 
 def useragent(txt):
     return 'Mozilla/5.0 (X11; Linux x86_64) ' + txt
+
+
+"commands"
 
 
 def dpl(event):

@@ -1,7 +1,6 @@
 # This file is placed in the Public Domain.
 #
-# pylint: disable=C,I,R,W0613,E1101,E0402,W0401
-# pylama: ignore=E225,E501
+# pylint: disable=C,I,R,W0613,E1101,E0402,W0401,W0105
 # flake8: noqa=E501
 
 
@@ -18,6 +17,9 @@ from ..objects import Object, construct, keys
 from ..repeats import Repeater
 from ..threads import launch
 from ..utility import laps
+
+
+"defines"
 
 
 def init():
@@ -237,9 +239,6 @@ aantal = """
          """.split(";")
 
 
-# oorzaak.Suicide = 1859
-
-
 aliases = {}
 aliases["Nieuwvormingen"] = "cancer"
 aliases["Hart en vaatstelsel"] = "hart disease"
@@ -280,58 +279,7 @@ construct(oorzaak, zip(oor, aantal))
 oorzaken = Object()
 
 
-# UTILITY
-
-
-def boot():
-    _nr = -1
-    for key in keys(oorzaak):
-        _nr += 1
-        if _nr == 0:
-            continue
-        if key.startswith('"'):
-            key = key[1:]
-        lines = key.split("/")
-        if len(lines) > 1 and not lines[1].startswith("Totaal"):
-            continue
-        atl = lines[0].replace('(aantal)"', "")
-        atl = atl.replace("Ziekten van de", "")
-        atl = atl.replace("Ziekten van", "")
-        atl = atl.replace("Ziekten", "")
-        atl = atl.replace("Zktn", "")
-        atl = atl.replace("zktn", "")
-        atl = atl.replace("en..", "")
-        atl = atl.replace("..", "")
-        atl = atl.replace("bindweef", "bindweefsel")
-        atl = atl.replace("bevind", "bevindingen")
-        atl = atl.replace("stofwiss.", "stofwisseling")
-        atl = atl.replace("Sympt.,", "")
-        atl = atl.replace(", bevalling en kraambed. ", "")
-        atl = atl.replace("Aandoeningen v.d. ", "")
-        nms = " ".join(atl.split()[1:]).capitalize()
-        nms = nms.strip()
-        setattr(oorzaken, nms, aantal[_nr])
-
-
-def daily():
-    time.sleep(11.0)
-    while 1:
-        evt = Event()
-        cbnow(evt)
-        time.sleep(24*60*60)
-
-
-def hourly():
-    while 1:
-        time.sleep(60*60)
-        evt = Event()
-        cbnow(evt)
-
-
-def seconds(nrs):
-    if not nrs:
-        return nrs
-    return 60*60*24*365 / float(nrs)
+"utility"
 
 
 def getalias(txt):
@@ -353,11 +301,36 @@ def getnr(name):
     return 0
 
 
+def seconds(nrs):
+    if not nrs:
+        return nrs
+    return 60*60*24*365 / float(nrs)
+
+
+
 def iswanted(k, line):
     for word in line:
         if word in k:
             return True
     return False
+
+
+"callbacks"
+
+
+def daily():
+    time.sleep(11.0)
+    while 1:
+        evt = Event()
+        cbnow(evt)
+        time.sleep(24*60*60)
+
+
+def hourly():
+    while 1:
+        time.sleep(60*60)
+        evt = Event()
+        cbnow(evt)
 
 
 def cbnow(evt):
@@ -394,6 +367,9 @@ def cbstats(evt):
         Bus.announce(txt)
 
 
+"commands"
+
+
 def now(event):
     name = event.rest or "Psych"
     needed = seconds(getnr(name))
@@ -415,6 +391,40 @@ def now(event):
         event.reply(txt)
     else:
         event.reply("not needed")
+
+
+
+"runtime"
+
+
+def boot():
+    _nr = -1
+    for key in keys(oorzaak):
+        _nr += 1
+        if _nr == 0:
+            continue
+        if key.startswith('"'):
+            key = key[1:]
+        lines = key.split("/")
+        if len(lines) > 1 and not lines[1].startswith("Totaal"):
+            continue
+        atl = lines[0].replace('(aantal)"', "")
+        atl = atl.replace("Ziekten van de", "")
+        atl = atl.replace("Ziekten van", "")
+        atl = atl.replace("Ziekten", "")
+        atl = atl.replace("Zktn", "")
+        atl = atl.replace("zktn", "")
+        atl = atl.replace("en..", "")
+        atl = atl.replace("..", "")
+        atl = atl.replace("bindweef", "bindweefsel")
+        atl = atl.replace("bevind", "bevindingen")
+        atl = atl.replace("stofwiss.", "stofwisseling")
+        atl = atl.replace("Sympt.,", "")
+        atl = atl.replace(", bevalling en kraambed. ", "")
+        atl = atl.replace("Aandoeningen v.d. ", "")
+        nms = " ".join(atl.split()[1:]).capitalize()
+        nms = nms.strip()
+        setattr(oorzaken, nms, aantal[_nr])
 
 
 boot()

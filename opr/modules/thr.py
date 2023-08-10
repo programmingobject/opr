@@ -1,6 +1,6 @@
 # This file is placed in the Public Domain.
 #
-# pylint: disable=C0116
+# pylint: disable=C0116,W0105
 
 
 "running threads"
@@ -13,6 +13,9 @@ import time
 from ..objects import Object, update
 from ..runtime import STARTTIME
 from ..utility import laps
+
+
+"commands"
 
 
 def thr(event):

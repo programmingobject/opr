@@ -1,6 +1,6 @@
 # This file is placed in the Public Domain.
 #
-# pylint: disable=C0115,C0116
+# pylint: disable=C0115,C0116,W0105
 
 
 "udp to irc relay"
@@ -19,10 +19,16 @@ from ..storage import last
 from ..threads import launch
 
 
+"defines"
+
+
 def init():
     udpd = UDP()
     udpd.start()
     return udpd
+
+
+"classes"
 
 
 class Cfg(Default):
@@ -84,9 +90,15 @@ class UDP(Object):
         launch(self.loop)
 
 
+"utility"
+
+
 def toudp(host, port, txt):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.sendto(bytes(txt.strip(), "utf-8"), (host, port))
+
+
+"commands"
 
 
 def udp(event):

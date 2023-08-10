@@ -1,6 +1,6 @@
 # This file is placed in the Public Domain.
 #
-# pylint: disable=C0115,C0116,R0912,R0915
+# pylint: disable=C0115,C0116,R0912,R0915,W0105
 
 
 "internet relay chat"
@@ -646,6 +646,9 @@ def cb_quit(evt):
     Errors.debug(f"quit from {bot.cfg.server}")
     if evt.orig and evt.orig in bot.zelf:
         bot.stop()
+
+
+"commands"
 
 
 def cfg(event):

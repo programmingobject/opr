@@ -1,6 +1,6 @@
 # This file is placed in the Public Domain.
 #
-# pylint: disable=C0115,C0116
+# pylint: disable=C0115,C0116,W0105
 
 
 "shopping list"
@@ -14,6 +14,9 @@ from ..storage import find, write
 from ..utility import fntime, laps
 
 
+"classes"
+
+
 class Shop(Object):
 
     def __init__(self):
@@ -25,6 +28,9 @@ class Shop(Object):
 
     def length(self):
         return len(self.__dict__)
+
+
+"commands"
 
 
 def got(event):

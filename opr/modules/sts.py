@@ -1,12 +1,15 @@
 # This file is placed in the Public Domain.
 #
-# pylint: disable=C0116
+# pylint: disable=C0116,W0105
 
 
 "status of bots"
 
 
 from ..listens import Bus
+
+
+"commands"
 
 
 def sts(event):
