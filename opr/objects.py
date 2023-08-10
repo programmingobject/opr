@@ -201,18 +201,12 @@ class ObjectEncoder(JSONEncoder):
     def default(self, o) -> str:
         ""
         o.__type__ = name(o)
-        try:
+        if isinstance(o, dict):
             return o.items()
-        except AttributeError:
-            pass
-        try:
+        if isinstance(o, Object):
             return vars(o)
-        except ValueError:
-            pass
-        try:
+        if isinstance(o, list):
             return iter(o)
-        except ValueError:
-            pass
         if isinstance(
                       o,
                       (
