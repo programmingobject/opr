@@ -30,8 +30,8 @@ class CLI(Reactor):
 
     def __init__(self):
         Reactor.__init__(self)
+        self.register("command", Commands.handle)
         Bus.add(self)
-        self.register("event", Commands.handle)
 
     def announce(self, txt):
         pass

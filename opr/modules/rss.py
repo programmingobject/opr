@@ -35,7 +35,6 @@ from ..utility import fntime, laps, spl
 
 
 def init():
-    time.sleep(5.0)
     fetcher = Fetcher()
     fetcher.start()
     return fetcher

@@ -35,7 +35,7 @@ Cfg = Default()
 Cfg.name = __file__.split(os.sep)[-2]
 
 
-def scan(pkg, modstr, initer=False, doall=False) -> None:
+def scan(pkg, modstr, initer=False, doall=False, wait=False) -> None:
     path = pkg.__path__[0]
     inited = []
     scanned = []
@@ -52,6 +52,9 @@ def scan(pkg, modstr, initer=False, doall=False) -> None:
         if initer and "init" in dir(module):
             inited.append(modname)
             threads.append(launch(module.init, name=f"init {modname}"))
+    if wait:
+        for thread in threads:
+            thread.join()
     Errors.debug(f"scanned {','.join(scanned)}")
     Errors.debug(f"init {','.join(inited)}")
     return threads

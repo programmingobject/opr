@@ -55,11 +55,11 @@ class Object:
     def __len__(self):
         return len(self.__dict__)
 
+    def __repr__(self):
+        return dumps(self.__dict__)
+
     def __setitem__(self, key, value):
         return self.__dict__.__setitem__(key, value)
-
-    def __str__(self):
-        return dumps(self.__dict__)
 
 
 def clear(obj):
@@ -162,17 +162,7 @@ class ObjectDecoder(JSONDecoder):
 
 def hook(objdict) -> type:
     with hooklock:
-        cls = Object
-        if "__type__" in objdict:
-            clz = objdict["__type__"]
-            del objdict["__type__"]
-            splitted = clz.split(".")
-            modname = ".".join(splitted[:1])
-            clz = splitted[-1]
-            mod = sys.modules.get(modname, None)
-            if mod:
-                cls = getattr(mod, clz, cls)
-        obj = cls()
+        obj = Object()
         construct(obj, objdict)
         return obj
 
@@ -200,7 +190,6 @@ class ObjectEncoder(JSONEncoder):
 
     def default(self, o) -> str:
         ""
-        o.__type__ = name(o)
         if isinstance(o, dict):
             return o.items()
         if isinstance(o, Object):
@@ -221,7 +210,7 @@ class ObjectEncoder(JSONEncoder):
         try:
             return JSONEncoder.default(self, o)
         except TypeError:
-            return repr(o)
+            return object.__repr__(o)
 
     def encode(self, o) -> str:
         ""

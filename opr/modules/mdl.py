@@ -23,7 +23,7 @@ from ..utility import laps
 
 
 def init():
-    time.sleep(10.0)
+    Bus.wait()
     for key in keys(oorzaken):
         val = getattr(oorzaken, key, None)
         if val and int(val) > 10000:
@@ -34,7 +34,7 @@ def init():
             repeater = Repeater(sec, cbstats, evt, thrname=aliases.get(key))
             repeater.start()
     launch(daily, name="daily")
-
+    
 
 DAY = 24*60*60
 YEAR = 365*DAY

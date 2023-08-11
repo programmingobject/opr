@@ -16,6 +16,7 @@ import termios
 from .command import Commands
 from .console import CLI, Console
 from .errored import Errors
+from .listens import Bus
 from .message import Event
 from .objfunc import parse
 from .persist import Persist
@@ -87,7 +88,8 @@ def main():
         print(banner(Cfg))
         csl = Console()
         scan(modules, Cfg.mod, True)
-        csl.start()
+        Bus.wait()
+        launch(csl.loop)
         wait(Errors.wait)
     else:
         cli = CLI()

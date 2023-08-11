@@ -57,6 +57,7 @@ class UDP(Object):
         self._starttime = time.time()
         self.cfg = Cfg()
         self.cfg.addr = ""
+        self.ready = threading.Event()
 
     def output(self, txt, addr=None):
         if addr:
@@ -68,6 +69,7 @@ class UDP(Object):
             self._sock.bind((self.cfg.host, self.cfg.port))
         except socket.gaierror:
             return
+        self.ready.set()
         while not self.stopped:
             (txt, addr) = self._sock.recvfrom(64000)
             if self.stopped:
@@ -89,6 +91,11 @@ class UDP(Object):
         last(self.cfg)
         launch(self.loop)
 
+    def ready(self):
+        self.ready.set()
+
+    def wait(self):
+        self.ready.set()
 
 "utility"
 

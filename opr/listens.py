@@ -21,6 +21,7 @@ class Bus:
 
     @staticmethod
     def add(obj) -> None:
+        print(f"bus add {object.__repr__(obj)}")
         Bus.objs.append(obj)
 
     @staticmethod
@@ -31,9 +32,15 @@ class Bus:
     @staticmethod
     def byorig(orig):
         for obj in Bus.objs:
-            if repr(obj) == orig:
+            if object.__repr__(obj) == orig:
                 return obj
         return None
+
+    @staticmethod
+    def bytype(typ):
+        for obj in Bus.objs:
+            if typ in object.__repr__(obj):
+                return obj
 
     @staticmethod
     def remove(obj) -> None:
@@ -55,3 +62,10 @@ class Bus:
     def show(event) -> None:
         for txt in event.result:
             Bus.say(event.orig, txt, event.channel)
+
+    @staticmethod
+    def wait():
+        bot = Bus.bytype("IRC")
+        if bot:
+            print(f"waiting on {bot}")
+            bot.wait()

@@ -13,6 +13,7 @@ import threading
 
 from .errored import Errors
 from .message import Event
+from .objects import Object
 from .threads import launch
 
 
@@ -25,7 +26,7 @@ def __dir__():
 __all__ = __dir__()
 
 
-class Reactor:
+class Reactor(Object):
 
     errors = []
 
@@ -33,9 +34,6 @@ class Reactor:
         self.cbs = {}
         self.queue = queue.Queue()
         self.stopped = threading.Event()
-
-    def announce(self, txt) -> None:
-        self.raw(txt)
 
     @staticmethod
     def dispatch(func, evt) -> None:
@@ -51,7 +49,7 @@ class Reactor:
     def event(self, txt):
         msg = Event()
         msg.type = 'event'
-        msg.orig = repr(self)
+        msg.orig = object.__repr__(self)
         msg.txt = txt
         return msg
 
@@ -73,10 +71,8 @@ class Reactor:
             except (ssl.SSLError, EOFError) as ex:
                 exc = ex.with_traceback(ex.__traceback__)
                 Errors.errors.append(exc)
-                self.restart()
-
-    def one(self, txt):
-        return self.handle(self.event(txt))
+                self.stopped.set()
+                launch(self.loop)
 
     def poll(self):
         return self.queue.get()
@@ -84,23 +80,5 @@ class Reactor:
     def put(self, evt) -> None:
         self.queue.put_nowait(evt)
 
-    def raw(self, txt) -> None:
-        pass
-
-    def say(self, channel, txt) -> None:
-        if channel:
-            self.raw(txt)
-
     def register(self, typ, func) -> None:
         self.cbs[typ] = func
-
-    def restart(self) -> None:
-        self.stop()
-        self.start()
-
-    def start(self) -> None:
-        launch(self.loop)
-
-    def stop(self) -> None:
-        self.stopped.set()
-        self.queue.put_nowait(None)

@@ -11,6 +11,7 @@ import inspect
 
 from .listens import Bus
 from .errored import Errors
+from .objects import Object
 from .objfunc import parse
 
 
@@ -23,7 +24,7 @@ def __dir__():
 __all__ = __dir__()
 
 
-class Commands:
+class Commands(Object):
 
     cmds = {}
 

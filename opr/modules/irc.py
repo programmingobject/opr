@@ -42,6 +42,7 @@ def init():
     irc = IRC()
     irc.start()
     irc.events.joined.wait()
+    irc.events.ready.set()
     return irc
 
 
@@ -134,7 +135,7 @@ class Output(Object):
             setattr(self.cache, channel, [])
         self.oqueue.put_nowait((channel, txt))
 
-    def output(self):
+    def loop(self):
         while not self.dostop.is_set():
             (channel, txt) = self.oqueue.get()
             if channel is None and txt is None:
@@ -164,15 +165,6 @@ class Output(Object):
             return len(getattr(self.cache, chan, []))
         return 0
 
-    def start(self):
-        self.dostop.clear()
-        launch(self.output)
-        return self
-
-    def stop(self):
-        self.dostop.set()
-        self.oqueue.put_nowait((None, None))
-
 
 class IRC(Reactor, Output):
 
@@ -185,6 +177,7 @@ class IRC(Reactor, Output):
         self.events.authed = threading.Event()
         self.events.connected = threading.Event()
         self.events.joined = threading.Event()
+        self.events.ready = threading.Event()
         self.channels = []
         self.sock = None
         self.state = Default()
@@ -201,6 +194,7 @@ class IRC(Reactor, Output):
         self.register('NOTICE', cb_notice)
         self.register('PRIVMSG', cb_privmsg)
         self.register('QUIT', cb_quit)
+        self.register("366", cb_ready)
         Bus.add(self)
 
     def announce(self, txt):
@@ -250,9 +244,9 @@ class IRC(Reactor, Output):
         return False
 
     def direct(self, txt):
-        Errors.debug(txt)
         with saylock:
-            time.sleep(1.0)
+            time.sleep(5.0)
+            Errors.debug(txt)
             self.sock.send(bytes(txt.rstrip()+'\r\n', 'utf-8'))
 
     def disconnect(self):
@@ -396,7 +390,7 @@ class IRC(Reactor, Output):
             obj.args = spl[1:]
         if obj.args:
             obj.rest = " ".join(obj.args)
-        obj.orig = repr(self)
+        obj.orig = object.__repr__(self)
         obj.txt = obj.txt.strip()
         obj.type = obj.command
         return obj
@@ -484,8 +478,8 @@ class IRC(Reactor, Output):
             self.channels.append(self.cfg.channel)
         self.events.connected.clear()
         self.events.joined.clear()
-        Reactor.start(self)
-        Output.start(self)
+        launch(Reactor.loop, self)
+        launch(Output.loop, self)
         launch(
                self.doconnect,
                self.cfg.server or "localhost",
@@ -497,9 +491,13 @@ class IRC(Reactor, Output):
 
     def stop(self):
         Bus.remove(self)
-        Reactor.stop(self)
-        Output.stop(self)
+        Reactor.stopped.set()
+        Output.stopped.set()
         self.disconnect()
+
+
+    def wait(self):
+        self.events.ready.wait()
 
 
 class User(Persist):
@@ -608,6 +606,13 @@ def cb_kill(evt):
 
 def cb_log(evt):
     pass
+
+
+def cb_ready(evt):
+    bot = Bus.byorig(evt.orig)
+    if bot:
+        bot.events.ready.set()
+    print(f"ready {type(bot)} {evt.orig}")
 
 
 def cb_001(evt):
